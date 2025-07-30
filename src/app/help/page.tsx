@@ -10,32 +10,29 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { LifeBuoy } from 'lucide-react';
+import { LifeBuoy, Book, BarChart3, Video } from 'lucide-react';
 
 const faqItems = [
   {
-    question: 'Как начать пользоваться платформой?',
-    answer: 'Для начала работы просто зарегистрируйтесь, создав аккаунт. После этого вы получите доступ к поиску тендеров и основным функциям. Для получения полного доступа ко всем инструментам, включая аналитику и неограниченные фильтры, выберите один из наших тарифных планов.',
+    value: 'terms',
+    question: 'Термины и определения',
+    answer: 'Здесь будет подробный глоссарий со всеми терминами, используемыми в системе: тендер, закупка, лот, электронный аукцион, запрос предложений и т.д.',
   },
   {
-    question: 'Какие источники тендеров вы используете?',
-    answer: 'Мы агрегируем данные с десятков официальных и коммерческих площадок, включая goszakupki.by, icetrade.by, butb.by и многие другие. Наша база постоянно обновляется, чтобы вы получали самую актуальную информацию.',
+    value: 'functionality',
+    question: 'Описание функционала сервиса',
+    answer: 'Подробное описание каждого модуля и функции: как работает поиск, как настраивать фильтры, как пользоваться аналитикой, как управлять уведомлениями и командной работой.',
   },
   {
-    question: 'Как работают уведомления?',
-    answer: 'Вы можете настроить фильтры по ключевым словам, регионам и отраслям. Как только в системе появится новый тендер, соответствующий вашим критериям, мы немедленно отправим вам уведомление на Email и/или в Telegram, в зависимости от вашего тарифного плана.',
+    value: 'videos',
+    question: 'Видеоруководства',
+    answer: 'Раздел со встроенными видеоуроками. Каждый ролик демонстрирует основной сценарий работы: от регистрации и настройки первого фильтра до выгрузки аналитического отчета и совместной работы над тендером.',
   },
   {
-    question: 'Могу ли я работать на платформе вместе с коллегами?',
-    answer: 'Да! Тарифные планы "Профи" и "Бизнес" включают возможность командной работы. Вы можете приглашать коллег, распределять задачи, оставлять комментарии и совместно отслеживать статусы тендеров.',
-  },
-  {
-    question: 'Можно ли отменить подписку в любое время?',
-    answer: 'Да, вы можете отменить подписку в любой момент в вашем личном кабинете. Доступ к функциям сохранится до конца оплаченного периода. Никаких скрытых платежей или обязательств.',
-  },
-   {
-    question: 'Предоставляете ли вы API для интеграции?',
-    answer: 'Да, для клиентов на тарифе "Бизнес" мы предоставляем REST API, которое позволяет интегрировать нашу базу тендеров с вашими внутренними системами, такими как CRM или ERP, для полной автоматизации рабочих процессов.',
+    value: 'analytics',
+    question: 'Раздел «Аналитика»',
+    answer: 'Модуль "Аналитика" — это ваш центр управления для глубокого анализа рынка закупок. Он позволяет отслеживать динамику по отраслям, регионам и заказчикам, анализировать активность конкурентов и выявлять тренды. Используйте более 12 гибких фильтров для построения кастомных отчетов. Результаты можно выгружать в Excel или просматривать в виде интерактивных графиков и диаграмм.',
+    video: true,
   },
 ];
 
@@ -46,22 +43,35 @@ export default function HelpPage() {
       <main className="flex-grow py-12 sm:py-16 bg-secondary/30">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center max-w-3xl mx-auto">
-            <LifeBuoy className="w-16 h-16 mx-auto text-accent mb-4" />
-            <h1 className="text-3xl sm:text-4xl font-bold text-primary">Центр помощи</h1>
+            <Book className="w-16 h-16 mx-auto text-accent mb-4" />
+            <h1 id="knowledge-base" className="text-3xl sm:text-4xl font-bold text-primary scroll-mt-20">База знаний</h1>
             <p className="text-muted-foreground mt-4 text-lg">
-              Нашли ответ на свой вопрос? Если нет, наша команда поддержки всегда готова помочь.
+              Вся необходимая информация для успешной работы с сервисом.
             </p>
           </div>
 
           <div className="max-w-3xl mx-auto mt-12">
-            <Accordion type="single" collapsible className="w-full bg-card p-4 sm:p-8 rounded-xl shadow-sm border">
-              {faqItems.map((item, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left font-semibold text-primary hover:no-underline text-base sm:text-lg">
-                    {item.question}
+            <Accordion type="single" collapsible defaultValue="analytics" className="w-full bg-card p-4 sm:p-8 rounded-xl shadow-sm border">
+              {faqItems.map((item) => (
+                <AccordionItem key={item.value} value={item.value}>
+                  <AccordionTrigger id={item.value} className="text-left font-semibold text-primary hover:no-underline text-base sm:text-lg scroll-mt-20">
+                    <div className="flex items-center gap-3">
+                        {item.value === 'analytics' ? <BarChart3 className="w-5 h-5 text-accent"/> : <LifeBuoy className="w-5 h-5 text-accent"/>}
+                        {item.question}
+                    </div>
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground pt-2 text-sm sm:text-base">
-                    {item.answer}
+                    <p>{item.answer}</p>
+                    {item.video && (
+                      <div className="mt-4">
+                        <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
+                            <div className="text-center text-gray-500">
+                                <Video className="w-12 h-12 mx-auto mb-2"/>
+                                <p>Короткое обучающее видео</p>
+                            </div>
+                        </div>
+                      </div>
+                    )}
                   </AccordionContent>
                 </AccordionItem>
               ))}
