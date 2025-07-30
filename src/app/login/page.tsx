@@ -34,6 +34,9 @@ export default function LoginPage() {
                 title: 'Успешно!',
                 description: state.message,
             });
+            localStorage.setItem('isLoggedIn', 'true');
+            // Dispatch a storage event to notify the header
+            window.dispatchEvent(new Event('storage'));
             router.push('/');
         }
     }, [state, toast, router]);
@@ -51,11 +54,11 @@ export default function LoginPage() {
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="username">Имя пользователя</Label>
-                                <Input id="username" name="username" placeholder="например, user01" required />
+                                <Input id="username" name="username" placeholder="например, user01" required defaultValue="user01"/>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="password">Пароль</Label>
-                                <Input id="password" name="password" type="password" required />
+                                <Input id="password" name="password" type="password" required defaultValue="demo"/>
                             </div>
                         </CardContent>
                         <CardFooter className="flex flex-col gap-4">
