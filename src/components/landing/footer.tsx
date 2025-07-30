@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Logo } from '@/components/icons';
 import { MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 const quickLinks = [
   { href: '#about', label: 'О нас' },
@@ -23,7 +23,7 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-12 lg:col-span-5 text-center lg:text-left">
              <Link href="/" className="flex items-center justify-center lg:justify-start gap-2 text-decoration-none mb-4">
-                <Logo className="h-10 w-10" />
+                <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
                 <span className="text-xl font-bold text-white">Tendersoft</span>
             </Link>
             <p className="mt-4 text-sm text-white/70 max-w-sm mx-auto lg:mx-0">

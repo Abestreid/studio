@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Logo } from '@/components/icons';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import Image from 'next/image';
 
 const navLinks = [
   { href: '#tenders', label: 'Тендеры' },
@@ -23,7 +23,7 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-decoration-none">
-          <Logo className="h-10 w-10" />
+          <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
           <span className="text-xl font-bold text-primary">Tendersoft</span>
         </Link>
         <nav className="hidden items-center gap-6 lg:flex">
