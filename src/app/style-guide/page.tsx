@@ -55,8 +55,12 @@ import { DatePickerWithRange } from '@/components/analytics/date-range-picker';
 import { TendersByMonthChart } from '@/components/analytics/tenders-by-month-chart';
 import { TendersByIndustryChart } from '@/components/analytics/tenders-by-industry-chart';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Terminal, LogOut, UserCircle } from 'lucide-react';
+import { Terminal, LogOut, UserCircle, Check } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { Switch } from '@/components/ui/switch';
+
 
 const mockTender = {
     id: "sample-123",
@@ -76,8 +80,54 @@ const recentWins = [
     { id: '2', title: 'Ремонтные работы в офисе', customer: 'ООО "ТехноСтрой"', amount: '112,000 BYN', date: '22.05.2025' },
 ];
 
+const tiers = [
+  {
+    name: 'Базовый',
+    priceMonthly: '29 BYN',
+    priceAnnually: '290 BYN',
+    description: 'Для индивидуальных специалистов и небольших команд.',
+    features: [
+      'Доступ ко всем тендерам',
+      'Уведомления на Email',
+      'До 5 сохраненных фильтров',
+      'Базовая аналитика',
+    ],
+    isPopular: false,
+  },
+  {
+    name: 'Профи',
+    priceMonthly: '79 BYN',
+    priceAnnually: '790 BYN',
+    description: 'Для активных участников тендеров и растущих компаний.',
+    features: [
+      'Все возможности Базового',
+      'Уведомления в Telegram',
+      'Безлимитные фильтры',
+      'Анализ конкурентов',
+      'Командный доступ (до 5 чел.)',
+    ],
+    isPopular: true,
+  },
+  {
+    name: 'Бизнес',
+    priceMonthly: '149 BYN',
+    priceAnnually: '1490 BYN',
+    description: 'Для крупных организаций с высокими требованиями.',
+    features: [
+      'Все возможности Профи',
+      'Персональный менеджер',
+      'Интеграция по API',
+      'Расширенная аналитика',
+      'Командный доступ (до 20 чел.)',
+    ],
+    isPopular: false,
+  },
+];
+
 
 export default function StyleGuidePage() {
+  const [isAnnual, setIsAnnual] = useState(false);
+
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="mb-12">
       <h2 className="text-2xl font-bold text-primary border-b-2 border-accent pb-2 mb-6">{title}</h2>
@@ -378,6 +428,63 @@ export default function StyleGuidePage() {
                             ))}
                         </TableBody>
                     </Table>
+                </div>
+            </SubSection>
+
+            <SubSection title="Карточки тарифов и переключатель">
+                 <div className="w-full space-y-8">
+                     <div className="flex justify-center items-center gap-4">
+                        <Label htmlFor="billing-cycle-sg" className={!isAnnual ? 'text-primary font-semibold' : 'text-muted-foreground'}>
+                            Ежемесячно
+                        </Label>
+                        <Switch
+                            id="billing-cycle-sg"
+                            checked={isAnnual}
+                            onCheckedChange={setIsAnnual}
+                            aria-label="Переключить на годовую оплату"
+                        />
+                        <Label htmlFor="billing-cycle-sg" className={isAnnual ? 'text-primary font-semibold' : 'text-muted-foreground'}>
+                            Ежегодно <span className="text-accent font-bold">(выгода 2 месяца!)</span>
+                        </Label>
+                    </div>
+                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch w-full">
+                        {tiers.map((tier) => (
+                        <Card
+                            key={tier.name}
+                            className={cn(
+                            'flex flex-col shadow-sm hover:shadow-xl transition-shadow duration-300 rounded-2xl',
+                            tier.isPopular && 'border-2 border-accent shadow-accent/20'
+                            )}
+                        >
+                            {tier.isPopular && (
+                            <div className="bg-accent text-accent-foreground text-xs font-bold uppercase tracking-wider text-center py-1.5 rounded-t-xl">
+                                Популярный выбор
+                            </div>
+                            )}
+                            <CardHeader className="text-center">
+                            <CardTitle className="text-2xl text-primary">{tier.name}</CardTitle>
+                            <CardDescription className="px-4">{tier.description}</CardDescription>
+                            </CardHeader>
+                            <CardContent className="flex flex-col flex-grow">
+                            <div className="text-center my-4">
+                                <span className="text-4xl font-bold">{isAnnual ? tier.priceAnnually : tier.priceMonthly}</span>
+                                <span className="text-muted-foreground">/{isAnnual ? 'год' : 'мес'}</span>
+                            </div>
+                            <ul className="space-y-3 text-sm flex-grow">
+                                {tier.features.map((feature) => (
+                                <li key={feature} className="flex items-start">
+                                    <Check className="w-5 h-5 text-green-500 mr-2 shrink-0 mt-0.5" />
+                                    <span>{feature}</span>
+                                </li>
+                                ))}
+                            </ul>
+                            <Button className="w-full mt-8" size="lg" variant={tier.isPopular ? 'default' : 'outline'}>
+                                Выбрать тариф
+                            </Button>
+                            </CardContent>
+                        </Card>
+                        ))}
+                    </div>
                 </div>
             </SubSection>
 
