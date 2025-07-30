@@ -1,38 +1,61 @@
 
-export function Partners() {
-const partners = [
-  { name: 'Goszakupki.by', logo: '/logos/logo_header_min.png', hint: 'company logo' },
-  { name: 'ICETRADE.BY', logo: '/logos/logo.svg', hint: 'company logo' },
-  { name: 'BUT.BY', logo: '/logos/logo_s1.svg', hint: 'company logo' },
-  { name: 'Goszakup.gov.kz', logo: '/logos/logo.png', hint: 'company logo' },
-  { name: 'Zakup.sk.kz', logo: '/logos/logo2.png', hint: 'company logo' },
-  { name: 'ETS.kz', logo: '/logos/logo_ru.png', hint: 'company logo' },
-  { name: 'EEP.mitwork.kz', logo: '/logos/logo-ru.gif', hint: 'company logo' },
-];
-  const duplicatedPartners = [...partners, ...partners, ...partners, ...partners];
+import { Card, CardContent } from "../ui/card";
+import { Button } from "../ui/button";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
+const belarusianPlatforms = [
+  {
+    name: 'Goszakupki.by',
+    logo: 'https://goszakupki.by/img/logo_ru.png',
+    description: 'Официальная электронная торговая площадка для государственных закупок в Республике Беларусь.',
+    href: 'https://goszakupki.by'
+  },
+  {
+    name: 'ICETRADE.BY',
+    logo: 'https://icetrade.by/img/logo.png',
+    description: 'Информационный ресурс, предоставляющий сведения о тендерах и закупках в Беларуси.',
+    href: 'https://icetrade.by'
+  },
+  {
+    name: 'BUTB.BY',
+    logo: 'https://www.butb.by/local/templates/butb/img/logo_s1.svg',
+    description: 'Белорусская универсальная товарная биржа, площадка для электронных торгов.',
+    href: 'https://www.butb.by'
+  },
+];
+
+
+export function Partners() {
   return (
     <section className="bg-white">
       <div className="container mx-auto px-4 md:px-6">
         <h2 className="section-title">
-          Источники данных и партнёрские площадки
+         🇧🇾 Площадки Беларуси
         </h2>
-        <div className="sources-container mt-12">
-            <div className="sources-track">
-                {duplicatedPartners.map((partner, index) => (
-                <div key={`${partner.name}-${index}`} className="source-item">
-                    <img
-                        src={partner.logo}
-                        alt={partner.name}
-                        className="source-logo"
-                        data-ai-hint={partner.hint}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {belarusianPlatforms.map((platform) => (
+            <Card key={platform.name} className="flex flex-col text-center p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="flex-grow flex items-center justify-center p-4">
+                     <Image 
+                        src={platform.logo} 
+                        alt={`${platform.name} logo`}
+                        width={150}
+                        height={60}
+                        className="object-contain"
                     />
                 </div>
-                ))}
-            </div>
-        </div>
-        <div className="text-center mt-8">
-            <span className="text-muted-foreground text-sm">* Мы используем только официальные и проверенные источники данных для вашей уверенности и прозрачности.</span>
+                <p className="text-muted-foreground text-sm mt-4 flex-grow">{platform.description}</p>
+                <div className="mt-6">
+                    <Button asChild variant="outline">
+                        <Link href={platform.href} target="_blank" rel="noopener noreferrer">
+                            Перейти на сайт <ArrowUpRight className="ml-2 w-4 h-4"/>
+                        </Link>
+                    </Button>
+                </div>
+            </Card>
+          ))}
         </div>
       </div>
     </section>
