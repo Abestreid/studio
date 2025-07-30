@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { MagnifyingGlass, IdentificationCard, Bell, ChartBar, UserFocus, Funnel } from '@phosphor-icons/react/dist/ssr';
+import { MagnifyingGlass, Browsers, Bell, ChartBar, Users, Funnel } from '@phosphor-icons/react/dist/ssr';
 
 const features = [
   {
@@ -8,7 +8,7 @@ const features = [
     description: 'Поиск тендеров по всем основным площадкам Казахстана и Беларуси. Быстро находите нужные закупки с помощью интеллектуальных фильтров.',
   },
   {
-    icon: <IdentificationCard weight="regular" />,
+    icon: <Browsers weight="regular" />,
     title: 'Детализированные карточки',
     description: 'Вся информация о тендере в одном месте: заказчик, статус, сроки, тип закупки, цена и многое другое для быстрого анализа.',
   },
@@ -23,7 +23,7 @@ const features = [
     description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.',
   },
   {
-    icon: <UserFocus weight="regular" />,
+    icon: <Users weight="regular" />,
     title: 'Отслеживание конкурентов',
     description: 'Следите за активностью конкурентов и их тендерами, чтобы быть на шаг впереди на рынке.',
   },

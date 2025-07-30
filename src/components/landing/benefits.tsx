@@ -1,5 +1,3 @@
-
-
 import { Card, CardContent } from '@/components/ui/card';
 import { Bot, Filter, DatabaseZap, UserPlus, SlidersHorizontal, Bell } from 'lucide-react';
 import { Button } from '../ui/button';

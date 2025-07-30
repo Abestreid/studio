@@ -32,6 +32,7 @@ export default function LandingPage() {
         <Cta
           title="Начните получать тендеры первыми"
           buttonText="Попробовать бесплатно"
+          className="bg-primary"
         />
       </main>
       <Footer />

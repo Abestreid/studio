@@ -2,6 +2,7 @@ import { TenderCard } from '../tender-card';
 
 const tenders = [
     {
+        id: "1",
         title: "Поставка офисной мебели для администрации г. Минска",
         location: "Минск",
         customer: "Администрация г. Минска",
@@ -10,9 +11,10 @@ const tenders = [
         deadline: "до 29.05 (2 дня)",
         type: "Товар",
         price: "34 500 BYN",
-        status: ""
+        status: "Открыт"
     },
     {
+        id: "2",
         title: "Уведомление о проведении КП по замене компенсатора К-4; К-5 на трубопроводе сетевой воды ТЭС",
         location: "Мангистауская обл.",
         customer: "Филиал ВМУ",
@@ -24,6 +26,7 @@ const tenders = [
         status: "Предварительное обсуждение"
     },
     {
+        id: "3",
         title: "Поставка стульев",
         location: "Алматы",
         customer: "Заказчик скрыт",
@@ -34,28 +37,6 @@ const tenders = [
         price: "30 310 KZT",
         status: "Время истекает!"
     },
-     {
-        title: "Закупка канцтоваров для школы №12",
-        location: "Нур-Султан",
-        customer: "Школа №12",
-        platform: "Госзакупки",
-        published: "30.05.2025",
-        deadline: "до 05.06 (6 дней)",
-        type: "Товар",
-        price: "150 000 KZT",
-        status: ""
-    },
-    {
-        title: "Ремонтные работы в офисном здании",
-        location: "Гомель",
-        customer: "ООО 'СтройМастер'",
-        platform: "icetrade.by",
-        published: "01.06.2025",
-        deadline: "до 15.06 (14 дней)",
-        type: "Услуга",
-        price: "50 000 BYN",
-        status: ""
-    }
 ];
 
 export function NewTenders() {
@@ -66,8 +47,8 @@ export function NewTenders() {
           Новые тендеры в реальном времени
         </h2>
         <div className="mt-8 max-w-4xl mx-auto space-y-4">
-            {tenders.slice(0, 3).map((tender, index) => (
-                <TenderCard key={index} {...tender} />
+            {tenders.map((tender, index) => (
+                <TenderCard key={index} {...tender} id={tender.id || `${index}`} />
             ))}
         </div>
       </div>

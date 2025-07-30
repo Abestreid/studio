@@ -34,7 +34,7 @@ const exampleTenders: TenderResult[] = [
         deadline: "до 29.05 (2 дня)",
         type: "Товар",
         price: "34 500 BYN",
-        status: ""
+        status: "Открыт"
     },
     {
         id: "2",
@@ -60,30 +60,6 @@ const exampleTenders: TenderResult[] = [
         price: "30 310 KZT",
         status: "Время истекает!"
     },
-     {
-        id: "4",
-        title: "Закупка канцтоваров для школы №12",
-        location: "Нур-Султан",
-        customer: "Школа №12",
-        platform: "Госзакупки",
-        published: "30.05.2025",
-        deadline: "до 05.06 (6 дней)",
-        type: "Товар",
-        price: "150 000 KZT",
-        status: ""
-    },
-    {
-        id: "5",
-        title: "Ремонтные работы в офисном здании",
-        location: "Гомель",
-        customer: "ООО 'СтройМастер'",
-        platform: "icetrade.by",
-        published: "01.06.2025",
-        deadline: "до 15.06 (14 дней)",
-        type: "Услуга",
-        price: "50 000 BYN",
-        status: ""
-    }
 ];
 
 export function Hero() {
@@ -110,9 +86,15 @@ export function Hero() {
     formAction(formData);
   }
 
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.value === '') {
+      setHasSearched(false);
+    }
+  }
+
   const hasResults = state.results && state.results.length > 0;
   const noResultsMessage = hasSearched && state.message;
-  const showExampleResults = !hasSearched;
+  const showExampleResults = !hasSearched && !isPending && !hasResults;
 
   return (
     <section className="bg-gradient-to-br from-primary via-teal-800 to-accent pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20">
@@ -130,7 +112,7 @@ export function Hero() {
           <Collapsible open={showAdvancedSearch} onOpenChange={setShowAdvancedSearch}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <div className="md:col-span-2">
-                <Input id={`${formId}-query`} name="query" placeholder="Что ищем? место поставки, закупки, тендер" className="bg-white h-12 rounded-full"/>
+                <Input id={`${formId}-query`} name="query" placeholder="Что ищем? место поставки, закупки, тендер" className="bg-white h-12 rounded-full" onChange={handleQueryChange}/>
               </div>
 
               <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
@@ -279,7 +261,7 @@ export function Hero() {
                  </div>
             )}
              {noResultsMessage && <p className="text-center text-white bg-black/20 p-4 rounded-lg">{state.message}</p>}
-             {showExampleResults && !isPending && (
+             {showExampleResults && (
                 <div className="space-y-4">
                     {exampleTenders.map((tender) => (
                         <TenderCard key={tender.id} {...tender} />
