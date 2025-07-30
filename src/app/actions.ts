@@ -12,8 +12,21 @@ const SearchSchema = z.object({
   region: z.string().optional(),
 });
 
+export interface TenderResult {
+    id: string;
+    title: string;
+    location: string;
+    customer: string;
+    platform: string;
+    published: string;
+    deadline: string;
+    type: string;
+    price: string;
+    status?: string;
+}
+
 export interface SearchState {
-  results?: string[];
+  results?: TenderResult[];
   error?: string;
   message?: string;
 }

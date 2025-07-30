@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useState } from 'react';
+import { useActionState, useEffect, useState, useId } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { TenderCard } from '../tender-card';
-import { searchTenders, type SearchState } from '@/app/actions';
+import { searchTenders, type SearchState, type TenderResult } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
@@ -23,8 +23,9 @@ const initialState: SearchState = {};
 
 const tenderSources = ["goszakupki.by", "icetrade.by", "butb.by"];
 
-const exampleTenders = [
+const exampleTenders: TenderResult[] = [
     {
+        id: "1",
         title: "Поставка офисной мебели для администрации г. Минска",
         location: "Минск",
         customer: "Администрация г. Минска",
@@ -36,6 +37,7 @@ const exampleTenders = [
         status: ""
     },
     {
+        id: "2",
         title: "Уведомление о проведении КП по замене компенсатора К-4; К-5 на трубопроводе сетевой воды ТЭС",
         location: "Мангистауская обл.",
         customer: "Филиал ВМУ",
@@ -47,6 +49,7 @@ const exampleTenders = [
         status: "Предварительное обсуждение"
     },
     {
+        id: "3",
         title: "Поставка стульев",
         location: "Алматы",
         customer: "Заказчик скрыт",
@@ -58,6 +61,7 @@ const exampleTenders = [
         status: "Время истекает!"
     },
      {
+        id: "4",
         title: "Закупка канцтоваров для школы №12",
         location: "Нур-Султан",
         customer: "Школа №12",
@@ -69,6 +73,7 @@ const exampleTenders = [
         status: ""
     },
     {
+        id: "5",
         title: "Ремонтные работы в офисном здании",
         location: "Гомель",
         customer: "ООО 'СтройМастер'",
@@ -85,6 +90,7 @@ export function Hero() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const { toast } = useToast();
   const [state, formAction] = useActionState(searchTenders, initialState);
+  const formId = useId();
 
   useEffect(() => {
     if (state.error) {
@@ -116,84 +122,88 @@ export function Hero() {
           <Collapsible open={showAdvancedSearch} onOpenChange={setShowAdvancedSearch}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <div className="md:col-span-2">
-                <Input id="query" name="query" placeholder="Что ищем? место поставки, закупки, тендер" className="bg-white h-12 rounded-full"/>
+                <Input id={`${formId}-query`} name="query" placeholder="Что ищем? место поставки, закупки, тендер" className="bg-white h-12 rounded-full"/>
               </div>
 
               <div className='md:col-span-2'>
-                <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 transition-all duration-300", !showAdvancedSearch && 'grid-rows-[1fr_0]')} >
+                <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 transition-all duration-300", !showAdvancedSearch && 'grid-rows-[0fr]')} >
                   <div className='overflow-hidden'>
-                     <Select name="region">
-                       <SelectTrigger id="region" className="bg-white h-12 rounded-full">
+                    <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4")}>
+                      <Select name="region">
+                       <SelectTrigger id={`${formId}-region`} className="bg-white h-12 rounded-full">
                           <SelectValue placeholder="Место поставки" />
                        </SelectTrigger>
                        <SelectContent>
                           <SelectItem value="by">Беларусь</SelectItem>
                           <SelectItem value="kz">Казахстан</SelectItem>
                        </SelectContent>
-                    </Select>
+                      </Select>
+                    </div>
                   </div>
+                </div>
+              </div>
 
-                  <CollapsibleContent asChild className="md:col-span-2">
+              <CollapsibleContent asChild className="md:col-span-2">
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                         <div>
-                            <Input id="tender_id" name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
+                            <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
                         </div>
                         <div className="relative">
-                            <Input id="okrb_code" name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 pr-36 rounded-md"/>
+                            <Input id={`${formId}-okrb_code`} name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 pr-36 rounded-md"/>
                             <Button type="button" variant="link" className="absolute right-2 top-1/2 -translate-y-1/2 h-auto text-sm">Открыть справочник</Button>
                         </div>
                         <div className="md:col-span-2">
-                            <Input id="subject" name="subject" placeholder="Введите наименование предмета закупки" className="bg-white h-12 rounded-md"/>
+                            <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-white h-12 rounded-md"/>
                             <div className="flex items-center gap-4 mt-2">
                               <RadioGroup defaultValue="search_in_name" className="flex">
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="exact" id="exact" />
-                                        <Label htmlFor="exact" className="text-sm font-normal">Точное соответствие</Label>
+                                        <RadioGroupItem value="exact" id={`${formId}-exact`} />
+                                        <Label htmlFor={`${formId}-exact`} className="text-sm font-normal">Точное соответствие</Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="search_in_name" id="search_in_name" />
-                                        <Label htmlFor="search_in_name" className="text-sm font-normal">Искать и в названии закупки</Label>
+                                        <RadioGroupItem value="search_in_name" id={`${formId}-search_in_name`} />
+                                        <Label htmlFor={`${formId}-search_in_name`} className="text-sm font-normal">Искать и в названии закупки</Label>
                                     </div>
                                 </RadioGroup>
                             </div>
                         </div>
                         <div className="md:col-span-2">
-                            <Input id="exclude_words" name="exclude_words" placeholder="Укажите слова исключения" className="bg-white h-12 rounded-md"/>
+                            <Input id={`${formId}-exclude_words`} name="exclude_words" placeholder="Укажите слова исключения" className="bg-white h-12 rounded-md"/>
                         </div>
                         <div>
-                            <Input id="price_from" name="price_from" type="number" placeholder="Предельная стоимость от" className="mt-1 bg-white h-12 rounded-md" />
+                            <Input id={`${formId}-price_from`} name="price_from" type="number" placeholder="Предельная стоимость от" className="mt-1 bg-white h-12 rounded-md" />
                         </div>
                         <div>
-                            <Input id="price_to" name="price_to" type="number" placeholder="Предельная стоимость до" className="mt-1 bg-white h-12 rounded-md"/>
+                            <Input id={`${formId}-price_to`} name="price_to" type="number" placeholder="Предельная стоимость до" className="mt-1 bg-white h-12 rounded-md"/>
                         </div>
                         <div>
-                            <Input id="date_pub_from" name="date_pub_from" type="date" placeholder="Дата размещения с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                            <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" placeholder="Дата размещения с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
                         </div>
                         <div>
-                            <Input id="date_pub_to" name="date_pub_to" type="date" placeholder="Дата размещения до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                            <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" placeholder="Дата размещения до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
                         </div>
                         <div>
-                            <Input id="date_end_from" name="date_end_from" type="date" placeholder="Дата окончания приема предлоджиний с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                            <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" placeholder="Дата окончания приема предлоджиний с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
                         </div>
                         <div>
-                            <Input id="date_end_to" name="date_end_to" type="date" placeholder="Дата окончания приема предлоджиний до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                            <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" placeholder="Дата окончания приема предлоджиний до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
                         </div>
                         <div>
-                            <Input id="delivery_from" name="delivery_from" type="date" placeholder="Срок поставки от" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                            <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" placeholder="Срок поставки от" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
                         </div>
                         <div>
-                            <Input id="delivery_to" name="delivery_to" type="date" placeholder="Срок поставки до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                            <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" placeholder="Срок поставки до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
                         </div>
                         <div className="md:col-span-2 space-y-3">
                             <RadioGroup defaultValue="all" className="flex items-center gap-4">
                                 <Label className="text-sm font-medium">Тип закупки:</Label>
                                 <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="own" id="own" />
-                                    <Label htmlFor="own" className="text-sm font-normal">Собственные средства</Label>
+                                    <RadioGroupItem value="own" id={`${formId}-own`} />
+                                    <Label htmlFor={`${formId}-own`} className="text-sm font-normal">Собственные средства</Label>
                                 </div>
                                 <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="gov" id="gov" />
-                                    <Label htmlFor="gov" className="text-sm font-normal">Государственные закупки</Label>
+                                    <RadioGroupItem value="gov" id={`${formId}-gov`} />
+                                    <Label htmlFor={`${formId}-gov`} className="text-sm font-normal">Государственные закупки</Label>
                                 </div>
                             </RadioGroup>
                             <div className="chip-group-sm">
@@ -208,8 +218,6 @@ export function Hero() {
                         </div>
                     </div>
                   </CollapsibleContent>
-                </div>
-              </div>
               <div className="md:col-span-2 flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
                 <Button type="submit" size="lg" className="w-full sm:w-auto h-12 text-base rounded-full flex-grow">
                   <Search className="mr-2" />
@@ -237,11 +245,11 @@ export function Hero() {
         <div className="mt-12 max-w-4xl mx-auto">
             {(hasResults || showExampleResults) && (
                  <div className="space-y-4">
-                     {hasResults && state.results.map((tender, index) => (
-                        <TenderCard key={index} {...JSON.parse(tender)} />
+                     {hasResults && state.results.map((tender) => (
+                        <TenderCard key={tender.id} {...tender} />
                      ))}
-                     {showExampleResults && exampleTenders.map((tender, index) => (
-                         <TenderCard key={index} {...tender} />
+                     {showExampleResults && exampleTenders.map((tender) => (
+                         <TenderCard key={tender.id} {...tender} />
                      ))}
                  </div>
             )}

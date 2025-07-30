@@ -1,4 +1,3 @@
-// This file uses server-side code.
 'use server';
 
 /**
@@ -12,6 +11,19 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
+const TenderSchema = z.object({
+  id: z.string().describe('Уникальный идентификатор тендера'),
+  title: z.string().describe('Название тендера'),
+  location: z.string().describe('Местоположение'),
+  customer: z.string().describe('Заказчик'),
+  platform: z.string().describe('Платформа'),
+  published: z.string().describe('Дата публикации'),
+  deadline: z.string().describe('Срок подачи заявок'),
+  type: z.string().describe('Тип (Товар, Услуга, Работа)'),
+  price: z.string().describe('Цена'),
+  status: z.string().optional().describe('Статус тендера'),
+});
+
 const NaturalLanguageTenderSearchInputSchema = z.object({
   query: z.string().describe('The natural language search query.'),
   industry: z.string().optional().describe('The industry to search within.'),
@@ -20,7 +32,7 @@ const NaturalLanguageTenderSearchInputSchema = z.object({
 export type NaturalLanguageTenderSearchInput = z.infer<typeof NaturalLanguageTenderSearchInputSchema>;
 
 const NaturalLanguageTenderSearchOutputSchema = z.object({
-  results: z.array(z.string()).describe('A list of relevant tender opportunities.'),
+  results: z.array(TenderSchema).describe('A list of relevant tender opportunities.'),
 });
 export type NaturalLanguageTenderSearchOutput = z.infer<typeof NaturalLanguageTenderSearchOutputSchema>;
 
@@ -32,16 +44,38 @@ const naturalLanguageTenderSearchPrompt = ai.definePrompt({
   name: 'naturalLanguageTenderSearchPrompt',
   input: {schema: NaturalLanguageTenderSearchInputSchema},
   output: {schema: NaturalLanguageTenderSearchOutputSchema},
-  prompt: `You are an expert in tender opportunity search.
+  prompt: `You are an expert in tender opportunity search. Your task is to act as a mock API.
 
 You will take a natural language query from the user and return a list of relevant tender opportunities.
-Consider the industry and region if provided.
+The user's query is "{{query}}".
 
-Query: {{{query}}}
-Industry: {{{industry}}}
-Region: {{{region}}}
+If the query contains the word "принтер" or "мфу", you MUST return the following 2 results. For any other query, you must return an empty list of results.
 
-Results:`, // Removed Handlebars 'each' helper as it is for presentation, not generation
+Result 1:
+- id: "1"
+- title: "Многофункциональные устройства (МФУ) и принтеры"
+- location: "Минск"
+- customer: "Национальный филиал (представительство) Межгосударственной телерадиокомпании \"Мир\""
+- platform: "goszakupki.by"
+- published: "04.06.2025"
+- deadline: "до 08.06 (4 дня)"
+- type: "Товар"
+- price: "34 500 BYN"
+- status: "Открыт"
+
+Result 2:
+- id: "2"
+- title: "Поставка картриджей для принтеров"
+- location: "Алматы"
+- customer: "ТОО 'Офис-Сервис'"
+- platform: "zakup.sk.kz"
+- published: "10.06.2025"
+- deadline: "до 15.06 (5 дней)"
+- type: "Товар"
+- price: "1 200 000 KZT"
+- status: "Открыт"
+
+Format the output as a valid JSON object matching the output schema. Do not include any other text or explanations.`,
 });
 
 const naturalLanguageTenderSearchFlow = ai.defineFlow(
