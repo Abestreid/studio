@@ -249,17 +249,19 @@ export default function TenderPage({ params }: { params: { id: string } }) {
                     </Card>
                 </div>
             </div>
-            <div className="lg:col-span-1">
-                <div className="sticky top-24">
-                    <Card className="shadow-lg border-accent">
-                        <CardContent className="p-6 text-center">
-                            <h3 className="text-lg font-bold text-primary mb-2">Доступ ограничен</h3>
-                            <p className="text-sm text-muted-foreground mb-4">Для просмотра полной информации оформите тариф «Премиум»</p>
-                            <Button className="w-full">Купить онлайн</Button>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
+            {!isLoggedIn && (
+              <div className="lg:col-span-1">
+                  <div className="sticky top-24">
+                      <Card className="shadow-lg border-accent">
+                          <CardContent className="p-6 text-center">
+                              <h3 className="text-lg font-bold text-primary mb-2">Доступ ограничен</h3>
+                              <p className="text-sm text-muted-foreground mb-4">Для просмотра полной информации оформите тариф «Премиум»</p>
+                              <Button className="w-full">Купить онлайн</Button>
+                          </CardContent>
+                      </Card>
+                  </div>
+              </div>
+            )}
           </div>
         </div>
       </main>
