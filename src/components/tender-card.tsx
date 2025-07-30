@@ -1,80 +1,65 @@
 'use client';
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Badge } from './ui/badge';
-import { Star, ExternalLink, Calendar, MapPin } from 'lucide-react';
+import { Clock, MapPin, Building, Calendar, UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface TenderCardProps {
-  description: string;
+  title: string;
+  location: string;
+  customer: string;
+  platform: string;
+  published: string;
+  deadline: string;
+  type: string;
+  price: string;
+  status?: string;
 }
 
-export function TenderCard({ description }: TenderCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
+export function TenderCard({ 
+  title,
+  location,
+  customer,
+  platform,
+  published,
+  deadline,
+  type,
+  price,
+  status
+}: TenderCardProps) {
 
-  // Mock data as AI does not provide it
-  const mockData = {
-    title: description.split(' ').slice(0, 5).join(' ') + '...',
-    date: new Date(Date.now() - Math.random() * 10 * 24 * 60 * 60 * 1000).toLocaleDateString('ru-RU'),
-    region: 'Казахстан',
-    price: `${Math.floor(Math.random() * 500000)} KZT`
-  };
+  const statusVariant = status === 'Время истекает!' ? 'destructive' : 
+                        status === 'Предварительное обсуждение' ? 'default' : 
+                        'secondary';
+  
+  const statusClass = status === 'Предварительное обсуждение' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' : '';
+
 
   return (
-    <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 rounded-xl hover:border-accent">
-      <CardHeader className="pb-4">
-        <div className="flex justify-between items-start gap-4">
-          <CardTitle className="text-base font-semibold leading-tight text-primary">
-            <a href="#" className="hover:text-accent transition-colors">{mockData.title}</a>
-          </CardTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsFavorite(!isFavorite)}
-            className="h-8 w-8 shrink-0 text-muted-foreground hover:text-yellow-400"
-            aria-label="Добавить в избранное"
-          >
-            <Star
-              className={cn(
-                'h-5 w-5 transition-colors',
-                isFavorite
-                  ? 'text-yellow-400 fill-yellow-400'
-                  : ''
-              )}
-            />
-          </Button>
-        </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground pt-2">
-            <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" /> Опубликовано: {mockData.date}</span>
-            <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {mockData.region}</span>
-        </div>
-      </CardHeader>
-      <CardContent className="flex-1 py-0">
-        <CardDescription className="text-sm line-clamp-3">
-            {description}
-        </CardDescription>
-      </CardContent>
-      <CardFooter className="flex justify-between items-end pt-4">
-        <div>
-            <Badge variant="secondary">IT</Badge>
-            <div className="mt-2 font-bold text-accent">{mockData.price}</div>
-        </div>
-        <Button variant="link" asChild className="text-accent h-auto p-0 hover:text-primary">
-            <a href="#">
-                Подробнее
-                <ExternalLink className="ml-2 h-4 w-4" />
-            </a>
-        </Button>
-      </CardFooter>
-    </Card>
+    <article className="flex flex-col md:flex-row gap-4 p-4 rounded-xl shadow-sm bg-white hover:shadow-lg transition-all duration-300 border hover:border-accent hover:-translate-y-1">
+      <div className="flex flex-col flex-grow justify-between">
+          <div>
+              <a href="#" className="text-decoration-none group">
+                <h3 className="font-semibold text-primary mb-3 leading-tight group-hover:text-accent transition-colors text-base">{title}</h3>
+              </a>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-2 text-muted-foreground text-xs sm:text-sm mb-3">
+                  <span className="flex items-center gap-1.5 truncate"><MapPin className="w-4 h-4 shrink-0"/>{location}</span>
+                  <span className="flex items-center gap-1.5 truncate"><UserCircle className="w-4 h-4 shrink-0"/>{customer}</span>
+                  <span className="flex items-center gap-1.5 truncate"><Building className="w-4 h-4 shrink-0"/>{platform}</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-2 text-muted-foreground text-xs sm:text-sm mb-4">
+                  <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 shrink-0"/>Опубликовано: {published}</span>
+                  <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 shrink-0"/>{deadline}</span>
+              </div>
+          </div>
+          <div className="flex flex-wrap gap-2 items-center mt-auto">
+              <Badge variant="secondary">{type}</Badge>
+              {status && <Badge variant={statusVariant} className={cn(statusClass)}>{status}</Badge>}
+          </div>
+      </div>
+      <div className="flex flex-col items-start md:items-end justify-between flex-shrink-0 md:ml-3 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-dashed -mx-4 px-4 md:px-0 md:pl-4 md:-my-4">
+          <div className={`font-bold text-lg text-right w-full mt-auto self-end ${price === '—' ? 'text-muted-foreground' : 'text-accent'}`}>{price}</div>
+      </div>
+    </article>
   );
 }

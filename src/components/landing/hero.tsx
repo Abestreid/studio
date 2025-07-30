@@ -23,6 +23,64 @@ const initialState: SearchState = {};
 
 const tenderSources = ["goszakupki.by", "icetrade.by", "butb.by"];
 
+const exampleTenders = [
+    {
+        title: "Поставка офисной мебели для администрации г. Минска",
+        location: "Минск",
+        customer: "Администрация г. Минска",
+        platform: "Госзакупки",
+        published: "25.05.2025",
+        deadline: "до 29.05 (2 дня)",
+        type: "Товар",
+        price: "34 500 BYN",
+        status: ""
+    },
+    {
+        title: "Уведомление о проведении КП по замене компенсатора К-4; К-5 на трубопроводе сетевой воды ТЭС",
+        location: "Мангистауская обл.",
+        customer: "Филиал ВМУ",
+        platform: "Коммерческие",
+        published: "29.05.2025",
+        deadline: "до 10.06 (11 дней)",
+        type: "Работа",
+        price: "—",
+        status: "Предварительное обсуждение"
+    },
+    {
+        title: "Поставка стульев",
+        location: "Алматы",
+        customer: "Заказчик скрыт",
+        platform: "Малая закупка",
+        published: "29.05.2025",
+        deadline: "до 30.05 (<24ч)",
+        type: "Товар",
+        price: "30 310 KZT",
+        status: "Время истекает!"
+    },
+     {
+        title: "Закупка канцтоваров для школы №12",
+        location: "Нур-Султан",
+        customer: "Школа №12",
+        platform: "Госзакупки",
+        published: "30.05.2025",
+        deadline: "до 05.06 (6 дней)",
+        type: "Товар",
+        price: "150 000 KZT",
+        status: ""
+    },
+    {
+        title: "Ремонтные работы в офисном здании",
+        location: "Гомель",
+        customer: "ООО 'СтройМастер'",
+        platform: "icetrade.by",
+        published: "01.06.2025",
+        deadline: "до 15.06 (14 дней)",
+        type: "Услуга",
+        price: "50 000 BYN",
+        status: ""
+    }
+];
+
 export function Hero() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const { toast } = useToast();
@@ -37,6 +95,10 @@ export function Hero() {
       });
     }
   }, [state, toast]);
+
+  const hasResults = state.results && state.results.length > 0;
+  const showExampleResults = !state.results && !state.message && state.results !== undefined;
+
 
   return (
     <section className="bg-gradient-to-br from-primary via-teal-800 to-accent pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20">
@@ -172,20 +234,20 @@ export function Hero() {
           </Collapsible>
         </form>
 
-
-        {(state.results || state.message) && (
-          <div className="mt-12">
-            <h2 className="section-title text-white">Результаты поиска</h2>
-            {state.results && (
-              <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {state.results.map((tender, index) => (
-                  <TenderCard key={index} description={tender} />
-                ))}
-              </div>
+        <div className="mt-12 max-w-4xl mx-auto">
+            {(hasResults || showExampleResults) && (
+                 <div className="space-y-4">
+                     {hasResults && state.results.map((tender, index) => (
+                        <TenderCard key={index} {...JSON.parse(tender)} />
+                     ))}
+                     {showExampleResults && exampleTenders.map((tender, index) => (
+                         <TenderCard key={index} {...tender} />
+                     ))}
+                 </div>
             )}
-            {state.message && <p className="text-center text-muted-foreground">{state.message}</p>}
-          </div>
-        )}
+            {state.message && <p className="text-center text-white bg-black/20 p-4 rounded-lg">{state.message}</p>}
+        </div>
+
       </div>
     </section>
   );
