@@ -31,6 +31,18 @@ export function Hero() {
   const formRef = useRef<HTMLFormElement>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [theme, setTheme] = useState('tendersoft');
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+      setTheme(currentTheme);
+    };
+    
+    handleThemeChange();
+    window.addEventListener('storage', handleThemeChange);
+    return () => window.removeEventListener('storage', handleThemeChange);
+  }, []);
 
 
   useEffect(() => {
@@ -75,7 +87,9 @@ export function Hero() {
   const hasResults = hasSearched && state.results && state.results.length > 0;
   const noResultsMessage = hasSearched && state.message;
   
-  const heroTitle = isLoggedIn ? "Добро пожаловать, user01!" : "Все тендеры Беларуси — в одном простом окне";
+  const heroTitle = isLoggedIn ? "Добро пожаловать, user01!" : 
+    theme === 'rednet' ? "Все тендеры Беларуси — в одном простом окне" : "Все тендеры Казахстана — в одном простом окне";
+  
   const heroSubtitle = isLoggedIn ? "Найдите свой следующий контракт или просмотрите сохраненные фильтры." : "Перестаньте тратить часы на поиски. Находите выгодные заказы за 3 клика и получайте уведомления о новых — прямо в Telegram.";
 
 

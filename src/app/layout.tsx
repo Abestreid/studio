@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { Inter } from 'next/font/google';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 
 const golos = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="font-body antialiased bg-background" suppressHydrationWarning>
         {children}
         <Toaster />
+        <ThemeSwitcher />
       </body>
     </html>
   );

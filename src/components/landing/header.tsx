@@ -31,6 +31,7 @@ const navLinks = [
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [theme, setTheme] = useState('tendersoft');
     const router = useRouter();
 
     useEffect(() => {
@@ -39,17 +40,26 @@ export function Header() {
              setIsLoggedIn(loggedIn);
         }
 
-        checkLoginStatus(); // Check on initial render
-
-        const handleStorageChange = () => {
-           checkLoginStatus()
+        const handleThemeChange = () => {
+          const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+          setTheme(currentTheme);
         };
 
-        window.addEventListener('storage', handleStorageChange);
+        checkLoginStatus(); // Check on initial render
+        handleThemeChange();
+
+
+        window.addEventListener('storage', () => {
+          checkLoginStatus();
+          handleThemeChange();
+        });
         
         // Clean up event listener
         return () => {
-            window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('storage', () => {
+              checkLoginStatus();
+              handleThemeChange();
+            });
         };
 
     }, []);
@@ -62,13 +72,15 @@ export function Header() {
         router.push('/');
     };
 
+    const brandName = theme === 'rednet' ? 'redneT' : 'Tendersoft';
+
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-decoration-none">
           <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
-          <span className="text-xl font-bold text-primary">Tendersoft</span>
+          <span className="text-xl font-bold text-primary">{brandName}</span>
         </Link>
         <nav className="hidden items-center gap-6 lg:flex">
           {navLinks.map((link) => (
