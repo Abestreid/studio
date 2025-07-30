@@ -363,7 +363,7 @@ export default function StyleGuidePage() {
                     </Button>
                      <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="icon" className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                            <Button variant="outline" size="icon" className="rounded-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
                                <UserCircle className="h-6 w-6" />
                             </Button>
                         </DropdownMenuTrigger>
@@ -387,8 +387,11 @@ export default function StyleGuidePage() {
             </SubSection>
             
             {/* Analytics Components */}
-            <SubSection title="Компоненты аналитики">
-                <div className="w-full space-y-8">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Компоненты аналитики</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-8">
                     <DatePickerWithRange />
                     <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                         <Card className="lg:col-span-3">
@@ -428,11 +431,14 @@ export default function StyleGuidePage() {
                             ))}
                         </TableBody>
                     </Table>
-                </div>
-            </SubSection>
+                </CardContent>
+            </Card>
 
-            <SubSection title="Карточки тарифов и переключатель">
-                 <div className="w-full space-y-8">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Карточки тарифов и переключатель</CardTitle>
+                </CardHeader>
+                <CardContent className="w-full space-y-8">
                      <div className="flex justify-center items-center gap-4">
                         <Label htmlFor="billing-cycle-sg" className={!isAnnual ? 'text-primary font-semibold' : 'text-muted-foreground'}>
                             Ежемесячно
@@ -485,8 +491,8 @@ export default function StyleGuidePage() {
                         </Card>
                         ))}
                     </div>
-                </div>
-            </SubSection>
+                </CardContent>
+            </Card>
 
           </Section>
         </div>
@@ -495,4 +501,3 @@ export default function StyleGuidePage() {
     </div>
   );
 }
-
