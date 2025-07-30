@@ -30,7 +30,7 @@ export function Growth() {
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-white">
           Наши достижения в цифрах
         </h2>
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center p-4 sm:p-6 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
