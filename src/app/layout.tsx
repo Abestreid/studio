@@ -4,10 +4,10 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { Inter } from 'next/font/google';
 
-const inter = Inter({
+const golos = Inter({
   subsets: ['latin', 'cyrillic'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-golos',
 });
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" style={{scrollBehavior: 'smooth'}} className={cn(inter.variable)}>
+    <html lang="ru" style={{scrollBehavior: 'smooth'}} className={cn(golos.variable)}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -30,7 +30,7 @@ export default function RootLayout({
           rel="stylesheet"
         ></link>
       </head>
-      <body className="font-sans antialiased bg-background" suppressHydrationWarning>
+      <body className="font-body antialiased bg-background" suppressHydrationWarning>
         {children}
         <Toaster />
       </body>
