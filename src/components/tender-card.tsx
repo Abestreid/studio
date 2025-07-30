@@ -47,8 +47,8 @@ export function TenderCard({
                 {status && <Badge variant={statusVariant} className={cn(statusClass)}>{status}</Badge>}
             </div>
         </div>
-        <div className="flex flex-col items-start md:items-end justify-end flex-shrink-0 md:ml-3 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-dashed -mx-4 px-4 md:px-0 md:pl-4 md:-my-4 min-w-[150px]">
-            <div className={`font-bold text-lg text-right w-full mt-auto self-end ${price === '—' ? 'text-muted-foreground' : 'text-accent'}`}>{price}</div>
+        <div className="flex flex-col items-center justify-center flex-shrink-0 md:ml-3 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-dashed -mx-4 px-4 md:px-0 md:pl-4 md:-my-4 min-w-[150px]">
+            <div className={`font-bold text-lg text-center ${price === '—' ? 'text-muted-foreground' : 'text-accent'}`}>{price}</div>
         </div>
         </article>
     </Link>
