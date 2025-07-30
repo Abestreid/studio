@@ -11,7 +11,7 @@ interface CtaProps {
 
 export function Cta({ title, description, buttonText, secondaryButtonText, className }: CtaProps) {
   return (
-    <section className={cn("bg-accent text-accent-foreground", className)}>
+    <section className={cn("bg-accent", className)}>
       <div className="container mx-auto px-4 md:px-6 py-12 sm:py-16 text-center">
         <h2 className="text-2xl sm:text-3xl font-bold text-white">{title}</h2>
         {description && (
