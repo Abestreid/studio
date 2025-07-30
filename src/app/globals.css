@@ -17,6 +17,7 @@
     --muted: 216 34% 91%;
     --muted-foreground: 215 20% 65%; /* #9AA1AC */
     --accent: 168 76% 36%; /* #16A085 */
+    --accent-dark: 168 76% 30%; /* #138D75 */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -133,4 +134,20 @@
 
 .source-item:hover .source-logo {
     @apply grayscale-0 brightness-100;
+}
+
+.chip-group-sm label {
+    @apply cursor-pointer;
+}
+
+.chip-group-sm .form-check-input {
+    @apply sr-only;
+}
+
+.chip-group-sm .form-check-label {
+    @apply px-3 py-1.5 rounded-full border bg-gray-100 text-xs font-medium transition-colors hover:bg-gray-200;
+}
+
+.chip-group-sm .form-check-input:checked + .form-check-label {
+    @apply bg-accent text-accent-foreground border-accent;
 }
