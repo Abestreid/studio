@@ -20,17 +20,26 @@ import {
 import { useEffect, useState } from 'react';
 import { allTenders, type Tender } from '@/lib/tenders';
 import { useToast } from "@/hooks/use-toast";
+import { useParams } from 'next/navigation';
+import { cn } from "@/lib/utils";
 
 
-export default function TenderPage({ params }: { params: { id: string } }) {
+export default function TenderPage() {
+  const params = useParams<{ id: string }>();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [tender, setTender] = useState<Tender | null>(null);
   const { toast } = useToast();
   
   useEffect(() => {
-    const foundTender = allTenders.find(t => t.id === params.id) || null;
+    const tenderId = params.id;
+    const foundTender = allTenders.find(t => t.id === tenderId) || null;
     setTender(foundTender);
+
+    if (tenderId) {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        setIsFavorite(favorites.includes(tenderId));
+    }
   }, [params.id]);
 
 
@@ -43,12 +52,8 @@ export default function TenderPage({ params }: { params: { id: string } }) {
     checkLoginStatus();
     window.addEventListener('storage', checkLoginStatus);
 
-    // Check favorite status
-    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    setIsFavorite(favorites.includes(params.id));
-
     return () => window.removeEventListener('storage', checkLoginStatus);
-  }, [params.id]);
+  }, []);
 
   const handleToggleFavorite = () => {
     if (!isLoggedIn) {
@@ -59,10 +64,11 @@ export default function TenderPage({ params }: { params: { id: string } }) {
         });
         return;
     }
+    const tenderId = params.id;
     const favorites: string[] = JSON.parse(localStorage.getItem('favorites') || '[]');
     const newFavorites = isFavorite
-      ? favorites.filter((favId) => favId !== params.id)
-      : [...favorites, params.id];
+      ? favorites.filter((favId) => favId !== tenderId)
+      : [...favorites, tenderId];
     
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
     setIsFavorite(!isFavorite);
@@ -170,10 +176,10 @@ export default function TenderPage({ params }: { params: { id: string } }) {
                     <CardContent className="text-sm">
                         {isLoggedIn ? (
                             <>
-                                <InfoRow label="Наименование организации">{tender.customer.name}</InfoRow>
-                                <InfoRow label="Место нахождения">{tender.customer.address}</InfoRow>
-                                <InfoRow label="УНП организации">{tender.customer.unp}</InfoRow>
-                                <InfoRow label="Контакты">{tender.customer.contactPerson}</InfoRow>
+                                <InfoRow label="Наименование организации">{tender.customerDetails.name}</InfoRow>
+                                <InfoRow label="Место нахождения">{tender.customerDetails.address}</InfoRow>
+                                <InfoRow label="УНП организации">{tender.customerDetails.unp}</InfoRow>
+                                <InfoRow label="Контакты">{tender.customerDetails.contactPerson}</InfoRow>
                             </>
                         ) : <PremiumPlaceholder />}
                     </CardContent>
@@ -243,7 +249,7 @@ export default function TenderPage({ params }: { params: { id: string } }) {
                             </div>
                              <div>
                                 <p className="text-muted-foreground mb-1">Заказчик:</p>
-                                <p className="font-medium">{tender.customer.name}</p>
+                                <p className="font-medium">{tender.customerDetails.name}</p>
                             </div>
                         </CardContent>
                     </Card>
@@ -270,3 +276,5 @@ export default function TenderPage({ params }: { params: { id: string } }) {
     </div>
   );
 }
+
+    
