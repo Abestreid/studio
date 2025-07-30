@@ -65,6 +65,7 @@ export default function TenderPage() {
         return;
     }
     const tenderId = params.id;
+    if (!tenderId) return;
     const favorites: string[] = JSON.parse(localStorage.getItem('favorites') || '[]');
     const newFavorites = isFavorite
       ? favorites.filter((favId) => favId !== tenderId)
@@ -160,12 +161,16 @@ export default function TenderPage() {
                        <InfoRow label="Вид процедуры закупки">{tender.procurementType}</InfoRow>
                        <InfoRow label="Название процедуры">{tender.title}</InfoRow>
                        <InfoRow label="Отрасль">{tender.industry}</InfoRow>
-                       <InfoRow label="Адрес сайта ЭТП">
-                            <Link href={tender.operator.siteUrl} target="_blank" className="text-accent hover:underline flex items-center gap-2 justify-end">
-                                {tender.operator.site} <LinkIcon className="w-4 h-4"/>
-                            </Link>
-                       </InfoRow>
-                       <InfoRow label="Данные оператора">{tender.operator.name}, {tender.operator.address}, УНП {tender.operator.unp}, {tender.operator.contacts}</InfoRow>
+                       {tender.operator && (
+                        <>
+                            <InfoRow label="Адрес сайта ЭТП">
+                                <Link href={tender.operator.siteUrl} target="_blank" className="text-accent hover:underline flex items-center gap-2 justify-end">
+                                    {tender.operator.site} <LinkIcon className="w-4 h-4"/>
+                                </Link>
+                           </InfoRow>
+                           <InfoRow label="Данные оператора">{tender.operator.name}, {tender.operator.address}, УНП {tender.operator.unp}, {tender.operator.contacts}</InfoRow>
+                        </>
+                       )}
                     </CardContent>
                 </Card>
 
@@ -174,7 +179,7 @@ export default function TenderPage() {
                         <CardTitle className="text-primary">Сведения о заказчике</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm">
-                        {isLoggedIn ? (
+                        {isLoggedIn && tender.customerDetails ? (
                             <>
                                 <InfoRow label="Наименование организации">{tender.customerDetails.name}</InfoRow>
                                 <InfoRow label="Место нахождения">{tender.customerDetails.address}</InfoRow>
@@ -190,7 +195,7 @@ export default function TenderPage() {
                         <CardTitle className="text-primary">Основная информация по закупке</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm">
-                         {isLoggedIn ? (
+                         {isLoggedIn && tender.procurementInfo ? (
                             <>
                                 <InfoRow label="Дата размещения приглашения">{tender.procurementInfo.publishedDate}</InfoRow>
                                 <InfoRow label="Дата окончания приема предложений">{tender.procurementInfo.deadlineDate}</InfoRow>
@@ -209,7 +214,7 @@ export default function TenderPage() {
                         <CardTitle className="text-primary">Документы</CardTitle>
                     </CardHeader>
                     <CardContent>
-                         {isLoggedIn ? (
+                         {isLoggedIn && tender.document ? (
                             <div className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors">
                                 <div className="flex items-center gap-2">
                                     <FileText className="w-5 h-5 text-accent"/>
@@ -235,7 +240,7 @@ export default function TenderPage() {
                             <div>
                                 <p className="text-muted-foreground mb-1">Подача заявок до:</p>
                                 <p className="font-medium text-lg">{tender.deadline}</p>
-                                <Badge className="mt-1 bg-red-100 text-red-800 border-red-200">Осталось {tender.deadlineDays} дня</Badge>
+                                { tender.deadlineDays && <Badge className="mt-1 bg-red-100 text-red-800 border-red-200">Осталось {tender.deadlineDays} дня</Badge> }
                             </div>
                              <div>
                                 <p className="text-muted-foreground mb-1">Предельная стоимость:</p>
@@ -247,10 +252,12 @@ export default function TenderPage() {
                                     <p className="font-medium">{tender.platform}</p>
                                 </div>
                             </div>
-                             <div>
-                                <p className="text-muted-foreground mb-1">Заказчик:</p>
-                                <p className="font-medium">{tender.customerDetails.name}</p>
-                            </div>
+                            {tender.customerDetails &&
+                                <div>
+                                    <p className="text-muted-foreground mb-1">Заказчик:</p>
+                                    <p className="font-medium">{tender.customerDetails.name}</p>
+                                </div>
+                            }
                         </CardContent>
                     </Card>
                     {!isLoggedIn && (
@@ -276,5 +283,3 @@ export default function TenderPage() {
     </div>
   );
 }
-
-    
