@@ -39,8 +39,12 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden items-center gap-2 lg:flex">
-          <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">Войти</Button>
-          <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">Попробовать бесплатно</Button>
+          <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
+            <Link href="/login">Войти</Link>
+          </Button>
+          <Button className="bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+            <Link href="/register">Попробовать бесплатно</Link>
+          </Button>
         </div>
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild className="lg:hidden">
@@ -72,8 +76,12 @@ export function Header() {
                     ))}
                 </nav>
                 <div className="mt-auto flex flex-col gap-3">
-                    <Button variant="outline" className="w-full border-accent text-accent">Войти</Button>
-                    <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">Попробовать бесплатно</Button>
+                    <Button variant="outline" className="w-full border-accent text-accent" asChild>
+                      <Link href="/login" onClick={() => setIsMenuOpen(false)}>Войти</Link>
+                    </Button>
+                    <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+                      <Link href="/register" onClick={() => setIsMenuOpen(false)}>Попробовать бесплатно</Link>
+                    </Button>
                 </div>
                 </div>
           </SheetContent>
