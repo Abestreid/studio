@@ -6,17 +6,17 @@ import { Benefits } from '@/components/landing/benefits';
 import { Cta } from '@/components/landing/cta';
 import { Footer } from '@/components/landing/footer';
 import { Partners } from '@/components/landing/partners';
-import { Testimonials } from '@/components/landing/testimonials';
+import { NewTenders } from '@/components/landing/new-tenders';
 import { Growth } from '@/components/landing/growth';
 import { SystemFeatures } from '@/components/landing/system-features';
 
 export default function LandingPage() {
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-background text-foreground flex flex-col min-h-screen">
       <Header />
-      <main>
+      <main className="flex-grow">
         <Hero />
-        <Testimonials />
+        <NewTenders />
         <HowItWorks />
         <Features />
         <Growth />

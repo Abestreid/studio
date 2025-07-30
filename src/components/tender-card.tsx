@@ -25,21 +25,22 @@ export function TenderCard({ description }: TenderCardProps) {
   const mockData = {
     title: description.split(' ').slice(0, 5).join(' ') + '...',
     date: new Date(Date.now() - Math.random() * 10 * 24 * 60 * 60 * 1000).toLocaleDateString('ru-RU'),
-    region: 'Москва',
+    region: 'Казахстан',
+    price: `${Math.floor(Math.random() * 500000)} KZT`
   };
 
   return (
-    <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-      <CardHeader>
+    <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 rounded-xl hover:border-accent">
+      <CardHeader className="pb-4">
         <div className="flex justify-between items-start gap-4">
           <CardTitle className="text-base font-semibold leading-tight text-primary">
-            {mockData.title}
+            <a href="#" className="hover:text-accent transition-colors">{mockData.title}</a>
           </CardTitle>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setIsFavorite(!isFavorite)}
-            className="h-8 w-8 shrink-0"
+            className="h-8 w-8 shrink-0 text-muted-foreground hover:text-yellow-400"
             aria-label="Добавить в избранное"
           >
             <Star
@@ -47,7 +48,7 @@ export function TenderCard({ description }: TenderCardProps) {
                 'h-5 w-5 transition-colors',
                 isFavorite
                   ? 'text-yellow-400 fill-yellow-400'
-                  : 'text-muted-foreground'
+                  : ''
               )}
             />
           </Button>
@@ -57,16 +58,21 @@ export function TenderCard({ description }: TenderCardProps) {
             <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {mockData.region}</span>
         </div>
       </CardHeader>
-      <CardContent className="flex-1">
+      <CardContent className="flex-1 py-0">
         <CardDescription className="text-sm line-clamp-3">
             {description}
         </CardDescription>
       </CardContent>
-      <CardFooter className="flex justify-between items-center">
-        <Badge variant="secondary">IT</Badge>
-        <Button variant="link" className="text-accent h-auto p-0">
-          Подробнее
-          <ExternalLink className="ml-2 h-4 w-4" />
+      <CardFooter className="flex justify-between items-end pt-4">
+        <div>
+            <Badge variant="secondary">IT</Badge>
+            <div className="mt-2 font-bold text-accent">{mockData.price}</div>
+        </div>
+        <Button variant="link" asChild className="text-accent h-auto p-0 hover:text-primary">
+            <a href="#">
+                Подробнее
+                <ExternalLink className="ml-2 h-4 w-4" />
+            </a>
         </Button>
       </CardFooter>
     </Card>

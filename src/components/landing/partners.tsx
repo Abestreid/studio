@@ -1,6 +1,5 @@
 
-import Image from 'next/image';
-
+export function Partners() {
 const partners = [
   { name: 'Goszakupki.by', logo: '/logos/logo_header_min.png', hint: 'company logo' },
   { name: 'ICETRADE.BY', logo: '/logos/logo.svg', hint: 'company logo' },
@@ -10,9 +9,7 @@ const partners = [
   { name: 'ETS.kz', logo: '/logos/logo_ru.png', hint: 'company logo' },
   { name: 'EEP.mitwork.kz', logo: '/logos/logo-ru.gif', hint: 'company logo' },
 ];
-
-export function Partners() {
-  const duplicatedPartners = [...partners, ...partners];
+  const duplicatedPartners = [...partners, ...partners, ...partners, ...partners];
 
   return (
     <section className="bg-white">

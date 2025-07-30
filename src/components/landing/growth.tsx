@@ -25,19 +25,19 @@ const stats = [
 
 export function Growth() {
   return (
-    <section className="bg-gradient-to-br from-[#1A2634] to-[#2C3E50] text-primary-foreground">
+    <section className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold text-center text-white">
-          Наши достижения
+          Наши достижения в цифрах
         </h2>
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-6 sm:gap-8 grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="text-center p-6 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
-               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div key={stat.label} className="text-center p-4 sm:p-6 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
                  {stat.icon}
                </div>
-              <p className="text-4xl md:text-5xl font-bold">{stat.value}</p>
-              <p className="mt-2 text-primary-foreground/80">{stat.label}</p>
+              <p className="text-3xl sm:text-4xl md:text-5xl font-bold">{stat.value}</p>
+              <p className="mt-2 text-sm sm:text-base text-primary-foreground/80">{stat.label}</p>
             </div>
           ))}
         </div>

@@ -20,26 +20,26 @@ export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm py-3">
-      <div className="container mx-auto flex h-14 items-center justify-between px-4 md:px-6">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-decoration-none">
           <Logo className="h-10 w-10" />
           <span className="text-xl font-bold text-primary">Tendersoft</span>
         </Link>
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary relative after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:w-full after:scale-x-0 after:bg-gradient-to-r after:from-accent after:to-green-400 after:transition-transform after:duration-300 hover:after:scale-x-100"
+              className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-0.5 after:w-full after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:after:scale-x-100"
             >
               {link.label}
             </Link>
           ))}
         </nav>
         <div className="hidden items-center gap-2 lg:flex">
-          <Button variant="outline" className="h-10 text-base px-6 border-2 border-accent">Войти</Button>
-          <Button className="bg-accent hover:bg-accent/90 text-accent-foreground h-10 text-base px-6">Попробовать бесплатно</Button>
+          <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">Войти</Button>
+          <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">Попробовать бесплатно</Button>
         </div>
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild className="lg:hidden">
@@ -56,23 +56,23 @@ export function Header() {
                     <span className={cn("h-0.5 w-6 rounded-full bg-foreground transition-all", isMenuOpen && "-translate-y-2 -rotate-45")}></span>
                 </button>
             </SheetTrigger>
-            <SheetContent side="right" className="p-0">
-                <div className="flex flex-col gap-6 p-6 pt-20">
+            <SheetContent side="right" className="w-full max-w-xs p-0">
+                <div className="flex h-full flex-col gap-8 p-6 pt-20">
                 <nav className="flex flex-col gap-4">
                     {navLinks.map((link) => (
                     <Link
                         key={link.label}
                         href={link.href}
                         onClick={() => setIsMenuOpen(false)}
-                        className="text-lg font-medium text-muted-foreground transition-colors hover:text-primary"
+                        className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary"
                     >
                         {link.label}
                     </Link>
                     ))}
                 </nav>
-                <div className="mt-4 flex flex-col gap-2">
-                    <Button variant="outline">Войти</Button>
-                    <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">Попробовать бесплатно</Button>
+                <div className="mt-auto flex flex-col gap-3">
+                    <Button variant="outline" className="w-full border-accent text-accent">Войти</Button>
+                    <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">Попробовать бесплатно</Button>
                 </div>
                 </div>
           </SheetContent>
