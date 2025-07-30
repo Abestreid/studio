@@ -1,60 +1,99 @@
+
+'use client';
+
 import Image from 'next/image';
 import { Check } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 const featuresList = [
-    {
-        list: [
-            "Поиск внутри PDF / DOC-документов тендера",
-            "Сохранённые фильтры и Telegram-бот",
-            "REST API для интеграции с CRM / ERP"
-        ],
-        image: "https://placehold.co/500x350.png",
-        alt: "Аналитика",
-        hint: "analytics dashboard"
-    },
-    {
-        list: [
-            "Метки, статусы и распределение задач",
-            "Календарь дедлайнов с экспортом .ics",
-            "Обсуждение документов в одном окне"
-        ],
-        image: "https://placehold.co/500x350.png",
-        alt: "Командная работа",
-        hint: "team collaboration"
-    }
-]
+  {
+    title: "Аналитика и автоматизация",
+    list: [
+      'Поиск внутри PDF / DOC-документов тендера',
+      'Сохранённые фильтры и Telegram-бот',
+      'REST API для интеграции с CRM / ERP',
+    ],
+    image: 'https://placehold.co/500x350.png',
+    alt: 'Аналитика',
+    hint: 'analytics dashboard'
+  },
+  {
+    title: "Командная работа",
+    list: [
+      'Метки, статусы и распределение задач',
+      'Календарь дедлайнов с экспортом .ics',
+      'Обсуждение документов в одном окне',
+    ],
+    image: 'https://placehold.co/500x350.png',
+    alt: 'Командная работа',
+    hint: 'team collaboration'
+  },
+  {
+    title: "Мобильный доступ",
+    list: [
+      'Полный доступ с любого устройства',
+      'Адаптивный интерфейс для смартфонов',
+      'Push-уведомления о важных событиях',
+    ],
+    image: 'https://placehold.co/500x350.png',
+    alt: 'Мобильный доступ',
+    hint: 'mobile access'
+  },
+];
 
 export function Features() {
   return (
     <section>
       <div className="container mx-auto px-4 md:px-6">
         <h2 className="section-title">Все инструменты в одном окне</h2>
-        <div className="space-y-12 md:space-y-20">
-        {featuresList.map((feature, index) => (
-            <div key={index} className={`flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16 ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
-                <div className="md:w-1/2 lg:w-5/12">
+        <Carousel
+          opts={{
+            align: 'start',
+            loop: true,
+          }}
+          className="w-full mt-12"
+        >
+          <CarouselContent>
+            {featuresList.map((feature, index) => (
+              <CarouselItem key={index}>
+                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16">
+                  <div className="md:w-1/2 lg:w-5/12">
                     <Image
-                    src={feature.image}
-                    alt={feature.alt}
-                    width={500}
-                    height={350}
-                    className="rounded-xl shadow-lg object-cover w-full h-auto"
-                    data-ai-hint={feature.hint}
+                      src={feature.image}
+                      alt={feature.alt}
+                      width={500}
+                      height={350}
+                      className="rounded-xl shadow-lg object-cover w-full h-auto"
+                      data-ai-hint={feature.hint}
                     />
-                </div>
-                <div className="md:w-1/2">
+                  </div>
+                  <div className="md:w-1/2">
+                    <h3 className="text-2xl font-bold text-primary mb-4">{feature.title}</h3>
                     <ul className="space-y-4 list-none p-0">
-                    {feature.list.map((item, itemIndex) => (
-                        <li key={itemIndex} className="flex items-start text-base sm:text-lg">
-                            <Check className="w-6 h-6 text-accent mr-3 mt-0.5 shrink-0" />
-                            <span>{item}</span>
+                      {feature.list.map((item, itemIndex) => (
+                        <li
+                          key={itemIndex}
+                          className="flex items-start text-base sm:text-lg"
+                        >
+                          <Check className="w-6 h-6 text-accent mr-3 mt-0.5 shrink-0" />
+                          <span>{item}</span>
                         </li>
-                    ))}
+                      ))}
                     </ul>
+                  </div>
                 </div>
-            </div>
-        ))}
-        </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden sm:inline-flex" />
+          <CarouselNext className="hidden sm:inline-flex" />
+        </Carousel>
       </div>
     </section>
   );
