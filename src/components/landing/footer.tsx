@@ -2,11 +2,18 @@ import Link from 'next/link';
 import { MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
-const quickLinks = [
-  { href: '#about', label: 'О нас' },
-  { href: '#faq', label: 'Вопросы' },
-  { href: '#contact', label: 'Связаться с нами' },
+const productLinks = [
+  { href: '#tenders', label: 'Поиск тендеров' },
+  { href: '#analytics', label: 'Аналитика' },
   { href: '#pricing', label: 'Тарифы' },
+  { href: '#api', label: 'API' },
+];
+
+const companyLinks = [
+  { href: '#about', label: 'О нас' },
+  { href: '#blog', label: 'Блог' },
+  { href: '#faq', label: 'Вопросы и ответы' },
+  { href: '#contact', label: 'Контакты' },
 ];
 
 const contacts = [
@@ -20,8 +27,8 @@ export function Footer() {
   return (
     <footer className="text-white bg-primary">
       <div className="container mx-auto px-4 md:px-6 py-12 sm:py-16">
-        <div className="grid gap-8 md:grid-cols-12">
-          <div className="md:col-span-12 lg:col-span-5 text-center lg:text-left">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-12">
+          <div className="lg:col-span-4 text-center lg:text-left">
              <Link href="/" className="flex items-center justify-center lg:justify-start gap-2 text-decoration-none mb-4">
                 <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
                 <span className="text-xl font-bold text-white">Tendersoft</span>
@@ -30,10 +37,11 @@ export function Footer() {
                 IT-решения для поиска и мониторинга тендеров, защиты финансовых рисков и проверки контрагентов в Казахстане и Беларуси.
             </p>
           </div>
-          <div className="md:col-span-6 lg:col-span-3 text-center md:text-left">
-            <h5 className="font-semibold tracking-wider text-white mb-4">Быстрые ссылки</h5>
+          <div className="md:col-span-1 lg:col-span-2"></div>
+          <div className="lg:col-span-2 text-center md:text-left">
+            <h5 className="font-semibold tracking-wider text-white mb-4">Продукт</h5>
             <ul className="mt-4 space-y-2 list-none p-0">
-              {quickLinks.map(link => (
+              {productLinks.map(link => (
                 <li key={link.label}>
                   <Link href={link.href} className="flex items-center justify-center md:justify-start text-sm text-white/80 hover:text-white transition-colors group">
                     <ChevronRight className="w-4 h-4 mr-2 text-accent transition-transform group-hover:translate-x-1" />
@@ -43,7 +51,20 @@ export function Footer() {
               ))}
             </ul>
           </div>
-          <div className="md:col-span-6 lg:col-span-4 text-center md:text-left">
+           <div className="lg:col-span-2 text-center md:text-left">
+            <h5 className="font-semibold tracking-wider text-white mb-4">Компания</h5>
+            <ul className="mt-4 space-y-2 list-none p-0">
+              {companyLinks.map(link => (
+                <li key={link.label}>
+                  <Link href={link.href} className="flex items-center justify-center md:justify-start text-sm text-white/80 hover:text-white transition-colors group">
+                    <ChevronRight className="w-4 h-4 mr-2 text-accent transition-transform group-hover:translate-x-1" />
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="lg:col-span-2 text-center md:text-left">
             <h5 className="font-semibold tracking-wider text-white mb-4">Контакты</h5>
             <ul className="mt-4 space-y-3 list-none p-0">
               {contacts.map(contact => (
