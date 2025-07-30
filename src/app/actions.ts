@@ -7,7 +7,7 @@ import {
 import { z } from 'zod';
 
 const SearchSchema = z.object({
-  query: z.string().min(3, 'Запрос должен содержать не менее 3 символов'),
+  query: z.string().min(1, 'Запрос не может быть пустым'),
   industry: z.string().optional(),
   region: z.string().optional(),
 });
@@ -37,14 +37,15 @@ export async function searchTenders(
 ): Promise<SearchState> {
   const validatedFields = SearchSchema.safeParse({
     query: formData.get('query'),
-    industry: formData.get('industry'),
-    region: formData.get('region'),
+    industry: formData.get('industry') || undefined,
+    region: formData.get('region') || undefined,
   });
-
+  
   if (!validatedFields.success) {
+    const queryError = validatedFields.error.flatten().fieldErrors.query?.[0];
+    const generalError = 'Неверный ввод.';
     return {
-      error:
-        validatedFields.error.flatten().fieldErrors.query?.[0] || 'Неверный ввод.',
+      error: queryError || generalError,
     };
   }
   

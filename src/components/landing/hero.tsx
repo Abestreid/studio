@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useActionState, useEffect, useState, useId } from 'react';
+import { useActionState, useEffect, useState, useId, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -17,7 +17,6 @@ import { searchTenders, type SearchState, type TenderResult } from '@/app/action
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
-import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 
 const initialState: SearchState = {};
@@ -90,8 +89,11 @@ const exampleTenders: TenderResult[] = [
 export function Hero() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const { toast } = useToast();
-  const [state, formAction] = useActionState(searchTenders, initialState);
+  const [state, formAction, isPending] = useActionState(searchTenders, initialState);
   const formId = useId();
+  const formRef = useRef<HTMLFormElement>(null);
+  const [hasSearched, setHasSearched] = useState(false);
+
 
   useEffect(() => {
     if (state.error) {
@@ -102,10 +104,15 @@ export function Hero() {
       });
     }
   }, [state, toast]);
+  
+  const handleFormAction = (formData: FormData) => {
+    setHasSearched(true);
+    formAction(formData);
+  }
 
   const hasResults = state.results && state.results.length > 0;
-  const showExampleResults = !state.results && !state.message && state.results !== undefined;
-
+  const noResultsMessage = hasSearched && state.message;
+  const showExampleResults = !hasSearched;
 
   return (
     <section className="bg-gradient-to-br from-primary via-teal-800 to-accent pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20">
@@ -119,7 +126,7 @@ export function Hero() {
           </p>
         </div>
 
-        <form action={formAction} className="mt-8 max-w-4xl mx-auto md:mt-12 p-4 sm:p-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border">
+        <form ref={formRef} action={handleFormAction} className="mt-8 max-w-4xl mx-auto md:mt-12 p-4 sm:p-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border">
           <Collapsible open={showAdvancedSearch} onOpenChange={setShowAdvancedSearch}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <div className="md:col-span-2">
@@ -127,20 +134,31 @@ export function Hero() {
               </div>
 
               <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                <Select name="region">
+                 <Select name="region">
                     <SelectTrigger id={`${formId}-region`} className="bg-white h-12 rounded-full">
                     <SelectValue placeholder="Место поставки" />
                     </SelectTrigger>
                     <SelectContent>
+                        <SelectItem value="Все регионы">Все регионы</SelectItem>
                         <SelectItem value="by">Беларусь</SelectItem>
                         <SelectItem value="kz">Казахстан</SelectItem>
+                    </SelectContent>
+                </Select>
+                 <Select name="industry">
+                    <SelectTrigger id={`${formId}-industry`} className="bg-white h-12 rounded-full">
+                    <SelectValue placeholder="Отрасль" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="Все отрасли">Все отрасли</SelectItem>
+                        <SelectItem value="it">IT</SelectItem>
+                        <SelectItem value="construction">Строительство</SelectItem>
                     </SelectContent>
                 </Select>
               </div>
 
 
               <CollapsibleContent asChild className="md:col-span-2">
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                         <div>
                             <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
                         </div>
@@ -213,11 +231,11 @@ export function Hero() {
                             </div>
                         </div>
                     </div>
-                  </CollapsibleContent>
+              </CollapsibleContent>
               <div className="md:col-span-2 flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
-                <Button type="submit" size="lg" className="w-full sm:w-auto h-12 text-base rounded-full flex-grow">
+                <Button type="submit" size="lg" className="w-full sm:w-auto h-12 text-base rounded-full flex-grow" disabled={isPending}>
                   <Search className="mr-2" />
-                  Поиск
+                  {isPending ? 'Поиск...' : 'Поиск'}
                 </Button>
                 <CollapsibleTrigger asChild>
                   <Button
@@ -239,17 +257,35 @@ export function Hero() {
         </form>
 
         <div className="mt-12 max-w-4xl mx-auto">
-            {(hasResults || showExampleResults) && (
+            {isPending && (
                  <div className="space-y-4">
-                     {hasResults && state.results.map((tender) => (
+                    {[...Array(3)].map((_, i) => (
+                        <div key={i} className="p-4 rounded-xl shadow-sm bg-white border border-gray-200 animate-pulse">
+                            <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2 text-xs sm:text-sm mb-3">
+                                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                                <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+            {hasResults && (
+                 <div className="space-y-4">
+                     {state.results.map((tender) => (
                         <TenderCard key={tender.id} {...tender} />
-                     ))}
-                     {showExampleResults && exampleTenders.map((tender) => (
-                         <TenderCard key={tender.id} {...tender} />
                      ))}
                  </div>
             )}
-            {state.message && <p className="text-center text-white bg-black/20 p-4 rounded-lg">{state.message}</p>}
+             {noResultsMessage && <p className="text-center text-white bg-black/20 p-4 rounded-lg">{state.message}</p>}
+             {showExampleResults && !isPending && (
+                <div className="space-y-4">
+                    {exampleTenders.map((tender) => (
+                        <TenderCard key={tender.id} {...tender} />
+                    ))}
+                </div>
+            )}
         </div>
 
       </div>
