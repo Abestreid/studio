@@ -42,8 +42,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { TenderCard } from '@/components/tender-card';
-import { Terminal } from 'lucide-react';
+import { DatePickerWithRange } from '@/components/analytics/date-range-picker';
+import { TendersByMonthChart } from '@/components/analytics/tenders-by-month-chart';
+import { TendersByIndustryChart } from '@/components/analytics/tenders-by-industry-chart';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Terminal, LogOut, UserCircle } from 'lucide-react';
+import Link from 'next/link';
 
 const mockTender = {
     id: "sample-123",
@@ -57,6 +70,11 @@ const mockTender = {
     price: "100 000 BYN",
     status: "Открыт"
 };
+
+const recentWins = [
+    { id: '1', title: 'Поставка офисной мебели', customer: 'Администрация г. Минска', amount: '34 500 BYN', date: '25.05.2025' },
+    { id: '2', title: 'Ремонтные работы в офисе', customer: 'ООО "ТехноСтрой"', amount: '112,000 BYN', date: '22.05.2025' },
+];
 
 
 export default function StyleGuidePage() {
@@ -140,7 +158,7 @@ export default function StyleGuidePage() {
           </Section>
 
           {/* Components Section */}
-          <Section title="Компоненты">
+          <Section title="Базовые компоненты">
              {/* Buttons */}
             <SubSection title="Кнопки">
                 <Button>Кнопка (Default)</Button>
@@ -190,7 +208,7 @@ export default function StyleGuidePage() {
             </SubSection>
 
             {/* Alerts & Badges */}
-             <SubSection title="Уведомления">
+             <SubSection title="Уведомления и метки">
                 <div className="space-y-4 w-full">
                     <div className="flex gap-4">
                         <Badge>Default</Badge>
@@ -274,13 +292,95 @@ export default function StyleGuidePage() {
                     </div>
                 </div>
             </SubSection>
-            
+          </Section>
+          
+          <Section title="Составные компоненты и примеры">
             {/* Custom Components */}
-            <SubSection title="Специальные компоненты">
+            <SubSection title="Карточка тендера">
                 <div className="w-full">
                     <TenderCard {...mockTender} />
                 </div>
             </SubSection>
+
+            {/* Header Buttons */}
+            <SubSection title="Элементы шапки (Header)">
+                 <div className="flex items-center gap-4">
+                    <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
+                        <Link href="/login">Войти</Link>
+                    </Button>
+                    <Button className="bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+                        <Link href="/register">Попробовать бесплатно</Link>
+                    </Button>
+                     <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="icon" className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                               <UserCircle className="h-6 w-6" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56" align="end" forceMount>
+                            <DropdownMenuLabel className="font-normal">
+                            <div className="flex flex-col space-y-1">
+                                <p className="text-sm font-medium leading-none">user01</p>
+                                <p className="text-xs leading-none text-muted-foreground">
+                                user01@example.com
+                                </p>
+                            </div>
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="cursor-pointer">
+                                <LogOut className="mr-2 h-4 w-4" />
+                                <span>Выйти</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </SubSection>
+            
+            {/* Analytics Components */}
+            <SubSection title="Компоненты аналитики">
+                <div className="w-full space-y-8">
+                    <DatePickerWithRange />
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                        <Card className="lg:col-span-3">
+                            <CardHeader>
+                                <CardTitle>Динамика тендеров</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <TendersByMonthChart />
+                            </CardContent>
+                        </Card>
+                        <Card className="lg:col-span-2">
+                             <CardHeader>
+                                <CardTitle>Тендеры по отраслям</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <TendersByIndustryChart />
+                            </CardContent>
+                        </Card>
+                    </div>
+                     <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Название тендера</TableHead>
+                                <TableHead>Заказчик</TableHead>
+                                <TableHead className="text-right">Сумма</TableHead>
+                                <TableHead>Дата</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {recentWins.map((win) => (
+                                <TableRow key={win.id}>
+                                    <TableCell className="font-medium text-primary">{win.title}</TableCell>
+                                    <TableCell className="text-muted-foreground">{win.customer}</TableCell>
+                                    <TableCell className="text-right font-semibold text-accent">{win.amount}</TableCell>
+                                    <TableCell className="text-muted-foreground">{win.date}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            </SubSection>
+
           </Section>
         </div>
       </main>
@@ -288,3 +388,4 @@ export default function StyleGuidePage() {
     </div>
   );
 }
+
