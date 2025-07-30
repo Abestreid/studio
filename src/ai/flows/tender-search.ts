@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -49,7 +50,7 @@ const naturalLanguageTenderSearchPrompt = ai.definePrompt({
 You will take a natural language query from the user and return a list of relevant tender opportunities.
 The user's query is "{{query}}".
 
-If the query contains the word "принтер" or "мфу", you MUST return the following 2 results. For any other query, you must return an empty list of results.
+If the query contains the word "принтер" or "принтеры", you MUST return the following 2 results. For any other query, you must return an empty list of results.
 
 Result 1:
 - id: "1"
