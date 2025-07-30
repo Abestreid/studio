@@ -19,7 +19,7 @@ const featuresList = [
       'Сохранённые фильтры и Telegram-бот',
       'REST API для интеграции с CRM / ERP',
     ],
-    image: 'https://placehold.co/500x350.png',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhbmFseXRpY3MlMjBkYXNoYm9hcmR8ZW58MHx8fHwxNzUzODY0NTI2fDA&ixlib=rb-4.1.0&q=80&w=1080',
     alt: 'Аналитика',
     hint: 'analytics dashboard'
   },
@@ -30,7 +30,7 @@ const featuresList = [
       'Календарь дедлайнов с экспортом .ics',
       'Обсуждение документов в одном окне',
     ],
-    image: 'https://placehold.co/500x350.png',
+    image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx0ZWFtJTIwY29sbGFib3JhdGlvbnxlbnwwfHx8fDE3NTM4NjQ1MjZ8MA&ixlib=rb-4.1.0&q=80&w=1080',
     alt: 'Командная работа',
     hint: 'team collaboration'
   },
@@ -41,7 +41,7 @@ const featuresList = [
       'Адаптивный интерфейс для смартфонов',
       'Push-уведомления о важных событиях',
     ],
-    image: 'https://placehold.co/500x350.png',
+    image: 'https://images.unsplash.com/photo-1663661746125-9189b2f8ed81?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2JpbGUlMjBhY2Nlc3N8ZW58MHx8fHwxNzUzODY0NTI2fDA&ixlib=rb-4.1.0&q=80&w=1080',
     alt: 'Мобильный доступ',
     hint: 'mobile access'
   },

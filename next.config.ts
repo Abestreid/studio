@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
         hostname: 'tendersoft.kz',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
