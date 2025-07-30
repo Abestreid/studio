@@ -85,8 +85,8 @@ export function Header() {
           {isLoggedIn ? (
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                       <UserCircle className="h-8 w-8 text-primary" />
+                    <Button variant="outline" size="icon" className="rounded-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                       <UserCircle className="h-6 w-6" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
