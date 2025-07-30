@@ -11,7 +11,7 @@ import Image from 'next/image';
 const navLinks = [
   { href: '/', label: 'Тендеры' },
   { href: '/analytics', label: 'Аналитика' },
-  { href: '#favorites', label: 'Избранное' },
+  { href: '/favorites', label: 'Избранное' },
   { href: '#pricing', label: 'Тарифы' },
   { href: '#blog', label: 'Блог' },
   { href: '#help', label: 'Помощь' },
