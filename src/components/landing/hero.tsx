@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { TenderCard } from '../tender-card';
-import { searchTenders, type SearchState, type TenderResult } from '@/app/actions';
+import { searchTenders, type SearchState } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
@@ -22,45 +22,6 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/colla
 const initialState: SearchState = {};
 
 const tenderSources = ["goszakupki.by", "icetrade.by", "butb.by"];
-
-const exampleTenders: TenderResult[] = [
-    {
-        id: "1",
-        title: "Поставка офисной мебели для администрации г. Минска",
-        location: "Минск",
-        customer: "Администрация г. Минска",
-        platform: "Госзакупки",
-        published: "25.05.2025",
-        deadline: "до 29.05 (2 дня)",
-        type: "Товар",
-        price: "34 500 BYN",
-        status: "Открыт"
-    },
-    {
-        id: "2",
-        title: "Уведомление о проведении КП по замене компенсатора К-4; К-5 на трубопроводе сетевой воды ТЭС",
-        location: "Мангистауская обл.",
-        customer: "Филиал ВМУ",
-        platform: "Коммерческие",
-        published: "29.05.2025",
-        deadline: "до 10.06 (11 дней)",
-        type: "Работа",
-        price: "—",
-        status: "Предварительное обсуждение"
-    },
-    {
-        id: "3",
-        title: "Поставка стульев",
-        location: "Алматы",
-        customer: "Заказчик скрыт",
-        platform: "Малая закупка",
-        published: "29.05.2025",
-        deadline: "до 30.05 (<24ч)",
-        type: "Товар",
-        price: "30 310 KZT",
-        status: "Время истекает!"
-    },
-];
 
 export function Hero() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
@@ -82,19 +43,29 @@ export function Hero() {
   }, [state, toast]);
   
   const handleFormAction = (formData: FormData) => {
-    setHasSearched(true);
+    // Only set hasSearched if there is a query
+    if (formData.get('query')) {
+      setHasSearched(true);
+    } else {
+      setHasSearched(false);
+    }
     formAction(formData);
   }
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.value === '') {
       setHasSearched(false);
+      // Reset state if query is cleared
+      if (formRef.current) {
+        formRef.current.reset();
+      }
+      // A bit of a hack to reset the action state
+      (formAction as any)();
     }
   }
 
-  const hasResults = state.results && state.results.length > 0;
+  const hasResults = hasSearched && state.results && state.results.length > 0;
   const noResultsMessage = hasSearched && state.message;
-  const showExampleResults = !hasSearched && !isPending && !hasResults;
 
   return (
     <section className="bg-gradient-to-br from-primary via-teal-800 to-accent pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20">
@@ -138,82 +109,82 @@ export function Hero() {
                 </Select>
               </div>
 
-
               <CollapsibleContent asChild className="md:col-span-2">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <div>
-                            <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
-                        </div>
-                        <div className="relative">
-                            <Input id={`${formId}-okrb_code`} name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 pr-36 rounded-md"/>
-                            <Button type="button" variant="link" className="absolute right-2 top-1/2 -translate-y-1/2 h-auto text-sm">Открыть справочник</Button>
-                        </div>
-                        <div className="md:col-span-2">
-                            <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-white h-12 rounded-md"/>
-                            <div className="flex items-center gap-4 mt-2">
-                              <RadioGroup defaultValue="search_in_name" className="flex">
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="exact" id={`${formId}-exact`} />
-                                        <Label htmlFor={`${formId}-exact`} className="text-sm font-normal">Точное соответствие</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="search_in_name" id={`${formId}-search_in_name`} />
-                                        <Label htmlFor={`${formId}-search_in_name`} className="text-sm font-normal">Искать и в названии закупки</Label>
-                                    </div>
-                                </RadioGroup>
-                            </div>
-                        </div>
-                        <div className="md:col-span-2">
-                            <Input id={`${formId}-exclude_words`} name="exclude_words" placeholder="Укажите слова исключения" className="bg-white h-12 rounded-md"/>
-                        </div>
-                        <div>
-                            <Input id={`${formId}-price_from`} name="price_from" type="number" placeholder="Предельная стоимость от" className="mt-1 bg-white h-12 rounded-md" />
-                        </div>
-                        <div>
-                            <Input id={`${formId}-price_to`} name="price_to" type="number" placeholder="Предельная стоимость до" className="mt-1 bg-white h-12 rounded-md"/>
-                        </div>
-                        <div>
-                            <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" placeholder="Дата размещения с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
-                        </div>
-                        <div>
-                            <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" placeholder="Дата размещения до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
-                        </div>
-                        <div>
-                            <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" placeholder="Дата окончания приема предлоджиний с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
-                        </div>
-                        <div>
-                            <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" placeholder="Дата окончания приема предлоджиний до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
-                        </div>
-                        <div>
-                            <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" placeholder="Срок поставки от" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
-                        </div>
-                        <div>
-                            <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" placeholder="Срок поставки до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
-                        </div>
-                        <div className="md:col-span-2 space-y-3">
-                            <RadioGroup defaultValue="all" className="flex items-center gap-4">
-                                <Label className="text-sm font-medium">Тип закупки:</Label>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="own" id={`${formId}-own`} />
-                                    <Label htmlFor={`${formId}-own`} className="text-sm font-normal">Собственные средства</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="gov" id={`${formId}-gov`} />
-                                    <Label htmlFor={`${formId}-gov`} className="text-sm font-normal">Государственные закупки</Label>
-                                </div>
-                            </RadioGroup>
-                            <div className="chip-group-sm">
-                                <span className="text-sm font-medium mr-2">Местонахождение заказчика:</span>
-                                {tenderSources.map(source => (
-                                    <label key={source}>
-                                        <input type="checkbox" name="source" value={source} className="form-check-input" />
-                                        <span className="form-check-label">{source}</span>
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                      <div>
+                          <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
+                      </div>
+                      <div className="relative">
+                          <Input id={`${formId}-okrb_code`} name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 pr-36 rounded-md"/>
+                          <Button type="button" variant="link" className="absolute right-2 top-1/2 -translate-y-1/2 h-auto text-sm">Открыть справочник</Button>
+                      </div>
+                      <div className="md:col-span-2">
+                          <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-white h-12 rounded-md"/>
+                          <div className="flex items-center gap-4 mt-2">
+                            <RadioGroup defaultValue="search_in_name" className="flex">
+                                  <div className="flex items-center space-x-2">
+                                      <RadioGroupItem value="exact" id={`${formId}-exact`} />
+                                      <Label htmlFor={`${formId}-exact`} className="text-sm font-normal">Точное соответствие</Label>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                      <RadioGroupItem value="search_in_name" id={`${formId}-search_in_name`} />
+                                      <Label htmlFor={`${formId}-search_in_name`} className="text-sm font-normal">Искать и в названии закупки</Label>
+                                  </div>
+                              </RadioGroup>
+                          </div>
+                      </div>
+                      <div className="md:col-span-2">
+                          <Input id={`${formId}-exclude_words`} name="exclude_words" placeholder="Укажите слова исключения" className="bg-white h-12 rounded-md"/>
+                      </div>
+                      <div>
+                          <Input id={`${formId}-price_from`} name="price_from" type="number" placeholder="Предельная стоимость от" className="mt-1 bg-white h-12 rounded-md" />
+                      </div>
+                      <div>
+                          <Input id={`${formId}-price_to`} name="price_to" type="number" placeholder="Предельная стоимость до" className="mt-1 bg-white h-12 rounded-md"/>
+                      </div>
+                      <div>
+                          <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" placeholder="Дата размещения с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                      </div>
+                      <div>
+                          <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" placeholder="Дата размещения до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                      </div>
+                      <div>
+                          <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" placeholder="Дата окончания приема предлоджиний с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                      </div>
+                      <div>
+                          <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" placeholder="Дата окончания приема предлоджиний до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                      </div>
+                      <div>
+                          <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" placeholder="Срок поставки от" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                      </div>
+                      <div>
+                          <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" placeholder="Срок поставки до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                      </div>
+                      <div className="md:col-span-2 space-y-3">
+                          <RadioGroup defaultValue="all" className="flex items-center gap-4">
+                              <Label className="text-sm font-medium">Тип закупки:</Label>
+                              <div className="flex items-center space-x-2">
+                                  <RadioGroupItem value="own" id={`${formId}-own`} />
+                                  <Label htmlFor={`${formId}-own`} className="text-sm font-normal">Собственные средства</Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                  <RadioGroupItem value="gov" id={`${formId}-gov`} />
+                                  <Label htmlFor={`${formId}-gov`} className="text-sm font-normal">Государственные закупки</Label>
+                              </div>
+                          </RadioGroup>
+                          <div className="chip-group-sm">
+                              <span className="text-sm font-medium mr-2">Местонахождение заказчика:</span>
+                              {tenderSources.map(source => (
+                                  <label key={source}>
+                                      <input type="checkbox" name="source" value={source} className="form-check-input" />
+                                      <span className="form-check-label">{source}</span>
+                                  </label>
+                              ))}
+                          </div>
+                      </div>
+                  </div>
               </CollapsibleContent>
+
               <div className="md:col-span-2 flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
                 <Button type="submit" size="lg" className="w-full sm:w-auto h-12 text-base rounded-full flex-grow" disabled={isPending}>
                   <Search className="mr-2" />
@@ -238,7 +209,7 @@ export function Hero() {
           </Collapsible>
         </form>
 
-        <div className="mt-12 max-w-4xl mx-auto">
+        <div className="mt-12 max-w-4xl mx-auto min-h-[200px]">
             {isPending && (
                  <div className="space-y-4">
                     {[...Array(3)].map((_, i) => (
@@ -261,16 +232,11 @@ export function Hero() {
                  </div>
             )}
              {noResultsMessage && <p className="text-center text-white bg-black/20 p-4 rounded-lg">{state.message}</p>}
-             {showExampleResults && (
-                <div className="space-y-4">
-                    {exampleTenders.map((tender) => (
-                        <TenderCard key={tender.id} {...tender} />
-                    ))}
-                </div>
-            )}
         </div>
 
       </div>
     </section>
   );
 }
+
+    
