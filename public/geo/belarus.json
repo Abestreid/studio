@@ -1,0 +1,36 @@
+
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Brest voblast" },
+      "geometry": { "type": "Polygon", "coordinates": [[]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Homyel voblast" },
+      "geometry": { "type": "Polygon", "coordinates": [[]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Hrodna voblast" },
+      "geometry": { "type": "Polygon", "coordinates": [[]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Mahilyow voblast" },
+      "geometry": { "type": "Polygon", "coordinates": [[]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Minsk voblast" },
+      "geometry": { "type": "Polygon", "coordinates": [[]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Vitsyebsk voblast" },
+      "geometry": { "type": "Polygon", "coordinates": [[]] }
+    }
+  ]
+}
