@@ -30,6 +30,18 @@ export function Hero() {
   const formId = useId();
   const formRef = useRef<HTMLFormElement>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(loggedIn);
+    };
+    checkLoginStatus();
+    window.addEventListener('storage', checkLoginStatus);
+    return () => window.removeEventListener('storage', checkLoginStatus);
+  }, []);
 
 
   useEffect(() => {
@@ -43,7 +55,6 @@ export function Hero() {
   }, [state, toast]);
   
   const handleFormAction = (formData: FormData) => {
-    // Only set hasSearched if there is a query
     if (formData.get('query')) {
       setHasSearched(true);
     } else {
@@ -55,27 +66,28 @@ export function Hero() {
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.value === '') {
       setHasSearched(false);
-      // Reset state if query is cleared
-      if (formRef.current) {
-        formRef.current.reset();
-      }
-      // A bit of a hack to reset the action state
+      // A bit of a hack to reset the action state.
+      // This clears previous results when the query is manually cleared.
       (formAction as any)();
     }
   }
 
   const hasResults = hasSearched && state.results && state.results.length > 0;
   const noResultsMessage = hasSearched && state.message;
+  
+  const heroTitle = isLoggedIn ? "Добро пожаловать, user01!" : "Все тендеры Беларуси — в одном простом окне";
+  const heroSubtitle = isLoggedIn ? "Найдите свой следующий контракт или просмотрите сохраненные фильтры." : "Перестаньте тратить часы на поиски. Находите выгодные заказы за 3 клика и получайте уведомления о новых — прямо в Telegram.";
+
 
   return (
     <section className="bg-gradient-to-br from-primary via-teal-800 to-accent pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl font-bold text-white tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-            Все тендеры Беларуси — в одном простом окне
+            {heroTitle}
           </h1>
           <p className="mt-4 text-base text-white/80 sm:text-lg md:mt-6 md:text-xl max-w-3xl mx-auto">
-            Перестаньте тратить часы на поиски. Находите выгодные заказы за 3 клика и получайте уведомления о новых — прямо в Telegram.
+            {heroSubtitle}
           </p>
         </div>
 
@@ -203,9 +215,11 @@ export function Hero() {
                 </CollapsibleTrigger>
               </div>
             </div>
-            <p className="text-center text-xs text-muted-foreground mt-6">
-              Зарегистрируйтесь за 1 минуту и получите полный доступ на 7 дней бесплатно.
-            </p>
+            {!isLoggedIn && (
+                <p className="text-center text-xs text-muted-foreground mt-6">
+                Зарегистрируйтесь за 1 минуту и получите полный доступ на 7 дней бесплатно.
+                </p>
+            )}
           </Collapsible>
         </form>
 
@@ -238,5 +252,3 @@ export function Hero() {
     </section>
   );
 }
-
-    

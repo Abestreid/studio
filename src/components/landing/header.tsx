@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { UserCircle, LogOut } from 'lucide-react';
+import { UserCircle, LogOut, Menu } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,15 +34,20 @@ export function Header() {
     const router = useRouter();
 
     useEffect(() => {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(loggedIn);
+        const checkLoginStatus = () => {
+             const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+             setIsLoggedIn(loggedIn);
+        }
+
+        checkLoginStatus(); // Check on initial render
 
         const handleStorageChange = () => {
-            const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            setIsLoggedIn(loggedIn);
+           checkLoginStatus()
         };
 
         window.addEventListener('storage', handleStorageChange);
+        
+        // Clean up event listener
         return () => {
             window.removeEventListener('storage', handleStorageChange);
         };
@@ -52,6 +57,8 @@ export function Header() {
     const handleLogout = () => {
         localStorage.removeItem('isLoggedIn');
         setIsLoggedIn(false);
+        // Dispatch storage event to notify other tabs/windows
+        window.dispatchEvent(new Event('storage'));
         router.push('/');
     };
 
@@ -111,18 +118,9 @@ export function Header() {
         </div>
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild className="lg:hidden">
-                 <button
-                    aria-label="Открыть меню"
-                    className={cn(
-                        "burger z-50 flex h-8 w-8 cursor-pointer flex-col items-center justify-center gap-1.5 transition-all",
-                        isMenuOpen && "active"
-                    )}
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    >
-                    <span className={cn("h-0.5 w-6 rounded-full bg-foreground transition-all", isMenuOpen && "translate-y-2 rotate-45")}></span>
-                    <span className={cn("h-0.5 w-6 rounded-full bg-foreground transition-all", isMenuOpen && "opacity-0")}></span>
-                    <span className={cn("h-0.5 w-6 rounded-full bg-foreground transition-all", isMenuOpen && "-translate-y-2 -rotate-45")}></span>
-                </button>
+                 <Button variant="outline" size="icon" aria-label="Открыть меню">
+                    <Menu className="h-6 w-6" />
+                 </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-xs p-0">
                 <div className="flex h-full flex-col gap-8 p-6 pt-20">

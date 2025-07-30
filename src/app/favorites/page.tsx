@@ -13,8 +13,10 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { TenderCard } from '@/components/tender-card';
-import { ListFilter, Search, FileX2 } from 'lucide-react';
+import { ListFilter, Search, FileX2, User } from 'lucide-react';
 import { Cta } from '@/components/landing/cta';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const favoriteTenders = [
     {
@@ -46,6 +48,20 @@ const favoriteTenders = [
 const hasFavorites = favoriteTenders.length > 0;
 
 export default function FavoritesPage() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(loggedIn);
+         // Listen for storage changes to update UI across tabs
+        const handleStorageChange = () => {
+            const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            setIsLoggedIn(loggedIn);
+        };
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
   return (
     <div className="bg-background text-foreground flex flex-col min-h-screen">
       <Header />
@@ -60,7 +76,23 @@ export default function FavoritesPage() {
             </div>
           </div>
           
-          {hasFavorites ? (
+          {!isLoggedIn ? (
+            <div className="text-center bg-card border rounded-lg py-16 px-6">
+                <User className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                <h2 className="text-2xl font-semibold text-primary mb-2">Войдите, чтобы увидеть избранное</h2>
+                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                    Чтобы добавлять тендеры в избранное и просматривать их здесь, вам необходимо войти в свой аккаунт или зарегистрироваться.
+                </p>
+                <div className="flex justify-center gap-4">
+                    <Button size="lg" asChild>
+                        <Link href="/login">Войти</Link>
+                    </Button>
+                     <Button size="lg" variant="outline" asChild>
+                        <Link href="/register">Зарегистрироваться</Link>
+                    </Button>
+                </div>
+            </div>
+          ) : hasFavorites ? (
             <>
                 <div className="flex flex-col sm:flex-row gap-4 mb-6 p-4 bg-card rounded-lg border shadow-sm">
                     <div className="relative flex-grow">
@@ -103,13 +135,14 @@ export default function FavoritesPage() {
 
         </div>
       </main>
-      <Cta
-        title="Готовы начать выигрывать?"
-        description="Получите полный доступ к платформе и увеличьте свои шансы на победу."
-        buttonText="Попробовать бесплатно"
-      />
+      {!isLoggedIn && (
+        <Cta
+            title="Готовы начать выигрывать?"
+            description="Получите полный доступ к платформе и увеличьте свои шансы на победу."
+            buttonText="Попробовать бесплатно"
+        />
+      )}
       <Footer />
     </div>
   );
 }
-

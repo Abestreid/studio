@@ -1,5 +1,9 @@
+
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
 interface CtaProps {
   title: string;
@@ -10,6 +14,21 @@ interface CtaProps {
 }
 
 export function Cta({ title, description, buttonText, secondaryButtonText, className }: CtaProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
+    }
+    checkLoginStatus();
+    window.addEventListener('storage', checkLoginStatus);
+    return () => window.removeEventListener('storage', checkLoginStatus);
+  }, []);
+
+  if (isLoggedIn) {
+    return null;
+  }
+
   return (
     <section className={cn("bg-accent", className)}>
       <div className="container mx-auto px-4 md:px-6 py-12 sm:py-16 text-center">

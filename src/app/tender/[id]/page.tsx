@@ -1,3 +1,6 @@
+
+'use client';
+
 import { Header } from "@/components/landing/header";
 import { Footer } from "@/components/landing/footer";
 import { Cta } from "@/components/landing/cta";
@@ -16,9 +19,24 @@ import {
   MapPin,
   Briefcase,
   Building,
+  Lock,
 } from "lucide-react";
+import { useEffect, useState } from 'react';
 
 export default function TenderPage({ params }: { params: { id: string } }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      setIsLoggedIn(loggedIn);
+    };
+    checkLoginStatus();
+    window.addEventListener('storage', checkLoginStatus);
+    return () => window.removeEventListener('storage', checkLoginStatus);
+  }, []);
+
+
   const tender = {
     id: "auc0002573978",
     title: "Многофункциональные устройства (МФУ) и принтеры",
@@ -50,6 +68,14 @@ export default function TenderPage({ params }: { params: { id: string } }) {
       documentList: "в заявке",
     },
   };
+
+  const PremiumPlaceholder = () => (
+    <div className="bg-secondary/30 rounded-lg p-4 text-center">
+      <Lock className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+      <p className="font-semibold text-primary">Доступно на тарифе «Премиум»</p>
+      <Button size="sm" className="mt-2">Улучшить тариф</Button>
+    </div>
+  )
 
   return (
     <div className="bg-background text-foreground flex flex-col min-h-screen">
@@ -89,10 +115,15 @@ export default function TenderPage({ params }: { params: { id: string } }) {
             </Button>
           </div>
 
-          <div className="bg-yellow-100/60 border border-yellow-200 text-yellow-900 rounded-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-            <p className="text-sm">Для просмотра всех данных требуется тариф «Премиум»</p>
-            <Button className="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 shrink-0">Купить доступ</Button>
-          </div>
+          {!isLoggedIn && (
+            <div className="bg-yellow-100/60 border border-yellow-200 text-yellow-900 rounded-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+                <p className="text-sm font-medium">Для просмотра всех данных и контактов зарегистрируйтесь или войдите в аккаунт.</p>
+                <div className="flex gap-2">
+                    <Button asChild className="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 shrink-0"><Link href="/login">Войти</Link></Button>
+                    <Button asChild variant="outline" className="border-yellow-400 text-yellow-900 shrink-0"><Link href="/register">Регистрация</Link></Button>
+                </div>
+            </div>
+          )}
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
@@ -168,48 +199,52 @@ export default function TenderPage({ params }: { params: { id: string } }) {
                     <Card className="shadow-md">
                         <CardContent className="p-6">
                             <h3 className="font-bold text-lg text-primary mb-4">Информация о заказчике</h3>
-                            <div className="space-y-3 text-sm">
-                                <p className="font-semibold">{tender.customer.name}</p>
-                                <div>
-                                    <p className="text-muted-foreground text-xs">УНП:</p>
-                                    <p>{tender.customer.unp}</p>
+                            {isLoggedIn ? (
+                                <div className="space-y-3 text-sm">
+                                    <p className="font-semibold">{tender.customer.name}</p>
+                                    <div>
+                                        <p className="text-muted-foreground text-xs">УНП:</p>
+                                        <p>{tender.customer.unp}</p>
+                                    </div>
+                                     <div>
+                                        <p className="text-muted-foreground text-xs">Адрес:</p>
+                                        <p>{tender.customer.address}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-muted-foreground text-xs">Контактное лицо:</p>
+                                        <p>{tender.customer.contactPerson}</p>
+                                    </div>
                                 </div>
-                                 <div>
-                                    <p className="text-muted-foreground text-xs">Адрес:</p>
-                                    <p>{tender.customer.address}</p>
-                                </div>
-                                <div>
-                                    <p className="text-muted-foreground text-xs">Контактное лицо:</p>
-                                    <p>{tender.customer.contactPerson}</p>
-                                </div>
-                            </div>
+                            ) : <PremiumPlaceholder />}
                         </CardContent>
                     </Card>
                     <Card className="shadow-md">
                         <CardContent className="p-6">
                             <h3 className="font-bold text-lg text-primary mb-4">Основная информация по закупке</h3>
-                             <div className="space-y-3 text-sm">
-                                <div>
-                                    <p className="text-muted-foreground text-xs">Дата размещения приглашения:</p>
-                                    <p>{tender.procurementInfo.publishedDate}</p>
+                             {isLoggedIn ? (
+                                <div className="space-y-3 text-sm">
+                                    <div>
+                                        <p className="text-muted-foreground text-xs">Дата размещения приглашения:</p>
+                                        <p>{tender.procurementInfo.publishedDate}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-muted-foreground text-xs">Дата окончания приема предложений:</p>
+                                        <p>{tender.procurementInfo.deadlineDate}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-muted-foreground text-xs">Общая предельная стоимость закупки:</p>
+                                        <p className="font-bold text-accent">{tender.procurementInfo.totalValue}</p>
+                                    </div>
+                                     <div>
+                                        <p className="text-muted-foreground text-xs">Требования к участникам:</p>
+                                        <p>{tender.procurementInfo.participantRequirements}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-muted-foreground text-xs">Перечень документов:</p>
+                                        <p>{tender.procurementInfo.documentList}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-muted-foreground text-xs">Дата окончания приема предложений:</p>
-                                    <p>{tender.procurementInfo.deadlineDate}</p>
-                                </div>
-                                <div>
-                                    <p className="text-muted-foreground text-xs">Общая предельная стоимость закупки:</p>
-                                    <p className="font-bold text-accent">{tender.procurementInfo.totalValue}</p>
-                                </div>
-                                 <div>
-                                    <p className="text-muted-foreground text-xs">Требования к участникам:</p>
-                                    <p>{tender.procurementInfo.participantRequirements}</p>
-                                </div>
-                                <div>
-                                    <p className="text-muted-foreground text-xs">Перечень документов:</p>
-                                    <p>{tender.procurementInfo.documentList}</p>
-                                </div>
-                            </div>
+                            ) : <PremiumPlaceholder /> }
                         </CardContent>
                     </Card>
                 </div>
@@ -228,11 +263,13 @@ export default function TenderPage({ params }: { params: { id: string } }) {
           </div>
         </div>
       </main>
-      <Cta
-        title="Начните получать тендеры первыми"
-        description="Поиск, мониторинг, аналитика и командная работа – экономьте время и выигрывайте больше."
-        buttonText="Попробовать бесплатно"
-      />
+      {!isLoggedIn && (
+        <Cta
+            title="Начните получать тендеры первыми"
+            description="Поиск, мониторинг, аналитика и командная работа – экономьте время и выигрывайте больше."
+            buttonText="Попробовать бесплатно"
+        />
+      )}
       <Footer />
     </div>
   );
