@@ -1,36 +1,10 @@
 
-{
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": { "name": "Brest voblast" },
-      "geometry": { "type": "Polygon", "coordinates": [[]] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Homyel voblast" },
-      "geometry": { "type": "Polygon", "coordinates": [[]] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Hrodna voblast" },
-      "geometry": { "type": "Polygon", "coordinates": [[]] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Mahilyow voblast" },
-      "geometry": { "type": "Polygon", "coordinates": [[]] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Minsk voblast" },
-      "geometry": { "type": "Polygon", "coordinates": [[]] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Vitsyebsk voblast" },
-      "geometry": { "type": "Polygon", "coordinates": [[]] }
-    }
-  ]
-}
+{"type":"FeatureCollection","features":[
+{"type":"Feature","id":"BY-BR","properties":{"name":"Brest"},"geometry":{"type":"Polygon","coordinates":[[[25.109,53.216],[25.875,53.22],[26.155,53.023],[26.862,53.076],[27.054,52.923],[27.01,52.37],[27.42,52.16],[28.32,52.12],[28.61,51.85],[29.98,52.12],[30.012,52.49],[29.27,52.48],[28.63,52.83],[27.35,52.93],[26.85,53.05],[26.12,53],[25.2,53.18],[24.3,53.03],[23.88,52.6],[23.518,52.352],[23.442,51.921],[23.9,51.7],[24.9,51.83],[25.109,53.216]]]}},
+{"type":"Feature","id":"BY-HO","properties":{"name":"Homyel'"},"geometry":{"type":"Polygon","coordinates":[[[30.012,52.49],[29.98,52.12],[28.61,51.85],[28.32,52.12],[27.42,52.16],[27.01,52.37],[27.054,52.923],[27.35,52.93],[28.63,52.83],[29.27,52.48],[30.012,52.49]]]}},
+{"type":"Feature","id":"BY-HR","properties":{"name":"Hrodna"},"geometry":{"type":"Polygon","coordinates":[[[25.127,54.615],[25.84,54.49],[26.39,54.34],[26.74,53.95],[26.862,53.076],[26.155,53.023],[25.875,53.22],[25.109,53.216],[24.9,51.83],[23.9,51.7],[23.442,51.921],[23.518,52.352],[23.88,52.6],[24.3,53.03],[25.2,53.18],[25.127,54.615]]]}},
+{"type":"Feature","id":"BY-MA","properties":{"name":"Mahilyow"},"geometry":{"type":"Polygon","coordinates":[[[31.42,54.58],[32.06,54.39],[32.61,53.64],[31.49,53.01],[30.012,52.49],[29.27,52.48],[28.63,52.83],[28.9,53.53],[29.58,53.95],[30.33,54.21],[31.42,54.58]]]}},
+{"type":"Feature","id":"BY-MI","properties":{"name":"Minsk"},"geometry":{"type":"Polygon","coordinates":[[[27.56,53.9],[27.56,53.9],[27.56,53.9],[27.56,53.9]]]}},
+{"type":"Feature","id":"BY-VI","properties":{"name":"Vitsyebsk"},"geometry":{"type":"Polygon","coordinates":[[[27.51,55.93],[28.05,56.03],[28.7,55.92],[29.1,55.63],[30.1,55.6],[30.7,55.2],[31.3,55.22],[32.06,54.39],[31.42,54.58],[30.33,54.21],[29.58,53.95],[28.9,53.53],[28.06,53.79],[27.31,54.29],[27.24,54.7],[27.42,55.23],[27.51,55.93]]]}},
+{"type":"Feature","id":"BY-MIN","properties":{"name":"Minsk Voblasts'"},"geometry":{"type":"Polygon","coordinates":[[[29.58,53.95],[28.9,53.53],[28.06,53.79],[27.31,54.29],[27.24,54.7],[27.42,55.23],[27.51,55.93],[26.96,55.72],[26.33,55.29],[25.84,54.49],[26.39,54.34],[26.74,53.95],[26.862,53.076],[27.054,52.923],[27.35,52.93],[28.63,52.83],[29.27,52.48],[30.012,52.49],[31.49,53.01],[32.61,53.64],[32.06,54.39],[31.42,54.58],[30.33,54.21],[29.58,53.95]]]}}
+]}

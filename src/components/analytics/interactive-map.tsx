@@ -10,30 +10,34 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 
 // Mock data structure - in a real app, this would come from an API
+// Region names must match the 'name' property in the geoJSON features.
 const mockApiData: { [year: number]: { region: string; sum: number; count: number }[] } = {
   2025: [
-    { region: "Minsk voblast", sum: 1250000000, count: 4321 },
-    { region: "Brest voblast", sum: 850000000, count: 2987 },
-    { region: "Homyel voblast", sum: 920000000, count: 3150 },
-    { region: "Hrodna voblast", sum: 780000000, count: 2640 },
-    { region: "Mahilyow voblast", sum: 710000000, count: 2400 },
-    { region: "Vitsyebsk voblast", sum: 810000000, count: 2800 },
+    { region: "Minsk Voblasts'", sum: 1250000000, count: 4321 },
+    { region: "Brest", sum: 850000000, count: 2987 },
+    { region: "Homyel'", sum: 920000000, count: 3150 },
+    { region: "Hrodna", sum: 780000000, count: 2640 },
+    { region: "Mahilyow", sum: 710000000, count: 2400 },
+    { region: "Vitsyebsk", sum: 810000000, count: 2800 },
+    { region: "Minsk", sum: 1500000000, count: 5100 },
   ],
   2024: [
-    { region: "Minsk voblast", sum: 1150000000, count: 4100 },
-    { region: "Brest voblast", sum: 820000000, count: 2800 },
-    { region: "Homyel voblast", sum: 890000000, count: 3050 },
-    { region: "Hrodna voblast", sum: 750000000, count: 2500 },
-    { region: "Mahilyow voblast", sum: 680000000, count: 2300 },
-    { region: "Vitsyebsk voblast", sum: 780000000, count: 2700 },
+    { region: "Minsk Voblasts'", sum: 1150000000, count: 4100 },
+    { region: "Brest", sum: 820000000, count: 2800 },
+    { region: "Homyel'", sum: 890000000, count: 3050 },
+    { region: "Hrodna", sum: 750000000, count: 2500 },
+    { region: "Mahilyow", sum: 680000000, count: 2300 },
+    { region: "Vitsyebsk", sum: 780000000, count: 2700 },
+    { region: "Minsk", sum: 1400000000, count: 4900 },
   ],
    2023: [
-    { region: "Minsk voblast", sum: 1050000000, count: 3900 },
-    { region: "Brest voblast", sum: 790000000, count: 2700 },
-    { region: "Homyel voblast", sum: 860000000, count: 2950 },
-    { region: "Hrodna voblast", sum: 720000000, count: 2400 },
-    { region: "Mahilyow voblast", sum: 650000000, count: 2200 },
-    { region: "Vitsyebsk voblast", sum: 750000000, count: 2600 },
+    { region: "Minsk Voblasts'", sum: 1050000000, count: 3900 },
+    { region: "Brest", sum: 790000000, count: 2700 },
+    { region: "Homyel'", sum: 860000000, count: 2950 },
+    { region: "Hrodna", sum: 720000000, count: 2400 },
+    { region: "Mahilyow", sum: 650000000, count: 2200 },
+    { region: "Vitsyebsk", sum: 750000000, count: 2600 },
+    { region: "Minsk", sum: 1300000000, count: 4700 },
   ]
 };
 
@@ -48,7 +52,12 @@ export function InteractiveMap() {
   // 1) Load geoJSON
   useEffect(() => {
     fetch('/geo/belarus.json')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json()
+      })
       .then(geoData => {
         echarts.registerMap('Belarus', geoData as any);
         setGeoJson(geoData);
