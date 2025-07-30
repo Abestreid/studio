@@ -1,20 +1,40 @@
-import { AppHeader } from '@/components/app-header';
-import { AppSidebar } from '@/components/app-sidebar';
-import { SearchSection } from '@/components/search-section';
-import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { Header } from '@/components/landing/header';
+import { Hero } from '@/components/landing/hero';
+import { Features } from '@/components/landing/features';
+import { HowItWorks } from '@/components/landing/how-it-works';
+import { Benefits } from '@/components/landing/benefits';
+import { Cta } from '@/components/landing/cta';
+import { Footer } from '@/components/landing/footer';
+import { Partners } from '@/components/landing/partners';
+import { Testimonials } from '@/components/landing/testimonials';
+import { Growth } from '@/components/landing/growth';
+import { SystemFeatures } from '@/components/landing/system-features';
 
-export default function DashboardPage() {
+export default function LandingPage() {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <div className="flex flex-col min-h-svh">
-          <AppHeader />
-          <main className="flex-1 p-4 sm:p-6 lg:p-8">
-            <SearchSection />
-          </main>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+    <div className="bg-background text-foreground">
+      <Header />
+      <main>
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <Testimonials />
+        <Growth />
+        <Partners />
+        <Cta
+          title="Начните выигрывать тендеры уже сегодня"
+          buttonText="Попробовать бесплатно"
+          secondaryButtonText="Смотреть демо"
+        />
+        <Benefits />
+        <SystemFeatures />
+        <Cta
+          title="Готовы получить свой первый госконтракт?"
+          description="Зарегистрируйтесь на 1 минуту и получите 7 дней бесплатного доступа ко всем функциям. Без привязки карты и обязательств"
+          buttonText="Попробовать бесплатно"
+        />
+      </main>
+      <Footer />
+    </div>
   );
 }
