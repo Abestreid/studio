@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState } from 'react-dom';
+import { useState, useEffect, useActionState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -11,11 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { SlidersHorizontal, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { TenderCard } from '../tender-card';
 import { searchTenders, type SearchState } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect } from 'react';
 import { Checkbox } from '../ui/checkbox';
 import { Label } from '../ui/label';
 import { REGIONS } from '@/lib/constants';
@@ -28,7 +26,7 @@ const tradeTypes = ["44-ФЗ", "223-ФЗ", "615 ПП РФ", "Коммерчес�
 export function Hero() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const { toast } = useToast();
-  const [state, formAction] = useFormState(searchTenders, initialState);
+  const [state, formAction] = useActionState(searchTenders, initialState);
 
   useEffect(() => {
     if (state.error) {
@@ -41,13 +39,13 @@ export function Hero() {
   }, [state, toast]);
 
   return (
-    <section className="bg-primary/5 pt-12 pb-20">
+    <section className="hero pt-12 pb-20">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto text-left md:text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary tracking-tight">
+          <h1 className="hero__title text-4xl md:text-5xl lg:text-6xl font-bold text-primary tracking-tight">
             Все тендеры Беларуси и&nbsp;Казахстана — в одном месте
           </h1>
-          <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="hero__lead mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
             Поиск, мониторинг, аналитика и командная работа — экономьте время и выигрывайте больше.
           </p>
         </div>
@@ -78,7 +76,7 @@ export function Hero() {
               type="button"
               variant="ghost"
               size="icon"
-              className="rounded-full"
+              className="rounded-full btn-expand"
               onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
               aria-expanded={showAdvancedSearch}
             >
@@ -87,7 +85,7 @@ export function Hero() {
           </div>
 
           {showAdvancedSearch && (
-            <div className="mt-4 p-6 bg-blue-50/50 rounded-lg animate-accordion-down">
+            <div className="advanced-search mt-4 p-6 bg-blue-50/50 rounded-lg animate-accordion-down">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
                     <div className="md:col-span-2 lg:col-span-2">
                         <Label htmlFor="q_adv" className="text-sm font-medium">Ключевые слова</Label>
