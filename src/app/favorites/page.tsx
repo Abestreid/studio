@@ -17,50 +17,36 @@ import { ListFilter, Search, FileX2, User } from 'lucide-react';
 import { Cta } from '@/components/landing/cta';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { allTenders, Tender } from '@/lib/tenders';
 
-const favoriteTenders = [
-    {
-        id: "1",
-        title: "Поставка офисной мебели для администрации г. Минска",
-        location: "Минск",
-        customer: "Администрация г. Минска",
-        platform: "Госзакупки",
-        published: "25.05.2025",
-        deadline: "до 29.05 (2 дня)",
-        type: "Товар",
-        price: "34 500 BYN",
-        status: "Открыт"
-    },
-    {
-        id: "4",
-        title: "Техническое обслуживание и ремонт принтеров",
-        location: "Нур-Султан",
-        customer: "Государственное учреждение 'Центр обслуживания населения'",
-        platform: "goszakup.gov.kz",
-        published: "15.06.2025",
-        deadline: "до 25.06 (10 дней)",
-        type: "Услуга",
-        price: "500 000 KZT",
-        status: ""
-    },
-];
-
-const hasFavorites = favoriteTenders.length > 0;
 
 export default function FavoritesPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [favoriteTenders, setFavoriteTenders] = useState<Tender[]>([]);
 
     useEffect(() => {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(loggedIn);
-         // Listen for storage changes to update UI across tabs
-        const handleStorageChange = () => {
+        const checkAuthAndLoadFavorites = () => {
             const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
             setIsLoggedIn(loggedIn);
+            
+            if (loggedIn) {
+                const favoriteIds: string[] = JSON.parse(localStorage.getItem('favorites') || '[]');
+                const favorited = allTenders.filter(tender => favoriteIds.includes(tender.id));
+                setFavoriteTenders(favorited);
+            } else {
+                setFavoriteTenders([]);
+            }
         };
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
+
+        checkAuthAndLoadFavorites();
+        
+        // Listen for storage changes to update UI across tabs
+        window.addEventListener('storage', checkAuthAndLoadFavorites);
+        
+        return () => window.removeEventListener('storage', checkAuthAndLoadFavorites);
     }, []);
+
+    const hasFavorites = favoriteTenders.length > 0;
 
   return (
     <div className="bg-background text-foreground flex flex-col min-h-screen">

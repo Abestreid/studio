@@ -10,68 +10,80 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import {
   Star,
-  HelpCircle,
   ArrowLeft,
   CheckCircle,
   FileText,
   Download,
   Link as LinkIcon,
-  MapPin,
-  Briefcase,
-  Building,
   Lock,
 } from "lucide-react";
 import { useEffect, useState } from 'react';
+import { allTenders, type Tender } from '@/lib/tenders';
+import { useToast } from "@/hooks/use-toast";
+
 
 export default function TenderPage({ params }: { params: { id: string } }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [tender, setTender] = useState<Tender | null>(null);
+  const { toast } = useToast();
+  
+  useEffect(() => {
+    const foundTender = allTenders.find(t => t.id === params.id) || null;
+    setTender(foundTender);
+  }, [params.id]);
+
 
   useEffect(() => {
     const checkLoginStatus = () => {
       const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
       setIsLoggedIn(loggedIn);
     };
+    
     checkLoginStatus();
     window.addEventListener('storage', checkLoginStatus);
+
+    // Check favorite status
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    setIsFavorite(favorites.includes(params.id));
+
     return () => window.removeEventListener('storage', checkLoginStatus);
-  }, []);
+  }, [params.id]);
 
+  const handleToggleFavorite = () => {
+    if (!isLoggedIn) {
+        toast({
+            title: 'Требуется авторизация',
+            description: 'Чтобы добавлять тендеры в избранное, войдите в свой аккаунт.',
+            variant: 'destructive',
+        });
+        return;
+    }
+    const favorites: string[] = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const newFavorites = isFavorite
+      ? favorites.filter((favId) => favId !== params.id)
+      : [...favorites, params.id];
+    
+    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    setIsFavorite(!isFavorite);
 
-  const tender = {
-    id: "auc0002573978",
-    title: "Многофункциональные устройства (МФУ) и принтеры",
-    published: "04.06.2025",
-    deadline: "08.06.2025",
-    deadlineDays: 4,
-    price: "34 500 BYN",
-    industry: "Компьютеры / оборудование > Периферийное оборудование",
-    location: "Минск",
-    platform: "goszakupki.by",
-    procurementType: "Закупка из одного источника (в электронном виде)",
-    status: "Открыт",
-    customer: {
-      name: 'Национальный филиал (представительство) Межгосударственной телерадиокомпании "Мир" в Республике Беларусь',
-      unp: "100824385",
-      address: "Республика Беларусь, г. Минск, 220030, г. Минск, ул. Кирова, 17",
-      contactPerson: "Поправко Д.И., +375173786096",
-    },
-    procurementInfo: {
-      publishedDate: "04.06.2025",
-      deadlineDate: "08.06.2025",
-      totalValue: "24 259,34 BYN",
-      participantRequirements: "в заявке",
-      documentList: "в заявке",
-    },
-    operator: {
-        name: 'РУП "Национальный центр маркетинга и конъюнктуры цен"',
-        address: '220030, Республика Беларусь, г. Минск, пл. Свободы, 17-1, каб. 1003',
-        unp: '101223447',
-        contacts: 'info@goszakupki.by',
-        site: 'https://www.goszakupki.by/',
-        siteUrl: 'https://goszakupki.by/'
-    },
-    document: "zayavka-zoi_1749046027.pdf",
+    toast({
+        title: !isFavorite ? 'Добавлено в избранное' : 'Удалено из избранного',
+        description: tender?.title,
+    });
   };
+
+  if (!tender) {
+    return (
+       <div className="bg-background text-foreground flex flex-col min-h-screen">
+         <Header />
+         <main className="flex-grow flex items-center justify-center py-8 sm:py-12 bg-secondary/30">
+            <p>Тендер не найден.</p>
+         </main>
+         <Footer />
+       </div>
+    )
+  }
 
   const InfoRow = ({ label, children }: { label: string, children: React.ReactNode }) => (
     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between py-3 border-b border-dashed last:border-b-0">
@@ -120,7 +132,12 @@ export default function TenderPage({ params }: { params: { id: string } }) {
                         <p className="text-muted-foreground mt-1">Номер: {tender.id}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap shrink-0">
-                        <Button variant="outline"><Star className="mr-2 h-4 w-4" />В избранное</Button>
+                         {isLoggedIn && (
+                            <Button variant="outline" onClick={handleToggleFavorite}>
+                                <Star className={cn("mr-2 h-4 w-4", isFavorite && "fill-current text-yellow-500")} />
+                                {isFavorite ? 'В избранном' : 'В избранное'}
+                            </Button>
+                        )}
                         <Button variant="outline"><FileText className="mr-2 h-4 w-4" />Подготовить заявку</Button>
                     </div>
                 </div>
@@ -186,16 +203,18 @@ export default function TenderPage({ params }: { params: { id: string } }) {
                         <CardTitle className="text-primary">Документы</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors">
-                            <div className="flex items-center gap-2">
-                                <FileText className="w-5 h-5 text-accent"/>
-                                <span className="text-sm font-medium">{tender.document}</span>
+                         {isLoggedIn ? (
+                            <div className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors">
+                                <div className="flex items-center gap-2">
+                                    <FileText className="w-5 h-5 text-accent"/>
+                                    <span className="text-sm font-medium">{tender.document}</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <Download className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
+                                    <LinkIcon className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-3">
-                                <Download className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
-                                <LinkIcon className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
-                            </div>
-                        </div>
+                        ) : <PremiumPlaceholder />}
                     </CardContent>
                 </Card>
 
@@ -251,5 +270,3 @@ export default function TenderPage({ params }: { params: { id: string } }) {
     </div>
   );
 }
-
-    
