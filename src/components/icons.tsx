@@ -1,41 +1,15 @@
 export const Logo = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <path
-      d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M14 2V8H20"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <circle
-      cx="12"
-      cy="15"
-      r="2"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M13.5 16.5L15 18"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
+    <svg 
+        width="40" 
+        height="40" 
+        viewBox="0 0 40 40" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+    >
+        <path d="M20 0L40 20L20 40L0 20L20 0Z" fill="#16A085"/>
+        <path d="M20 4L36 20L20 36L4 20L20 4Z" fill="white"/>
+        <path d="M20 8L32 20L20 32L8 20L20 8Z" fill="#16A085"/>
+        <path d="M23.9999 21.2C23.9999 23.321 22.2459 25 20.0119 25C17.7779 25 16.0239 23.321 16.0239 21.2C16.0239 19.079 17.7779 17.4 20.0119 17.4C22.2459 17.4 23.9999 19.079 23.9999 21.2Z" fill="white"/>
+    </svg>
 );

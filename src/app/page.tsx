@@ -16,21 +16,21 @@ export default function LandingPage() {
       <Header />
       <main>
         <Hero />
-        <Features />
-        <HowItWorks />
         <Testimonials />
+        <HowItWorks />
+        <Features />
         <Growth />
         <Partners />
         <Cta
           title="Начните выигрывать тендеры уже сегодня"
+          description="Первый доступ — бесплатно, без карты и обязательств."
           buttonText="Попробовать бесплатно"
-          secondaryButtonText="Смотреть демо"
+          secondaryButtonText="Связаться с менеджером"
         />
         <Benefits />
         <SystemFeatures />
         <Cta
-          title="Готовы получить свой первый госконтракт?"
-          description="Зарегистрируйтесь на 1 минуту и получите 7 дней бесплатного доступа ко всем функциям. Без привязки карты и обязательств"
+          title="Начните получать тендеры первыми"
           buttonText="Попробовать бесплатно"
         />
       </main>

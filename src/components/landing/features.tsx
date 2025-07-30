@@ -1,49 +1,58 @@
+import Image from 'next/image';
 
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Search, Bell, BarChart, Users } from 'lucide-react';
-
-const features = [
-  {
-    icon: <Search className="w-8 h-8 text-accent" />,
-    title: 'Умный поиск',
-    description: 'Поиск по всему тексту документации и учёт опечаток - находите даже скрытые закупки.',
-  },
-  {
-    icon: <Bell className="w-8 h-8 text-accent" />,
-    title: 'Мгновенные уведомления',
-    description: 'Email, Telegram, web-push - получайте ссылки на тендеры сразу после публикации.',
-  },
-  {
-    icon: <BarChart className="w-8 h-8 text-accent" />,
-    title: 'Глубокая аналитика',
-    description: 'Отраслевые дашборды, статистика заказчиков и конкурентов, обоснованные решения.',
-  },
-  {
-    icon: <Users className="w-8 h-8 text-accent" />,
-    title: 'Командная работа',
-    description: 'Метки, задачи, календарь дедлайнов - вся команда работает в едином пространстве.',
-  },
-];
+const featuresList = [
+    {
+        list: [
+            "Поиск внутри PDF / DOC-документов тендера",
+            "Сохранённые фильтры и Telegram-бот",
+            "REST API для интеграции с CRM / ERP"
+        ],
+        image: "https://placehold.co/500x320.png",
+        alt: "Аналитика",
+        hint: "analytics dashboard"
+    },
+    {
+        list: [
+            "Метки, статусы и распределение задач",
+            "Календарь дедлайнов с экспортом .ics",
+            "Обсуждение документов в одном окне"
+        ],
+        image: "https://placehold.co/500x320.png",
+        alt: "Командная работа",
+        hint: "team collaboration"
+    }
+]
 
 export function Features() {
   return (
     <section>
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl font-bold text-center text-primary">
-          Почему выбирают нас
-        </h2>
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature) => (
-            <Card key={feature.title} className="text-center shadow-sm hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="mx-auto bg-accent/10 rounded-full p-4 w-fit mb-4">
-                  {feature.icon}
+        <h2 className="section-title">Основные функции</h2>
+        <div className="space-y-16">
+        {featuresList.map((feature, index) => (
+            <div key={index} className={`flex flex-col md:flex-row items-center gap-12 ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+                <div className="md:w-1/2">
+                    <Image
+                    src={feature.image}
+                    alt={feature.alt}
+                    width={500}
+                    height={320}
+                    className="rounded-lg shadow-lg"
+                    data-ai-hint={feature.hint}
+                    />
                 </div>
-                <CardTitle className="text-xl">{feature.title}</CardTitle>
-                <CardDescription className="mt-2">{feature.description}</CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
+                <div className="md:w-1/2">
+                    <ul className="space-y-4 list-none p-0">
+                    {feature.list.map((item, itemIndex) => (
+                        <li key={itemIndex} className="flex items-start text-lg relative pl-6">
+                            <span className="text-accent absolute left-0 top-1">◆</span>
+                            <span>{item}</span>
+                        </li>
+                    ))}
+                    </ul>
+                </div>
+            </div>
+        ))}
         </div>
       </div>
     </section>

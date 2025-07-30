@@ -1,84 +1,46 @@
+import { Search, Bell, BarChart, Users } from 'lucide-react';
 
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CheckCircle } from 'lucide-react';
-import Image from 'next/image';
+const benefits = [
+  {
+    icon: <i className="ph ph-magnifying-glass text-3xl"></i>,
+    title: 'Умный поиск',
+    description: 'Поиск по всему тексту документации и учёт опечаток — находите даже скрытые закупки.',
+  },
+  {
+    icon: <i className="ph ph-bell text-3xl"></i>,
+    title: 'Мгновенные уведомления',
+    description: 'Email, Telegram, web-push — получайте свежие тендеры сразу после публикации.',
+  },
+  {
+    icon: <i className="ph ph-chart-line text-3xl"></i>,
+    title: 'Глубокая аналитика',
+    description: 'Отраслевые дашборды, статистика заказчиков и конкурентов — принимайте обоснованные решения.',
+  },
+  {
+    icon: <i className="ph ph-users text-3xl"></i>,
+    title: 'Командная работа',
+    description: 'Метки, задачи, календарь дедлайнов — вся команда работает в едином пространстве.',
+  },
+];
 
 export function HowItWorks() {
   return (
-    <section className="bg-primary/5">
+    <section className="bg-white">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl font-bold text-center text-primary">
-          Основные функции
+        <h2 className="section-title">
+          Почему выбирают нас
         </h2>
-        <Tabs defaultValue="analytics" className="mt-8 max-w-4xl mx-auto">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="analytics">Аналитика</TabsTrigger>
-            <TabsTrigger value="monitoring">Мониторинг</TabsTrigger>
-          </TabsList>
-          <TabsContent value="analytics">
-            <div className="grid md:grid-cols-2 gap-8 items-center pt-8">
-              <div>
-                <h3 className="text-2xl font-semibold text-primary">Аналитика</h3>
-                <ul className="mt-4 space-y-3">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-accent mr-3 mt-1 shrink-0" />
-                    <span>Поиск закупки ИИ / OCR, укрупнение тендеров</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-accent mr-3 mt-1 shrink-0" />
-                    <span>Сохраненные фильтры и Telegram бот</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-accent mr-3 mt-1 shrink-0" />
-                    <span>REST API для интеграции с CRM / ERP</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <Image
-                  src="https://placehold.co/500x300.png"
-                  alt="Аналитика"
-                  width={500}
-                  height={300}
-                  className="rounded-lg shadow-md"
-                  data-ai-hint="dashboard chart"
-                />
-              </div>
+        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {benefits.map((benefit) => (
+            <div key={benefit.title} className="text-center p-6 bg-card rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-105">
+                <div className="mx-auto bg-accent/10 rounded-full p-4 w-20 h-20 flex items-center justify-center mb-4">
+                  {benefit.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-primary">{benefit.title}</h3>
+                <p className="mt-2 text-muted-foreground">{benefit.description}</p>
             </div>
-          </TabsContent>
-           <TabsContent value="monitoring">
-            <div className="grid md:grid-cols-2 gap-8 items-center pt-8">
-              <div>
-                <h3 className="text-2xl font-semibold text-primary">Мониторинг</h3>
-                 <ul className="mt-4 space-y-3">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-accent mr-3 mt-1 shrink-0" />
-                    <span>Моментальное отслеживание новых тендеров</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-accent mr-3 mt-1 shrink-0" />
-                    <span>Гибкая настройка уведомлений под ваши нужды</span>
-                  </li>
-                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-accent mr-3 mt-1 shrink-0" />
-                    <span>Интеграция с вашими любимыми мессенджерами</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <Image
-                  src="https://placehold.co/500x300.png"
-                  alt="Мониторинг"
-                  width={500}
-                  height={300}
-                  className="rounded-lg shadow-md"
-                  data-ai-hint="notifications feed"
-                />
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+          ))}
+        </div>
       </div>
     </section>
   );
