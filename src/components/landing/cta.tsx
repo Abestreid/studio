@@ -24,7 +24,7 @@ export function Cta({ title, description, buttonText, secondaryButtonText, class
             {buttonText}
           </Button>
           {secondaryButtonText && (
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 hover:text-white">
+            <Button size="lg" variant="secondary" className="bg-accent-dark hover:bg-accent-dark/90 text-accent-foreground">
               {secondaryButtonText}
             </Button>
           )}
