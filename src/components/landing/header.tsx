@@ -24,8 +24,8 @@ const navLinks = [
   { href: '/analytics', label: 'Аналитика' },
   { href: '/favorites', label: 'Избранное' },
   { href: '/pricing', label: 'Тарифы' },
-  { href: '#blog', label: 'Блог' },
-  { href: '#help', label: 'Помощь' },
+  { href: '/blog', label: 'Блог' },
+  { href: '/help', label: 'Помощь' },
 ];
 
 export function Header() {
