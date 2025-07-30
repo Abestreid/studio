@@ -32,6 +32,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import Image from 'next/image';
+import { InteractiveMap } from '@/components/analytics/interactive-map';
 
 const recentWins = [
     { id: '1', title: 'Поставка офисной мебели', status: 'Завершено', openDate: '10.05.2025', closeDate: '25.05.2025', winner: 'ООО "Мебель-Про"', method: 'Электронный аукцион', initialAmount: '40 000 BYN', finalAmount: '34 500 BYN', diff: '-13.75%', platform: 'goszakupki.by', volume: '1' },
@@ -205,10 +206,8 @@ export default function AnalyticsPage() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-primary"><Map className="w-5 h-5"/> Интерактивная карта закупок</CardTitle>
                 </CardHeader>
-                <CardContent>
-                    <div className="bg-gray-200 h-96 rounded-lg flex items-center justify-center">
-                        <p className="text-muted-foreground">Здесь будет интерактивная карта (как на zakup.gov.kz)</p>
-                    </div>
+                <CardContent className="p-0">
+                    <InteractiveMap />
                 </CardContent>
              </Card>
         </div>
@@ -217,5 +216,3 @@ export default function AnalyticsPage() {
     </div>
   );
 }
-
-    
