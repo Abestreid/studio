@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -8,8 +9,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 const navLinks = [
-  { href: '#tenders', label: 'Тендеры' },
-  { href: '#analytics', label: 'Аналитика' },
+  { href: '/', label: 'Тендеры' },
+  { href: '/analytics', label: 'Аналитика' },
   { href: '#favorites', label: 'Избранное' },
   { href: '#pricing', label: 'Тарифы' },
   { href: '#blog', label: 'Блог' },
