@@ -125,23 +125,20 @@ export function Hero() {
                 <Input id={`${formId}-query`} name="query" placeholder="Что ищем? место поставки, закупки, тендер" className="bg-white h-12 rounded-full"/>
               </div>
 
-              <div className='md:col-span-2'>
-                <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 transition-all duration-300", !showAdvancedSearch && 'grid-rows-[0fr]')} >
-                  <div className='overflow-hidden'>
-                    <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4")}>
-                      <Select name="region">
-                       <SelectTrigger id={`${formId}-region`} className="bg-white h-12 rounded-full">
-                          <SelectValue placeholder="Место поставки" />
-                       </SelectTrigger>
-                       <SelectContent>
-                          <SelectItem value="by">Беларусь</SelectItem>
-                          <SelectItem value="kz">Казахстан</SelectItem>
-                       </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
+              <div className={cn("md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 transition-all duration-300", !showAdvancedSearch ? 'grid-rows-[0fr]' : 'grid-rows-[1fr]')}>
+                <div className="overflow-hidden">
+                    <Select name="region">
+                     <SelectTrigger id={`${formId}-region`} className="bg-white h-12 rounded-full">
+                        <SelectValue placeholder="Место поставки" />
+                     </SelectTrigger>
+                     <SelectContent>
+                        <SelectItem value="by">Беларусь</SelectItem>
+                        <SelectItem value="kz">Казахстан</SelectItem>
+                     </SelectContent>
+                    </Select>
                 </div>
               </div>
+
 
               <CollapsibleContent asChild className="md:col-span-2">
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
