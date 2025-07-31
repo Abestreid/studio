@@ -1,4 +1,5 @@
-import { Bot, Filter, DatabaseZap, UserPlus, SlidersHorizontal, Bell, Search, BarChart, Users, MagnifyingGlass, Browsers, Funnel, Clock, Building } from 'lucide-react';
+import { Bot, Filter, DatabaseZap, UserPlus, SlidersHorizontal, Bell, Search, BarChart, Users, Clock, Building } from 'lucide-react';
+import { MagnifyingGlass, Browsers, Funnel, ChartBar as ChartBarIcon, Bell as BellIcon } from '@phosphor-icons/react/dist/ssr';
 import React from 'react';
 
 export const content = {
@@ -78,7 +79,7 @@ export const content = {
                 { icon: React.createElement(Building, { className: "w-8 h-8 text-accent" }), value: '100+', label: 'площадок в базе' },
                 { icon: React.createElement(Clock, { className: "w-8 h-8 text-accent" }), value: '6', label: 'лет на рынке' },
                 { icon: React.createElement(Users, { className: "w-8 h-8 text-accent" }), value: '25,000+', label: 'активных пользователей' },
-                { icon: React.createElement(Database, { className: "w-8 h-8 text-accent" }), value: '450 млрд ₸', label: 'актуальных лотов' },
+                { icon: React.createElement(DatabaseZap, { className: "w-8 h-8 text-accent" }), value: '450 млрд ₸', label: 'актуальных лотов' },
             ]
         },
         benefits: {
@@ -103,8 +104,8 @@ export const content = {
             items: [
               { icon: React.createElement(MagnifyingGlass, { weight: "regular" }), title: 'Мультиплощадочный поиск', description: 'Поиск тендеров по всем основным площадкам Казахстана. Быстро находите нужные закупки с помощью интеллектуальных фильтров.'},
               { icon: React.createElement(Browsers, { weight: "regular" }), title: 'Детализированные карточки', description: 'Вся информация о тендере в одном месте: заказчик, статус, сроки, тип закупки, цена и многое другое для быстрого анализа.'},
-              { icon: React.createElement(Bell, { weight: "regular" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
-              { icon: React.createElement(ChartBar, { weight: "regular" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
+              { icon: React.createElement(BellIcon, { weight: "regular" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
+              { icon: React.createElement(ChartBarIcon, { weight: "regular" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
               { icon: React.createElement(Users, { weight: "regular" }), title: 'Отслеживание конкурентов', description: 'Следите за активностью конкурентов и их тендерами, чтобы быть на шаг впереди на рынке.'},
               { icon: React.createElement(Funnel, { weight: "regular" }), title: 'Гибкая фильтрация', description: 'Настраивайте фильтры по регионам, типам закупок, цене, дате и другим параметрам для максимальной релевантности.'},
             ]
@@ -167,7 +168,7 @@ export const content = {
                 { icon: React.createElement(Building, { className: "w-8 h-8 text-accent" }), value: '60+', label: 'площадок в базе' },
                 { icon: React.createElement(Clock, { className: "w-8 h-8 text-accent" }), value: '15', label: 'лет на рынке' },
                 { icon: React.createElement(Users, { className: "w-8 h-8 text-accent" }), value: '12,000+', label: 'пользователей' },
-                { icon: React.createElement(Database, { className: "w-8 h-8 text-accent" }), value: '120 млрд BYN', label: 'актуальных лотов' },
+                { icon: React.createElement(DatabaseZap, { className: "w-8 h-8 text-accent" }), value: '120 млрд BYN', label: 'актуальных лотов' },
             ]
         },
         benefits: {
@@ -192,8 +193,8 @@ export const content = {
             items: [
               { icon: React.createElement(MagnifyingGlass, { weight: "regular" }), title: 'Мультиплощадочный поиск', description: 'Поиск тендеров по всем основным площадкам Беларуси. Быстро находите нужные закупки с помощью интеллектуальных фильтров.'},
               { icon: React.createElement(Browsers, { weight: "regular" }), title: 'Детализированные карточки', description: 'Вся информация о тендере в одном месте: заказчик, статус, сроки, тип закупки, цена и многое другое для быстрого анализа.'},
-              { icon: React.createElement(Bell, { weight: "regular" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
-              { icon: React.createElement(ChartBar, { weight: "regular" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
+              { icon: React.createElement(BellIcon, { weight: "regular" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
+              { icon: React.createElement(ChartBarIcon, { weight: "regular" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
               { icon: React.createElement(Users, { weight: "regular" }), title: 'Отслеживание конкурентов', description: 'Следите за активностью конкурентов и их тендерами, чтобы быть на шаг впереди на рынке.'},
               { icon: React.createElement(Funnel, { weight: "regular" }), title: 'Гибкая фильтрация', description: 'Настраивайте фильтры по регионам, типам закупок, цене, дате и другим параметрам для максимальной релевантности.'},
             ]

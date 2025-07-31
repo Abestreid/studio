@@ -41,7 +41,7 @@ const blogPosts = [
     author: 'Максим Ковалёв',
     date: '1 мая 2025',
     excerpt: 'Дьявол кроется в деталях. Правильное понимание всех требований и условий в документации — залог успешной заявки. Мы научим вас...',
-    image: 'https://images.unsplash.com/photo-1583344692120-f4e3e51b3a31?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
     aiHint: 'person reading documents',
   },
 ];

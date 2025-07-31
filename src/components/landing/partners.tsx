@@ -2,13 +2,13 @@
 import Image from 'next/image';
 
 const sources = [
-  { name: 'Goszakupki.by', logo: 'https://goszakupki.by/img/logo_ru.png' },
-  { name: 'ICETRADE.BY', logo: 'https://icetrade.by/img/logo.png' },
-  { name: 'BUTB.BY', logo: 'https://www.butb.by/local/templates/butb/img/logo_s1.svg' },
+  { name: 'Goszakupki.by', logo: '/images/goszakupki-logo.png' },
+  { name: 'ICETRADE.BY', logo: '/images/icetrade-logo.png' },
+  { name: 'BUTB.BY', logo: '/images/butb-logo.svg' },
   { name: 'zakup.sk.kz', logo: 'https://tendersoft.kz/content/images/Zakup-sk.svg' },
   { name: 'goszakup.gov.kz', logo: 'https://tendersoft.kz/content/images/goszakup.svg' },
-  { name: 'mitwork.kz', logo: 'https://tendersoft.kz/content/images/mitwork.svg' },
-  { name: 'nadloc.kz', logo: 'https://tendersoft.kz/content/images/nadloc.svg' },
+  { name: 'mitwork.kz', logo: '/images/mitwork-logo.svg' },
+  { name: 'nadloc.kz', logo: '/images/nadloc-logo.svg' },
 ];
 
 // Duplicate sources for a seamless loop
