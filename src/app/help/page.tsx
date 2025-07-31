@@ -101,7 +101,7 @@ export default function HelpPage() {
                 <AccordionItem key={item.value} value={item.value}>
                   <AccordionTrigger id={item.value} className="text-left font-semibold text-primary hover:no-underline text-base sm:text-lg scroll-mt-20">
                     <div className="flex items-center gap-3">
-                        <HelpCircle className="w-6 h-6 text-accent"/>
+                        <HelpCircle className="w-6 h-6 text-accent shrink-0"/>
                         {item.question}
                     </div>
                   </AccordionTrigger>
