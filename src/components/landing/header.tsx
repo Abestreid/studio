@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -112,6 +112,8 @@ export function Header() {
                  </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-xs p-0">
+                <SheetTitle className="sr-only">Меню</SheetTitle>
+                <SheetDescription className="sr-only">Главная навигация по сайту</SheetDescription>
                 <div className="flex h-full flex-col gap-8 p-6 pt-20">
                 <nav className="flex flex-col gap-4">
                     {headerContent.navLinks.map((link: any) => (
