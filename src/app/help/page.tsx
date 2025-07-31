@@ -10,7 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { LifeBuoy, Book, BarChart3, Video } from 'lucide-react';
+import { LifeBuoy, Book, BarChart3, Video, HelpCircle } from 'lucide-react';
 
 const faqItems = [
   {
@@ -34,6 +34,31 @@ const faqItems = [
     answer: 'Модуль "Аналитика" — это ваш центр управления для глубокого анализа рынка закупок. Он позволяет отслеживать динамику по отраслям, регионам и заказчикам, анализировать активность конкурентов и выявлять тренды. Используйте более 12 гибких фильтров для построения кастомных отчетов. Результаты можно выгружать в Excel или просматривать в виде интерактивных графиков и диаграмм.',
     video: true,
   },
+  {
+    value: 'access-speed',
+    question: 'Как быстро я смогу получить доступ к тендерам на металлоизделия в Казахстане?',
+    answer: 'После регистрации сервис станет доступен в течение нескольких минут.',
+  },
+  {
+    value: 'trial-access',
+    question: 'Есть ли пробный доступ?',
+    answer: 'Да, можно бесплатно протестировать сервис в течение 48 часов.',
+  },
+  {
+    value: 'custom-search',
+    question: 'Можно ли настроить поиск тендеров на производство металлических изделий по индивидуальным параметрам?',
+    answer: 'Да, наш сервис позволяет фильтровать закупки по бюджету, региону, типу металлоконструкций и другим параметрам.',
+  },
+  {
+    value: 'participation-help',
+    question: 'Помогаете ли вы участвовать в тендерах?',
+    answer: 'Мы предоставляем инструмент для поиска тендеров, но не оказываем услуги по подаче заявок.',
+  },
+  {
+    value: 'requirements-kz',
+    question: 'Что нужно, для участи в тендерах на металлоконструкции в Республике Казахстан?',
+    answer: 'Каждый тендер имеет свои требования, включая квалификацию подрядчика, наличие сертифицированного оборудования и подтвержденный опыт производства. Чтобы успешно участвовать, необходимо заранее подготовить пакет документов и предложить конкурентные условия. Для быстрого поиска актуальных лотов закупок воспользуйтесь сервисом от ТОО «СофтБисервис».',
+  },
 ];
 
 export default function HelpPage() {
@@ -56,7 +81,7 @@ export default function HelpPage() {
                 <AccordionItem key={item.value} value={item.value}>
                   <AccordionTrigger id={item.value} className="text-left font-semibold text-primary hover:no-underline text-base sm:text-lg scroll-mt-20">
                     <div className="flex items-center gap-3">
-                        {item.value === 'analytics' ? <BarChart3 className="w-5 h-5 text-accent"/> : <LifeBuoy className="w-5 h-5 text-accent"/>}
+                        {item.value === 'analytics' ? <BarChart3 className="w-5 h-5 text-accent"/> : <HelpCircle className="w-5 h-5 text-accent"/>}
                         {item.question}
                     </div>
                   </AccordionTrigger>
