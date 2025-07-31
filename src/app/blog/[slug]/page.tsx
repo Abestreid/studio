@@ -1,22 +1,22 @@
 
 import { Header } from '@/components/landing/header';
 import { Footer } from '@/components/landing/footer';
-import { Cta } from '@/components/landing/cta';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Cta } from '@/components/landing/cta';
 
 // Mock data - in a real app, this would come from a CMS or database
 const blogPosts = {
   'how-to-win-tenders': {
     slug: 'how-to-win-tenders',
-    title: '5 ключевых стратегий для победы в государственных тендерах',
+    title: '5 ключевых стратегий для победы в госзакупках',
     author: 'Анна Кузнецова',
     date: '15 мая 2025',
-    tags: ['Стратегия', 'Госзакупки', 'Победа'],
+    tags: ['#госзакупки', '#тендерная_стратегия'],
     image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80',
     aiHint: 'business strategy meeting',
     content: `
@@ -41,6 +41,36 @@ const blogPosts = {
       <h3 class="text-xl font-bold text-primary mt-6 mb-3">5. Использование аналитических инструментов</h3>
       <p>Современные платформы, такие как Tendersoft, предоставляют мощные аналитические инструменты. Анализируйте заказчиков, отслеживайте активность конкурентов и выявляйте закономерности. Эти данные помогут вам принимать взвешенные решения и выбирать наиболее перспективные закупки.</p>
     `
+  },
+   'common-mistakes-in-tenders': {
+    slug: 'common-mistakes-in-tenders',
+    title: 'Топ-10 ошибок при подаче заявок на тендер',
+    author: 'Иван Петров',
+    date: '10 мая 2025',
+    tags: ['#оптимизация_затрат'],
+    image: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80',
+    aiHint: 'person writing mistakes',
+    content: `<p>Даже опытные участники иногда допускают досадные ошибки, которые стоят им контракта. Разберем самые частые из них, чтобы вы могли учиться на чужом опыте.</p>`
+  },
+  'analytics-for-success': {
+    slug: 'analytics-for-success',
+    title: 'Как аналитика помогает повышать свои шансы',
+    author: 'Елена Смирнова',
+    date: '5 мая 2025',
+    tags: ['#аналитика'],
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    aiHint: 'analytics dashboard chart',
+    content: `<p>Данные — это ваше главное преимущество. Узнайте, как использовать аналитические инструменты для оценки конкурентов и выбора наиболее перспективных закупок.</p>`
+  },
+  'understanding-documentation': {
+    slug: 'understanding-documentation',
+    title: 'Читаем тендерную документацию между строк',
+    author: 'Максим Ковалёв',
+    date: '1 мая 2025',
+    tags: ['#госзакупки'],
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
+    aiHint: 'person reading documents',
+    content: `<p>Дьявол кроется в деталях. Правильное понимание всех требований и условий в документации — залог успешной заявки. Мы научим вас видеть то, что скрыто от глаз большинства.</p>`
   },
 };
 
@@ -104,7 +134,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               </div>
 
               <div
-                className="prose prose-lg max-w-none"
+                className="prose prose-lg max-w-none text-foreground/90"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
             </article>

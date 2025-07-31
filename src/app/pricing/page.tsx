@@ -5,7 +5,7 @@ import { Header } from '@/components/landing/header';
 import { Footer } from '@/components/landing/footer';
 import { Cta } from '@/components/landing/cta';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Check, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
@@ -17,39 +17,39 @@ const tiers = [
     name: 'Базовый',
     priceMonthly: '29 BYN',
     priceAnnually: '290 BYN',
-    description: 'Для индивидуальных специалистов и небольших команд.',
+    description: 'Для индивидуальных предпринимателей и микробизнеса.',
     features: [
-      'Доступ ко всем тендерам',
+      'Полный доступ ко всем тендерам',
       'Уведомления на Email',
       'До 5 сохраненных фильтров',
-      'Базовая аналитика',
     ],
     isPopular: false,
   },
   {
     name: 'Профи',
-    priceMonthly: '79 BYN',
-    priceAnnually: '790 BYN',
-    description: 'Для активных участников тендеров и растущих компаний.',
+    priceMonthly: '59 BYN',
+    priceAnnually: '590 BYN',
+    description: 'Для отделов закупок до 5 человек.',
     features: [
       'Все возможности Базового',
-      'Уведомления в Telegram',
-      'Безлимитные фильтры',
-      'Анализ конкурентов',
+      'Уведомления в Email + Telegram',
+      'Неограниченные фильтры',
+      'Сравнительный анализ конкурентов',
       'Командный доступ (до 5 чел.)',
     ],
     isPopular: true,
   },
   {
     name: 'Бизнес',
-    priceMonthly: '149 BYN',
-    priceAnnually: '1490 BYN',
-    description: 'Для крупных организаций с высокими требованиями.',
+    priceMonthly: 'Индивидуально',
+    priceAnnually: 'Индивидуально',
+    description: 'Для департаментов закупок и тендерных подразделений.',
     features: [
       'Все возможности Профи',
       'Персональный менеджер',
-      'Интеграция по API',
+      'Интеграция по REST API',
       'Расширенная аналитика',
+      'Приоритетная поддержка',
       'Командный доступ (до 20 чел.)',
     ],
     isPopular: false,
@@ -65,9 +65,9 @@ export default function PricingPage() {
       <main className="flex-grow py-12 sm:py-16 bg-secondary/30">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl font-bold text-primary">Наши тарифы</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-primary">Выберите тариф, который решит задачи вашего отдела закупок</h1>
             <p className="text-muted-foreground mt-4 text-lg">
-              Выберите план, который идеально подходит для ваших задач. Прозрачные цены, без скрытых платежей.
+              Прозрачные цены, без скрытых платежей.
             </p>
           </div>
 
@@ -82,11 +82,11 @@ export default function PricingPage() {
               aria-label="Переключить на годовую оплату"
             />
             <Label htmlFor="billing-cycle" className={isAnnual ? 'text-primary font-semibold' : 'text-muted-foreground'}>
-              Ежегодно <span className="text-accent font-bold">(выгода 2 месяца!)</span>
+              Ежегодно <span className="text-accent font-bold">(выгода 20%!)</span>
             </Label>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
             {tiers.map((tier) => (
               <Card
                 key={tier.name}
@@ -102,14 +102,14 @@ export default function PricingPage() {
                 )}
                 <CardHeader className="text-center">
                   <CardTitle className="text-2xl text-primary">{tier.name}</CardTitle>
-                  <CardDescription className="px-4">{tier.description}</CardDescription>
+                  <CardDescription className="px-4 h-10">{tier.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="flex flex-col flex-grow">
+                <CardContent className="flex flex-col flex-grow p-6">
                   <div className="text-center my-4">
                     <span className="text-4xl font-bold">{isAnnual ? tier.priceAnnually : tier.priceMonthly}</span>
-                    <span className="text-muted-foreground">/{isAnnual ? 'год' : 'мес'}</span>
+                    {tier.name !== 'Бизнес' && <span className="text-muted-foreground">/{isAnnual ? 'год' : 'мес'}</span>}
                   </div>
-                  <ul className="space-y-3 text-sm flex-grow">
+                  <ul className="space-y-3 text-sm flex-grow mb-6">
                     {tier.features.map((feature) => (
                       <li key={feature} className="flex items-start">
                         <Check className="w-5 h-5 text-green-500 mr-2 shrink-0 mt-0.5" />
@@ -117,10 +117,12 @@ export default function PricingPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button className="w-full mt-8" size="lg" variant={tier.isPopular ? 'default' : 'outline'}>
-                    Выбрать тариф
-                  </Button>
                 </CardContent>
+                 <CardFooter>
+                    <Button className="w-full" size="lg" variant={tier.isPopular ? 'default' : 'outline'}>
+                        Оформить
+                    </Button>
+                </CardFooter>
               </Card>
             ))}
           </div>

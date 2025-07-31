@@ -5,46 +5,54 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Calendar, User } from 'lucide-react';
+import { ArrowRight, Calendar, User, Search, Rss } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 
 const blogPosts = [
   {
     slug: 'how-to-win-tenders',
-    title: '5 ключевых стратегий для победы в государственных тендерах',
+    title: '5 ключевых стратегий для победы в госзакупках',
     author: 'Анна Кузнецова',
     date: '15 мая 2025',
     excerpt: 'Участие в тендерах может быть сложным, но с правильной стратегией ваши шансы на успех значительно возрастают. В этой статье мы рассмотрим...',
     image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80',
     aiHint: 'business strategy meeting',
+    tags: ['#госзакупки', '#тендерная_стратегия'],
   },
   {
     slug: 'common-mistakes-in-tenders',
-    title: 'Топ-10 ошибок при подаче заявок на тендер и как их избежать',
+    title: 'Топ-10 ошибок при подаче заявок на тендер',
     author: 'Иван Петров',
     date: '10 мая 2025',
     excerpt: 'Даже опытные участники иногда допускают досадные ошибки, которые стоят им контракта. Разберем самые частые из них, чтобы вы могли...',
     image: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80',
     aiHint: 'person writing mistakes',
+    tags: ['#оптимизация_затрат'],
   },
   {
     slug: 'analytics-for-success',
-    title: 'Как аналитика помогает предсказывать победителей и повышать свои шансы',
+    title: 'Как аналитика помогает повышать свои шансы',
     author: 'Елена Смирнова',
     date: '5 мая 2025',
     excerpt: 'Данные — это ваше главное преимущество. Узнайте, как использовать аналитические инструменты для оценки конкурентов и выбора...',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
     aiHint: 'analytics dashboard chart',
+    tags: ['#аналитика'],
   },
   {
     slug: 'understanding-documentation',
-    title: 'Читаем тендерную документацию между строк: на что обращать внимание?',
+    title: 'Читаем тендерную документацию между строк',
     author: 'Максим Ковалёв',
     date: '1 мая 2025',
     excerpt: 'Дьявол кроется в деталях. Правильное понимание всех требований и условий в документации — залог успешной заявки. Мы научим вас...',
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
     aiHint: 'person reading documents',
+    tags: ['#госзакупки'],
   },
 ];
+
+const tags = ['#госзакупки', '#аналитика', '#тендерная_стратегия', '#оптимизация_затрат'];
 
 
 export default function BlogPage() {
@@ -59,12 +67,16 @@ export default function BlogPage() {
               Советы, аналитика и полезная информация из мира тендеров, которые помогут вам выигрывать чаще.
             </p>
           </div>
+          
+          <div className="my-8 max-w-lg mx-auto flex flex-wrap justify-center gap-2">
+            {tags.map(tag => <Badge key={tag} variant="secondary" className="cursor-pointer hover:bg-accent/20">{tag}</Badge>)}
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-12 max-w-5xl mx-auto">
             {blogPosts.map((post) => (
               <Card key={post.slug} className="overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group rounded-2xl">
                 <Link href={`/blog/${post.slug}`} className="block">
-                  <div className="relative h-60 w-full">
+                  <div className="relative h-52 w-full">
                     <Image
                       src={post.image}
                       alt={post.title}
@@ -75,6 +87,9 @@ export default function BlogPage() {
                     />
                   </div>
                   <CardContent className="p-6">
+                    <div className="flex gap-2 mb-2">
+                        {post.tags.map(tag => <Badge key={tag} variant="outline">{tag}</Badge>)}
+                    </div>
                     <h2 className="text-xl font-bold text-primary group-hover:text-accent transition-colors">{post.title}</h2>
                     <div className="flex items-center gap-4 text-xs text-muted-foreground my-3">
                       <div className="flex items-center gap-1.5"><User className="w-4 h-4"/><span>{post.author}</span></div>
@@ -89,6 +104,16 @@ export default function BlogPage() {
               </Card>
             ))}
           </div>
+
+           <Card className="mt-16 max-w-3xl mx-auto text-center p-8 bg-card shadow-lg">
+                <Rss className="w-10 h-10 mx-auto text-accent mb-4"/>
+                <h3 className="text-2xl font-bold text-primary">Подпишитесь на нашу рассылку</h3>
+                <p className="text-muted-foreground mt-2 mb-6">Получайте свежие статьи и лучшие советы по тендерам раз в неделю прямо на почту.</p>
+                <form className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+                    <Input type="email" placeholder="Ваш E-mail" className="flex-grow"/>
+                    <Button type="submit">Подписаться</Button>
+                </form>
+            </Card>
         </div>
       </main>
       <Footer />
