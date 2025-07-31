@@ -91,7 +91,7 @@ export default function HelpPage() {
             </div>
           </div>
            
-          <div className="flex justify-center gap-4 my-8">
+          <div className="flex justify-center flex-wrap gap-4 my-8">
             {categories.map(cat => <button key={cat} className="px-4 py-2 rounded-full text-sm font-medium transition-colors bg-white shadow-sm hover:bg-accent hover:text-white">{cat}</button>)}
           </div>
 
@@ -101,7 +101,7 @@ export default function HelpPage() {
                 <AccordionItem key={item.value} value={item.value}>
                   <AccordionTrigger id={item.value} className="text-left font-semibold text-primary hover:no-underline text-base sm:text-lg scroll-mt-20">
                     <div className="flex items-center gap-3">
-                        <HelpCircle className="w-5 h-5 text-accent"/>
+                        <HelpCircle className="w-6 h-6 text-accent"/>
                         {item.question}
                     </div>
                   </AccordionTrigger>
