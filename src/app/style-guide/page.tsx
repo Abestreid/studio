@@ -60,70 +60,9 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
 import { PricingCard } from '@/components/pricing-card';
+import { pricingTiers, mockTender, recentWins } from '@/lib/content';
 
-
-const mockTender = {
-    id: "sample-123",
-    title: "Пример карточки тендера для UI Kit",
-    location: "Минск",
-    customer: "Пример Заказчика",
-    platform: "Пример Платформы",
-    published: "01.01.2025",
-    deadline: "до 10.01 (9 дней)",
-    type: "Услуга",
-    price: "100 000 BYN",
-    status: "Открыт"
-};
-
-const recentWins = [
-    { id: '1', title: 'Поставка офисной мебели', customer: 'Администрация г. Минска', amount: '34 500 BYN', date: '25.05.2025' },
-    { id: '2', title: 'Ремонтные работы в офисе', customer: 'ООО "ТехноСтрой"', amount: '112,000 BYN', date: '22.05.2025' },
-];
-
-const tiers = [
-  {
-    name: 'Базовый',
-    priceMonthly: '29 BYN',
-    priceAnnually: '290 BYN',
-    description: 'Для индивидуальных специалистов и небольших команд.',
-    features: [
-      'Доступ ко всем тендерам',
-      'Уведомления на Email',
-      'До 5 сохраненных фильтров',
-      'Базовая аналитика',
-    ],
-    isPopular: false,
-  },
-  {
-    name: 'Профи',
-    priceMonthly: '79 BYN',
-    priceAnnually: '790 BYN',
-    description: 'Для активных участников тендеров и растущих компаний.',
-    features: [
-      'Все возможности Базового',
-      'Уведомления в Telegram',
-      'Безлимитные фильтры',
-      'Анализ конкурентов',
-      'Командный доступ (до 5 чел.)',
-    ],
-    isPopular: true,
-  },
-  {
-    name: 'Бизнес',
-    priceMonthly: '149 BYN',
-    priceAnnually: '1490 BYN',
-    description: 'Для крупных организаций с высокими требованиями.',
-    features: [
-      'Все возможности Профи',
-      'Персональный менеджер',
-      'Интеграция по API',
-      'Расширенная аналитика',
-      'Командный доступ (до 20 чел.)',
-    ],
-    isPopular: false,
-  },
-];
-
+const tiers = pricingTiers;
 
 export default function StyleGuidePage() {
   const [isAnnual, setIsAnnual] = useState(false);

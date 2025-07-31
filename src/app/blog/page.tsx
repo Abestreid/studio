@@ -8,51 +8,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Calendar, User, Search, Rss } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { blogPostsList, blogTags } from '@/lib/content';
 
-const blogPosts = [
-  {
-    slug: 'how-to-win-tenders',
-    title: '5 ключевых стратегий для победы в госзакупках',
-    author: 'Анна Кузнецова',
-    date: '15 мая 2025',
-    excerpt: 'Участие в тендерах может быть сложным, но с правильной стратегией ваши шансы на успех значительно возрастают. В этой статье мы рассмотрим...',
-    image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80',
-    aiHint: 'business strategy meeting',
-    tags: ['#госзакупки', '#тендерная_стратегия'],
-  },
-  {
-    slug: 'common-mistakes-in-tenders',
-    title: 'Топ-10 ошибок при подаче заявок на тендер',
-    author: 'Иван Петров',
-    date: '10 мая 2025',
-    excerpt: 'Даже опытные участники иногда допускают досадные ошибки, которые стоят им контракта. Разберем самые частые из них, чтобы вы могли...',
-    image: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80',
-    aiHint: 'person writing mistakes',
-    tags: ['#оптимизация_затрат'],
-  },
-  {
-    slug: 'analytics-for-success',
-    title: 'Как аналитика помогает повышать свои шансы',
-    author: 'Елена Смирнова',
-    date: '5 мая 2025',
-    excerpt: 'Данные — это ваше главное преимущество. Узнайте, как использовать аналитические инструменты для оценки конкурентов и выбора...',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-    aiHint: 'analytics dashboard chart',
-    tags: ['#аналитика'],
-  },
-  {
-    slug: 'understanding-documentation',
-    title: 'Читаем тендерную документацию между строк',
-    author: 'Максим Ковалёв',
-    date: '1 мая 2025',
-    excerpt: 'Дьявол кроется в деталях. Правильное понимание всех требований и условий в документации — залог успешной заявки. Мы научим вас...',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
-    aiHint: 'person reading documents',
-    tags: ['#госзакупки'],
-  },
-];
-
-const tags = ['#госзакупки', '#аналитика', '#тендерная_стратегия', '#оптимизация_затрат'];
+const blogPosts = blogPostsList;
+const tags = blogTags;
 
 
 export default function BlogPage() {

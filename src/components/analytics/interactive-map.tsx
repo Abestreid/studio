@@ -8,38 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-
-// Mock data structure - in a real app, this would come from an API
-// Region names must match the 'name' property in the geoJSON features.
-const mockApiData: { [year: number]: { region: string; sum: number; count: number }[] } = {
-  2025: [
-    { region: "Minsk", sum: 1250000000, count: 4321 },
-    { region: "Brest", sum: 850000000, count: 2987 },
-    { region: "Gomel", sum: 920000000, count: 3150 },
-    { region: "Grodno", sum: 780000000, count: 2640 },
-    { region: "Mogilev", sum: 710000000, count: 2400 },
-    { region: "Vitebsk", sum: 810000000, count: 2800 },
-    { region: "City of Minsk", sum: 1500000000, count: 5100 },
-  ],
-  2024: [
-    { region: "Minsk", sum: 1150000000, count: 4100 },
-    { region: "Brest", sum: 820000000, count: 2800 },
-    { region: "Gomel", sum: 890000000, count: 3050 },
-    { region: "Grodno", sum: 750000000, count: 2500 },
-    { region: "Mogilev", sum: 680000000, count: 2300 },
-    { region: "Vitebsk", sum: 780000000, count: 2700 },
-    { region: "City of Minsk", sum: 1400000000, count: 4900 },
-  ],
-   2023: [
-    { region: "Minsk", sum: 1050000000, count: 3900 },
-    { region: "Brest", sum: 790000000, count: 2700 },
-    { region: "Gomel", sum: 860000000, count: 2950 },
-    { region: "Grodno", sum: 720000000, count: 2400 },
-    { region: "Mogilev", sum: 650000000, count: 2200 },
-    { region: "Vitebsk", sum: 750000000, count: 2600 },
-    { region: "City of Minsk", sum: 1300000000, count: 4700 },
-  ]
-};
+import { mockApiData } from '@/lib/content';
 
 export function InteractiveMap() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
@@ -70,7 +39,7 @@ export function InteractiveMap() {
     setLoading(true);
     // Simulate API call
     setTimeout(() => {
-      const yearData = mockApiData[parseInt(year, 10)] || [];
+      const yearData = mockApiData[parseInt(year, 10) as keyof typeof mockApiData] || [];
       setData(yearData);
       setLoading(false);
     }, 300); // Simulate network delay

@@ -7,50 +7,9 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { PricingCard } from '@/components/pricing-card';
+import { pricingTiers } from '@/lib/content';
 
-const tiers = [
-  {
-    name: 'Базовый',
-    priceMonthly: '29 BYN',
-    priceAnnually: '290 BYN',
-    description: 'Для индивидуальных предпринимателей и микробизнеса.',
-    features: [
-      'Полный доступ ко всем тендерам',
-      'Уведомления на Email',
-      'До 5 сохраненных фильтров',
-    ],
-    isPopular: false,
-  },
-  {
-    name: 'Профи',
-    priceMonthly: '59 BYN',
-    priceAnnually: '590 BYN',
-    description: 'Для отделов закупок до 5 человек.',
-    features: [
-      'Все возможности Базового',
-      'Уведомления в Email + Telegram',
-      'Неограниченные фильтры',
-      'Сравнительный анализ конкурентов',
-      'Командный доступ (до 5 чел.)',
-    ],
-    isPopular: true,
-  },
-  {
-    name: 'Бизнес',
-    priceMonthly: 'Индивидуально',
-    priceAnnually: 'Индивидуально',
-    description: 'Для департаментов закупок и тендерных подразделений.',
-    features: [
-      'Все возможности Профи',
-      'Персональный менеджер',
-      'Интеграция по REST API',
-      'Расширенная аналитика',
-      'Приоритетная поддержка',
-      'Командный доступ (до 20 чел.)',
-    ],
-    isPopular: false,
-  },
-];
+const tiers = pricingTiers;
 
 export default function PricingPage() {
   const [isAnnual, setIsAnnual] = useState(false);
