@@ -46,7 +46,6 @@ export function Header() {
 
     const handleLogout = () => {
         localStorage.removeItem('isLoggedIn');
-        setIsLoggedIn(false);
         window.dispatchEvent(new Event('storage'));
         router.push('/');
     };

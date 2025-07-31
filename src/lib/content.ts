@@ -1,5 +1,6 @@
+
 import { Bot, Filter, DatabaseZap, UserPlus, SlidersHorizontal, Bell, Search, BarChart, Users, Clock, Building } from 'lucide-react';
-import { MagnifyingGlass, Browsers, Funnel, ChartBar as ChartBarIcon, Bell as BellIcon } from '@phosphor-icons/react/dist/ssr';
+import { MagnifyingGlass, Browsers, Funnel, ChartBar as ChartBarIcon, Bell as BellIcon } from '@phosphor-icons/react';
 import React from 'react';
 
 export const content = {

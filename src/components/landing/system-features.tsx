@@ -2,7 +2,6 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
-import { MagnifyingGlass, Browsers, Bell, ChartBar, Users, Funnel } from '@phosphor-icons/react/dist/ssr';
 import { content } from '@/lib/content';
 import { useState, useEffect } from 'react';
 

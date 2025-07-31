@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -17,16 +18,24 @@ export function ThemeSwitcher() {
     } else {
       document.documentElement.classList.remove("theme-rednet");
     }
+    
+    const handleStorageChange = () => {
+        const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+        setTheme(currentTheme);
+        if (currentTheme === "rednet") {
+            document.documentElement.classList.add("theme-rednet");
+        } else {
+            document.documentElement.classList.remove("theme-rednet");
+        }
+    }
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+
   }, []);
 
   const toggleTheme = (newTheme: string) => {
-    setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    if (newTheme === "rednet") {
-      document.documentElement.classList.add("theme-rednet");
-    } else {
-      document.documentElement.classList.remove("theme-rednet");
-    }
     // Dispatch a storage event to notify other components like the header
     window.dispatchEvent(new Event("storage"));
   };
@@ -40,7 +49,7 @@ export function ThemeSwitcher() {
             onClick={() => toggleTheme("tendersoft")}
             size="sm"
             variant={theme === "tendersoft" ? "default" : "outline"}
-            className={cn(theme === 'tendersoft' && 'bg-green-500 hover:bg-green-600')}
+            className={cn(theme === 'tendersoft' && 'bg-primary text-primary-foreground')}
           >
             Tendersoft (KZ)
           </Button>
