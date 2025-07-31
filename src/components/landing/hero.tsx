@@ -18,6 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
+import { content } from '@/lib/content';
 
 const initialState: SearchState = {};
 
@@ -34,25 +35,16 @@ export function Hero() {
   const [theme, setTheme] = useState('tendersoft');
 
   useEffect(() => {
-    const handleThemeChange = () => {
+    const handleStorageChange = () => {
       const currentTheme = localStorage.getItem('theme') || 'tendersoft';
       setTheme(currentTheme);
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      setIsLoggedIn(loggedIn);
     };
     
-    handleThemeChange();
-    window.addEventListener('storage', handleThemeChange);
-    return () => window.removeEventListener('storage', handleThemeChange);
-  }, []);
-
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(loggedIn);
-    };
-    checkLoginStatus();
-    window.addEventListener('storage', checkLoginStatus);
-    return () => window.removeEventListener('storage', checkLoginStatus);
+    handleStorageChange();
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
 
@@ -78,8 +70,6 @@ export function Hero() {
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.value === '') {
       setHasSearched(false);
-      // A bit of a hack to reset the action state.
-      // This clears previous results when the query is manually cleared.
       (formAction as any)();
     }
   }
@@ -87,10 +77,10 @@ export function Hero() {
   const hasResults = hasSearched && state.results && state.results.length > 0;
   const noResultsMessage = hasSearched && state.message;
   
-  const heroTitle = isLoggedIn ? "Добро пожаловать, user01!" : 
-    theme === 'rednet' ? "Все тендеры Беларуси — в одном простом окне" : "Все тендеры Казахстана — в одном простом окне";
-  
-  const heroSubtitle = isLoggedIn ? "Найдите свой следующий контракт или просмотрите сохраненные фильтры." : "Перестаньте тратить часы на поиски. Находите выгодные заказы за 3 клика и получайте уведомления о новых — прямо в Telegram.";
+  const heroContent = content[theme as keyof typeof content].hero;
+
+  const heroTitle = isLoggedIn ? "Добро пожаловать, user01!" : heroContent.title;
+  const heroSubtitle = isLoggedIn ? "Найдите свой следующий контракт или просмотрите сохраненные фильтры." : heroContent.subtitle;
 
 
   return (
@@ -212,9 +202,9 @@ export function Hero() {
               </CollapsibleContent>
 
               <div className="md:col-span-2 flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
-                <Button type="submit" size="lg" className="w-full sm:w-auto h-12 text-base rounded-full flex-grow" disabled={isPending}>
+                 <Button type="submit" size="lg" className="w-full sm:w-auto h-12 text-base rounded-full flex-grow" disabled={isPending}>
                   <Search className="mr-2" />
-                  {isPending ? 'Поиск...' : 'Поиск'}
+                  {isPending ? 'Поиск...' : heroContent.cta}
                 </Button>
                 <CollapsibleTrigger asChild>
                   <Button

@@ -12,8 +12,8 @@ const golos = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Tendersoft.kz — Автоматизированный поиск тендеров',
-  description: 'Все тендеры Беларуси в одном простом окне',
+  title: 'Tendersoft — Платформа для поиска и аналитики тендеров',
+  description: 'Автоматизированный поиск, аналитика и уведомления по тендерам и госзакупкам в Казахстане и Беларуси.',
 };
 
 export default function RootLayout({

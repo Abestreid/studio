@@ -3,16 +3,15 @@ import { MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 const productLinks = [
-  { href: '#tenders', label: 'Поиск тендеров' },
-  { href: '#analytics', label: 'Аналитика' },
-  { href: '#pricing', label: 'Тарифы' },
-  { href: '#api', label: 'API' },
+  { href: '/analytics', label: 'Аналитика' },
+  { href: '/pricing', label: 'Тарифы' },
+  { href: '/api', label: 'API' },
 ];
 
 const companyLinks = [
   { href: '#about', label: 'О нас' },
-  { href: '#blog', label: 'Блог' },
-  { href: '#faq', label: 'Вопросы и ответы' },
+  { href: '/blog', label: 'Блог' },
+  { href: '/help', label: 'Вопросы и ответы' },
   { href: '#contact', label: 'Контакты' },
 ];
 
@@ -41,6 +40,12 @@ export function Footer() {
           <div className="lg:col-span-2 text-left">
             <h5 className="font-semibold tracking-wider text-white mb-4">Продукт</h5>
             <ul className="mt-4 space-y-2 list-none p-0">
+              <li>
+                  <Link href="/" className="flex items-center justify-start text-sm text-white/80 hover:text-white transition-colors group">
+                    <ChevronRight className="w-4 h-4 mr-2 text-accent transition-transform group-hover:translate-x-1" />
+                    Поиск тендеров
+                  </Link>
+              </li>
               {productLinks.map(link => (
                 <li key={link.label}>
                   <Link href={link.href} className="flex items-center justify-start text-sm text-white/80 hover:text-white transition-colors group">

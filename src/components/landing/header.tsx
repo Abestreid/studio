@@ -17,16 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useRouter } from 'next/navigation';
+import { content } from '@/lib/content';
 
-
-const navLinks = [
-  { href: '/', label: 'Тендеры' },
-  { href: '/analytics', label: 'Аналитика' },
-  { href: '/favorites', label: 'Избранное' },
-  { href: '/pricing', label: 'Тарифы' },
-  { href: '/blog', label: 'Блог' },
-  { href: '/help', label: 'Помощь' },
-];
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,31 +27,19 @@ export function Header() {
     const router = useRouter();
 
     useEffect(() => {
-        const checkLoginStatus = () => {
+        const handleStorageChange = () => {
              const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
              setIsLoggedIn(loggedIn);
+             const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+             setTheme(currentTheme);
         }
 
-        const handleThemeChange = () => {
-          const currentTheme = localStorage.getItem('theme') || 'tendersoft';
-          setTheme(currentTheme);
-        };
+        handleStorageChange();
 
-        checkLoginStatus(); // Check on initial render
-        handleThemeChange();
-
-
-        window.addEventListener('storage', () => {
-          checkLoginStatus();
-          handleThemeChange();
-        });
+        window.addEventListener('storage', handleStorageChange);
         
-        // Clean up event listener
         return () => {
-            window.removeEventListener('storage', () => {
-              checkLoginStatus();
-              handleThemeChange();
-            });
+            window.removeEventListener('storage', handleStorageChange);
         };
 
     }, []);
@@ -67,23 +47,21 @@ export function Header() {
     const handleLogout = () => {
         localStorage.removeItem('isLoggedIn');
         setIsLoggedIn(false);
-        // Dispatch storage event to notify other tabs/windows
         window.dispatchEvent(new Event('storage'));
         router.push('/');
     };
 
-    const brandName = theme === 'rednet' ? 'redneT' : 'Tendersoft';
-
+    const headerContent = content[theme as keyof typeof content].header;
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-decoration-none">
           <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
-          <span className="text-xl font-bold text-primary">{brandName}</span>
+          <span className="text-xl font-bold text-primary">{headerContent.brandName}</span>
         </Link>
         <nav className="hidden items-center gap-6 lg:flex">
-          {navLinks.map((link) => (
+          {headerContent.navLinks.map((link: any) => (
             <Link
               key={link.label}
               href={link.href}
@@ -137,7 +115,7 @@ export function Header() {
             <SheetContent side="right" className="w-full max-w-xs p-0">
                 <div className="flex h-full flex-col gap-8 p-6 pt-20">
                 <nav className="flex flex-col gap-4">
-                    {navLinks.map((link) => (
+                    {headerContent.navLinks.map((link: any) => (
                     <Link
                         key={link.label}
                         href={link.href}

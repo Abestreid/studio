@@ -4,26 +4,30 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { content } from '@/lib/content';
 
 interface CtaProps {
-  title: string;
-  description?: string;
-  buttonText: string;
-  secondaryButtonText?: string;
+  variant?: 'main' | 'secondary' | 'final';
   className?: string;
 }
 
-export function Cta({ title, description, buttonText, secondaryButtonText, className }: CtaProps) {
+export function Cta({ variant = 'main', className }: CtaProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+  const [theme, setTheme] = useState('tendersoft');
+
   useEffect(() => {
-    const checkLoginStatus = () => {
+    const handleStorageChange = () => {
       setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
+      const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+      setTheme(currentTheme);
     }
-    checkLoginStatus();
-    window.addEventListener('storage', checkLoginStatus);
-    return () => window.removeEventListener('storage', checkLoginStatus);
+    handleStorageChange();
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+
+  const ctaContent = content[theme as keyof typeof content].cta[variant as keyof typeof content.tendersoft.cta];
 
   if (isLoggedIn) {
     return null;
@@ -32,19 +36,19 @@ export function Cta({ title, description, buttonText, secondaryButtonText, class
   return (
     <section className={cn("bg-accent", className)}>
       <div className="container mx-auto px-4 md:px-6 py-12 sm:py-16 text-center">
-        <h2 className="text-2xl sm:text-3xl font-bold text-white">{title}</h2>
-        {description && (
+        <h2 className="text-2xl sm:text-3xl font-bold text-white">{ctaContent.title}</h2>
+        {ctaContent.description && (
           <p className="mt-4 max-w-2xl mx-auto text-white/90 text-base sm:text-lg">
-            {description}
+            {ctaContent.description}
           </p>
         )}
         <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-          <Button size="lg" className="bg-white text-accent hover:bg-gray-100">
-            {buttonText}
+          <Button size="lg" className="bg-white text-accent hover:bg-gray-100" asChild>
+            <Link href="/register">{ctaContent.buttonText}</Link>
           </Button>
-          {secondaryButtonText && (
+          {ctaContent.secondaryButtonText && (
             <Button size="lg" variant="secondary" className="bg-accent-dark hover:bg-accent-dark/90 text-accent-foreground">
-              {secondaryButtonText}
+              {ctaContent.secondaryButtonText}
             </Button>
           )}
         </div>

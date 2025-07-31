@@ -43,19 +43,10 @@ export default function LandingPage() {
         <Partners />
         {!isLoggedIn && (
           <>
-            <Cta
-              title="Начните выигрывать тендеры уже сегодня"
-              description="Первый доступ — бесплатно, без карты и обязательств."
-              buttonText="Попробовать бесплатно"
-              secondaryButtonText="Связаться с менеджером"
-            />
+            <Cta variant="main" />
             <Benefits />
             <SystemFeatures />
-            <Cta
-              title="Начните получать тендеры первыми"
-              buttonText="Попробовать бесплатно"
-              className="bg-primary"
-            />
+            <Cta variant="final" className="bg-primary" />
           </>
         )}
       </main>
