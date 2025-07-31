@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Badge } from './ui/badge';
@@ -20,14 +21,6 @@ export function TenderCard({
   price,
   status
 }: Tender) {
-
-  const getStatusClass = () => {
-    if (status?.includes('Предварительное обсуждение')) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-    if (status?.includes('Открыт')) return 'bg-green-100 text-green-800 border-green-200';
-    return '';
-  }
-
-
   return (
     <Link href={`/tender/${id}`} className="block text-decoration-none group">
         <article className="flex flex-col md:flex-row gap-4 p-4 rounded-xl shadow-sm bg-white hover:shadow-lg transition-all duration-300 border hover:border-accent hover:-translate-y-1">
@@ -44,7 +37,7 @@ export function TenderCard({
             </div>
             <div className="flex flex-wrap gap-2 items-center mt-auto pt-3 border-t border-dashed -mx-4 px-4">
                 <Badge variant="secondary">{type}</Badge>
-                {status && <Badge variant={getStatusVariant(status)} className={cn(getStatusClass())}>{status}</Badge>}
+                {status && <Badge variant={getStatusVariant(status)}>{status}</Badge>}
             </div>
         </div>
         <div className="flex flex-col items-center justify-center flex-shrink-0 md:ml-3 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-dashed -mx-4 px-4 md:px-0 md:pl-4 md:-my-4 min-w-[150px]">

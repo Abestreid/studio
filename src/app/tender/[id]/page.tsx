@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from "@/components/landing/header";
@@ -131,7 +132,7 @@ export default function TenderPage() {
             <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                     <div>
-                        <Badge variant={getStatusVariant(tender.status)} className="bg-green-100 text-green-800 text-sm py-1 px-3 self-start lg:self-center mb-2">
+                        <Badge variant={getStatusVariant(tender.status)} className="text-sm py-1 px-3 self-start lg:self-center mb-2">
                             <CheckCircle className="w-4 h-4 mr-2" />
                             {tender.status}
                         </Badge>
@@ -240,7 +241,7 @@ export default function TenderPage() {
                             <div>
                                 <p className="text-muted-foreground mb-1">Подача заявок до:</p>
                                 <p className="font-medium text-lg">{tender.deadline}</p>
-                                { tender.deadlineDays && <Badge className="mt-1 bg-red-100 text-red-800 border-red-200">Осталось {tender.deadlineDays} дня</Badge> }
+                                { tender.deadlineDays && <Badge variant="destructive">Осталось {tender.deadlineDays} дня</Badge> }
                             </div>
                              <div>
                                 <p className="text-muted-foreground mb-1">Предельная стоимость:</p>

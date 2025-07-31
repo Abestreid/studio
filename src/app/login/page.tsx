@@ -35,7 +35,7 @@ export default function LoginPage() {
                 description: state.message,
             });
             localStorage.setItem('isLoggedIn', 'true');
-            // Dispatch a storage event to notify the header
+            // Dispatch a storage event to notify other components like the header
             window.dispatchEvent(new Event('storage'));
             router.push('/');
         }

@@ -50,68 +50,19 @@ const naturalLanguageTenderSearchPrompt = ai.definePrompt({
 You will take a natural language query from the user and return a list of relevant tender opportunities.
 The user's query is "{{query}}".
 
-If the query contains the word "принтер" or "принтеры", you MUST return the following 5 results. For any other query, you must return an empty list of results.
+If the query contains the word "принтер" or "принтеры", you MUST return the following 1 result. For any other query, you must return an empty list of results.
 
 Result 1:
-- id: "1"
+- id: "auc0002573978"
 - title: "Многофункциональные устройства (МФУ) и принтеры"
 - location: "Минск"
-- customer: "Национальный филиал (представительство) Межгосударственной телерадиокомпании \"Мир\""
+- customer: "Национальный филиал (представительство) Межгосударственной телерадиокомпании 'Мир' в Республике Беларусь"
 - platform: "goszakupki.by"
 - published: "04.06.2025"
-- deadline: "до 08.06 (4 дня)"
+- deadline: "08.06.2025"
 - type: "Товар"
-- price: "34 500 BYN"
+- price: "24 259.34 BYN"
 - status: "Открыт"
-
-Result 2:
-- id: "2"
-- title: "Поставка картриджей для принтеров"
-- location: "Алматы"
-- customer: "ТОО 'Офис-Сервис'"
-- platform: "zakup.sk.kz"
-- published: "10.06.2025"
-- deadline: "до 15.06 (5 дней)"
-- type: "Товар"
-- price: "1 200 000 KZT"
-- status: "Открыт"
-
-Result 3:
-- id: "3"
-- title: "Аренда принтеров и МФУ для офиса"
-- location: "Гомель"
-- customer: "ООО 'БелОфис'"
-- platform: "icetrade.by"
-- published: "12.06.2025"
-- deadline: "до 20.06 (8 дней)"
-- type: "Услуга"
-- price: "5 000 BYN"
-- status: "Открыт"
-
-Result 4:
-- id: "4"
-- title: "Техническое обслуживание и ремонт принтеров"
-- location: "Нур-Султан"
-- customer: "Государственное учреждение 'Центр обслуживания населения'"
-- platform: "goszakup.gov.kz"
-- published: "15.06.2025"
-- deadline: "до 25.06 (10 дней)"
-- type: "Услуга"
-- price: "500 000 KZT"
-- status: ""
-
-Result 5:
-- id: "5"
-- title: "Закупка бумаги и расходных материалов для принтеров"
-- location: "Брест"
-- customer: "Брестский государственный университет"
-- platform: "goszakupki.by"
-- published: "18.06.2025"
-- deadline: "до 22.06 (4 дня)"
-- type: "Товар"
-- price: "15 000 BYN"
-- status: "Время истекает!"
-
 
 Format the output as a valid JSON object matching the output schema. Do not include any other text or explanations.`,
 });

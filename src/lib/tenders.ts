@@ -150,4 +150,3 @@ export const allTenders: Tender[] = [
         status: "Открыт"
     },
 ];
-
