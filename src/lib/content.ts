@@ -1,6 +1,5 @@
 
-import { Bot, Filter, DatabaseZap, UserPlus, SlidersHorizontal, Bell, Search, BarChart, Users, Clock, Building } from 'lucide-react';
-import { MagnifyingGlass, Browsers, Funnel, ChartBar as ChartBarIcon, Bell as BellIcon } from '@phosphor-icons/react';
+import { Bot, Filter, DatabaseZap, UserPlus, SlidersHorizontal, Bell, Search, BarChart, Users, Clock, Building, Briefcase, BarChart3, BellRing, Target, Scale, ShieldCheck } from 'lucide-react';
 import React from 'react';
 
 export const content = {
@@ -103,12 +102,12 @@ export const content = {
         systemFeatures: {
             title: 'Возможности системы',
             items: [
-              { icon: React.createElement(MagnifyingGlass, { weight: "regular" }), title: 'Мультиплощадочный поиск', description: 'Поиск тендеров по всем основным площадкам Казахстана. Быстро находите нужные закупки с помощью интеллектуальных фильтров.'},
-              { icon: React.createElement(Browsers, { weight: "regular" }), title: 'Детализированные карточки', description: 'Вся информация о тендере в одном месте: заказчик, статус, сроки, тип закупки, цена и многое другое для быстрого анализа.'},
-              { icon: React.createElement(BellIcon, { weight: "regular" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
-              { icon: React.createElement(ChartBarIcon, { weight: "regular" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
-              { icon: React.createElement(Users, { weight: "regular" }), title: 'Отслеживание конкурентов', description: 'Следите за активностью конкурентов и их тендерами, чтобы быть на шаг впереди на рынке.'},
-              { icon: React.createElement(Funnel, { weight: "regular" }), title: 'Гибкая фильтрация', description: 'Настраивайте фильтры по регионам, типам закупок, цене, дате и другим параметрам для максимальной релевантности.'},
+              { icon: React.createElement(Search, { className: "w-8 h-8" }), title: 'Мультиплощадочный поиск', description: 'Поиск тендеров по всем основным площадкам Казахстана. Быстро находите нужные закупки с помощью интеллектуальных фильтров.'},
+              { icon: React.createElement(Briefcase, { className: "w-8 h-8" }), title: 'Детализированные карточки', description: 'Вся информация о тендере в одном месте: заказчик, статус, сроки, тип закупки, цена и многое другое для быстрого анализа.'},
+              { icon: React.createElement(BellRing, { className: "w-8 h-8" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
+              { icon: React.createElement(BarChart3, { className: "w-8 h-8" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
+              { icon: React.createElement(Users, { className: "w-8 h-8" }), title: 'Отслеживание конкурентов', description: 'Следите за активностью конкурентов и их тендерами, чтобы быть на шаг впереди на рынке.'},
+              { icon: React.createElement(Filter, { className: "w-8 h-8" }), title: 'Гибкая фильтрация', description: 'Настраивайте фильтры по регионам, типам закупок, цене, дате и другим параметрам для максимальной релевантности.'},
             ]
         },
         cta: {
@@ -192,12 +191,12 @@ export const content = {
         systemFeatures: {
             title: 'Возможности системы',
             items: [
-              { icon: React.createElement(MagnifyingGlass, { weight: "regular" }), title: 'Мультиплощадочный поиск', description: 'Поиск тендеров по всем основным площадкам Беларуси. Быстро находите нужные закупки с помощью интеллектуальных фильтров.'},
-              { icon: React.createElement(Browsers, { weight: "regular" }), title: 'Детализированные карточки', description: 'Вся информация о тендере в одном месте: заказчик, статус, сроки, тип закупки, цена и многое другое для быстрого анализа.'},
-              { icon: React.createElement(BellIcon, { weight: "regular" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
-              { icon: React.createElement(ChartBarIcon, { weight: "regular" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
-              { icon: React.createElement(Users, { weight: "regular" }), title: 'Отслеживание конкурентов', description: 'Следите за активностью конкурентов и их тендерами, чтобы быть на шаг впереди на рынке.'},
-              { icon: React.createElement(Funnel, { weight: "regular" }), title: 'Гибкая фильтрация', description: 'Настраивайте фильтры по регионам, типам закупок, цене, дате и другим параметрам для максимальной релевантности.'},
+              { icon: React.createElement(Search, { className: "w-8 h-8" }), title: 'Мультиплощадочный поиск', description: 'Поиск тендеров по всем основным площадкам Беларуси. Быстро находите нужные закупки с помощью интеллектуальных фильтров.'},
+              { icon: React.createElement(Briefcase, { className: "w-8 h-8" }), title: 'Детализированные карточки', description: 'Вся информация о тендере в одном месте: заказчик, статус, сроки, тип закупки, цена и многое другое для быстрого анализа.'},
+              { icon: React.createElement(BellRing, { className: "w-8 h-8" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
+              { icon: React.createElement(BarChart3, { className: "w-8 h-8" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
+              { icon: React.createElement(Users, { className: "w-8 h-8" }), title: 'Отслеживание конкурентов', description: 'Следите за активностью конкурентов и их тендерами, чтобы быть на шаг впереди на рынке.'},
+              { icon: React.createElement(Filter, { className: "w-8 h-8" }), title: 'Гибкая фильтрация', description: 'Настраивайте фильтры по регионам, типам закупок, цене, дате и другим параметрам для максимальной релевантности.'},
             ]
         },
         cta: {
@@ -317,7 +316,7 @@ export const mockTender = {
   status: 'Открыт'
 };
 
-export const blogTags = ["госзакупки", "аналитика", "тендерная_стратегия", "оптимизация_затрат", "юридические_аспекты"];
+export const blogTags = ["госзакупки", "аналитика", "тендерная_стратегия", "оптимизация_затрат", "юридические_аспекты", "финансы"];
 
 export const blogPostsList = [
     {
@@ -352,7 +351,7 @@ export const blogPostsList = [
     },
     {
         slug: 'cost-optimization-secrets',
-        title: 'Секреты оптимизации затрат: как снизить издержки и увеличить прибыль',
+        title: 'Секреты оптимизации затрат: как снизить издержки',
         excerpt: 'Управление затратами — ключевой аспект успешного участия в закупках. Рассматриваем эффективные методы, которые помогут вам оставаться конкурентоспособными.',
         author: 'Елена Васильева',
         date: '18 мая 2024',
@@ -458,7 +457,7 @@ export const blogPostsData = {
         `
     },
     'cost-optimization-secrets': {
-        title: 'Секреты оптимизации затрат: как снизить издержки и увеличить прибыль',
+        title: 'Секреты оптимизации затрат: как снизить издержки',
         author: 'Елена Васильева',
         date: '18 мая 2024',
         image: 'https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?w=800&q=80',
