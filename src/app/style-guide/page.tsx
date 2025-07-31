@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Header } from '@/components/landing/header';
@@ -60,6 +59,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
+import { PricingCard } from '@/components/pricing-card';
 
 
 const mockTender = {
@@ -455,40 +455,7 @@ export default function StyleGuidePage() {
                     </div>
                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch w-full">
                         {tiers.map((tier) => (
-                        <Card
-                            key={tier.name}
-                            className={cn(
-                            'flex flex-col shadow-sm hover:shadow-xl transition-shadow duration-300 rounded-2xl',
-                            tier.isPopular && 'border-2 border-accent shadow-accent/20'
-                            )}
-                        >
-                            {tier.isPopular && (
-                            <div className="bg-accent text-accent-foreground text-xs font-bold uppercase tracking-wider text-center py-1.5 rounded-t-xl">
-                                Популярный выбор
-                            </div>
-                            )}
-                            <CardHeader className="text-center">
-                            <CardTitle className="text-2xl text-primary">{tier.name}</CardTitle>
-                            <CardDescription className="px-4">{tier.description}</CardDescription>
-                            </CardHeader>
-                            <CardContent className="flex flex-col flex-grow">
-                            <div className="text-center my-4">
-                                <span className="text-4xl font-bold">{isAnnual ? tier.priceAnnually : tier.priceMonthly}</span>
-                                <span className="text-muted-foreground">/{isAnnual ? 'год' : 'мес'}</span>
-                            </div>
-                            <ul className="space-y-3 text-sm flex-grow">
-                                {tier.features.map((feature) => (
-                                <li key={feature} className="flex items-start">
-                                    <Check className="w-5 h-5 text-green-500 mr-2 shrink-0 mt-0.5" />
-                                    <span>{feature}</span>
-                                </li>
-                                ))}
-                            </ul>
-                            <Button className="w-full mt-8" size="lg" variant={tier.isPopular ? 'default' : 'outline'}>
-                                Выбрать тариф
-                            </Button>
-                            </CardContent>
-                        </Card>
+                            <PricingCard key={tier.name} tier={tier} isAnnual={isAnnual} />
                         ))}
                     </div>
                 </CardContent>

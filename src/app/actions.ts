@@ -4,6 +4,7 @@ import {
   naturalLanguageTenderSearch,
   type NaturalLanguageTenderSearchInput,
 } from '@/ai/flows/tender-search';
+import { type Tender } from '@/lib/tenders';
 import { z } from 'zod';
 
 const SearchSchema = z.object({
@@ -12,21 +13,8 @@ const SearchSchema = z.object({
   region: z.string().optional(),
 });
 
-export interface TenderResult {
-    id: string;
-    title: string;
-    location: string;
-    customer: string;
-    platform: string;
-    published: string;
-    deadline: string;
-    type: string;
-    price: string;
-    status?: string;
-}
-
 export interface SearchState {
-  results?: TenderResult[];
+  results?: Tender[];
   error?: string;
   message?: string;
 }

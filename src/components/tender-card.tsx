@@ -4,7 +4,8 @@ import { Badge } from './ui/badge';
 import { Clock, MapPin, Building, Calendar, UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { type TenderResult } from '@/app/actions';
+import { type Tender } from '@/lib/tenders';
+import { getStatusVariant } from '@/lib/utils';
 
 
 export function TenderCard({ 
@@ -18,13 +19,7 @@ export function TenderCard({
   type,
   price,
   status
-}: TenderResult) {
-
-  const getStatusVariant = () => {
-    if (status?.includes('Время истекает')) return 'destructive';
-    if (status?.includes('Предварительное обсуждение')) return 'default';
-    return 'secondary';
-  }
+}: Tender) {
 
   const getStatusClass = () => {
     if (status?.includes('Предварительное обсуждение')) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
@@ -49,7 +44,7 @@ export function TenderCard({
             </div>
             <div className="flex flex-wrap gap-2 items-center mt-auto pt-3 border-t border-dashed -mx-4 px-4">
                 <Badge variant="secondary">{type}</Badge>
-                {status && <Badge variant={getStatusVariant()} className={cn(getStatusClass())}>{status}</Badge>}
+                {status && <Badge variant={getStatusVariant(status)} className={cn(getStatusClass())}>{status}</Badge>}
             </div>
         </div>
         <div className="flex flex-col items-center justify-center flex-shrink-0 md:ml-3 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-dashed -mx-4 px-4 md:px-0 md:pl-4 md:-my-4 min-w-[150px]">

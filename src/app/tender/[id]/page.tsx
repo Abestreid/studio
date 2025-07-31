@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Header } from "@/components/landing/header";
@@ -22,6 +21,7 @@ import { allTenders, type Tender } from '@/lib/tenders';
 import { useToast } from "@/hooks/use-toast";
 import { useParams } from 'next/navigation';
 import { cn } from "@/lib/utils";
+import { getStatusVariant } from '@/lib/utils';
 
 
 export default function TenderPage() {
@@ -131,7 +131,7 @@ export default function TenderPage() {
             <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                     <div>
-                        <Badge variant="secondary" className="bg-green-100 text-green-800 text-sm py-1 px-3 self-start lg:self-center mb-2">
+                        <Badge variant={getStatusVariant(tender.status)} className="bg-green-100 text-green-800 text-sm py-1 px-3 self-start lg:self-center mb-2">
                             <CheckCircle className="w-4 h-4 mr-2" />
                             {tender.status}
                         </Badge>

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Header } from '@/components/landing/header';
@@ -34,6 +33,7 @@ import { useActionState, useEffect, useState } from 'react';
 import { searchTenders, type SearchState } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import { getStatusVariant } from '@/lib/utils';
 
 const initialState: SearchState = {};
 
@@ -62,13 +62,6 @@ export default function AnalyticsPage() {
         setHasSearched(true);
         formAction(formData);
     }
-
-    const getStatusVariant = (status?: string) => {
-        if (status?.includes('Время истекает')) return 'destructive';
-        if (status?.includes('Открыт')) return 'default';
-        return 'secondary';
-    }
-
 
   return (
     <div className="bg-background text-foreground flex flex-col min-h-screen">
@@ -252,4 +245,3 @@ export default function AnalyticsPage() {
     </div>
   );
 }
-
