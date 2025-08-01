@@ -55,7 +55,7 @@ import { DatePickerWithRange } from '@/components/analytics/date-range-picker';
 import { TendersByMonthChart } from '@/components/analytics/tenders-by-month-chart';
 import { TendersByIndustryChart } from '@/components/analytics/tenders-by-industry-chart';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Terminal, LogOut, UserCircle, Check } from 'lucide-react';
+import { Terminal, LogOut, UserCircle, Check, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -454,6 +454,26 @@ export default function StyleGuidePage() {
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
+                </div>
+            </SubSection>
+
+             <SubSection title="Блок для неавторизованных пользователей">
+                <div className="w-full">
+                    <div className="text-center bg-card border rounded-lg py-16 px-6">
+                        <User className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                        <h2 className="text-2xl font-semibold text-primary mb-2">Войдите, чтобы увидеть избранное</h2>
+                        <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                            Чтобы добавлять тендеры в избранное и просматривать их здесь, вам необходимо войти в свой аккаунт или зарегистрироваться.
+                        </p>
+                        <div className="flex justify-center gap-4">
+                            <Button size="lg" asChild>
+                                <Link href="/login">Войти</Link>
+                            </Button>
+                             <Button size="lg" variant="outline" asChild>
+                                <Link href="/register">Зарегистрироваться</Link>
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </SubSection>
             
