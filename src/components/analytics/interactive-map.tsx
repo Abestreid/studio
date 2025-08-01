@@ -20,19 +20,25 @@ export function InteractiveMap() {
   const [themeColors, setThemeColors] = useState({
     primary: 'hsl(196 35% 26%)',
     accent: 'hsl(168 76% 36%)',
+    accentDark: 'hsl(168 76% 30%)',
     secondary: 'hsl(216 34% 91%)',
     foreground: 'hsl(215 28% 17%)',
   });
 
   // 1) Load theme colors on mount
   useEffect(() => {
-    const computedStyle = getComputedStyle(document.documentElement);
-    setThemeColors({
-      primary: `hsl(${computedStyle.getPropertyValue('--primary').trim()})`,
-      accent: `hsl(${computedStyle.getPropertyValue('--accent').trim()})`,
-      secondary: `hsl(${computedStyle.getPropertyValue('--secondary').trim()})`,
-      foreground: `hsl(${computedStyle.getPropertyValue('--foreground').trim()})`,
-    });
+    // This timeout ensures that the styles are applied before we read them
+    const timer = setTimeout(() => {
+      const computedStyle = getComputedStyle(document.documentElement);
+      setThemeColors({
+        primary: `hsl(${computedStyle.getPropertyValue('--primary').trim()})`,
+        accent: `hsl(${computedStyle.getPropertyValue('--accent').trim()})`,
+        accentDark: `hsl(${computedStyle.getPropertyValue('--accent-dark').trim()})`,
+        secondary: `hsl(${computedStyle.getPropertyValue('--secondary').trim()})`,
+        foreground: `hsl(${computedStyle.getPropertyValue('--foreground').trim()})`,
+      });
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
 
@@ -90,7 +96,7 @@ export function InteractiveMap() {
             top: 'bottom',
             text: bySum ? ['Max сумма','Min сумма'] : ['Max кол-во','Min кол-во'],
             inRange: {
-                color: [themeColors.secondary, themeColors.primary]
+                color: [themeColors.secondary, themeColors.accentDark] // Gradient from light gray to dark accent
             },
             calculable: true,
             textStyle: {
@@ -116,7 +122,7 @@ export function InteractiveMap() {
                         color: '#fff'
                     },
                     itemStyle: {
-                        areaColor: themeColors.accent
+                        areaColor: themeColors.accent // Hover color is the main accent color
                     }
                 }
             }
