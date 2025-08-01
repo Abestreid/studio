@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="ru" style={{scrollBehavior: 'smooth'}} className={cn(golos.variable)} suppressHydrationWarning>
       <head>
       </head>
-      <body className="font-body antialiased bg-background">
+      <body className={cn('antialiased bg-background font-sans', golos.className)}>
         {children}
         <Toaster />
         <ThemeSwitcher />
