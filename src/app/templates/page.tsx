@@ -21,7 +21,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   PlusCircle,
   Bell,
@@ -34,7 +33,8 @@ import {
   Trash2,
   Power,
   FileClock,
-  UserPlus
+  UserPlus,
+  Clock,
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -98,12 +98,26 @@ export default function TemplatesPage() {
   const [telegrams, setTelegrams] = useState(['@manager1_tg']);
   const [newTelegram, setNewTelegram] = useState('');
   const [selectedDays, setSelectedDays] = useState<string[]>(['mon', 'tue', 'wed', 'thu', 'fri']);
+  const [times, setTimes] = useState<string[]>(['09:00', '18:00']);
+  const [newTime, setNewTime] = useState('');
   
   const handleDayToggle = (dayId: string) => {
     setSelectedDays(prev => 
         prev.includes(dayId) ? prev.filter(d => d !== dayId) : [...prev, dayId]
     )
   }
+  
+  const handleAddTime = () => {
+    if (newTime && !times.includes(newTime)) {
+      setTimes([...times, newTime].sort());
+      setNewTime('');
+    }
+  };
+
+  const handleDeleteTime = (timeToDelete: string) => {
+    setTimes(times.filter(time => time !== timeToDelete));
+  };
+
 
   const handleAddEmail = () => {
     if (newEmail && !emails.includes(newEmail)) {
@@ -194,14 +208,23 @@ export default function TemplatesPage() {
                                                     </Button>
                                                 ))}
                                              </div>
-                                             <div className="grid grid-cols-8 gap-2">
-                                                {Array.from({length: 24}).map((_, hour) => (
-                                                    <div key={hour} className="flex items-center space-x-2">
-                                                        <Checkbox id={`hour-${hour}`} />
-                                                        <Label htmlFor={`hour-${hour}`} className="font-normal text-xs">{`${hour.toString().padStart(2, '0')}:00`}</Label>
-                                                    </div>
-                                                ))}
-                                             </div>
+                                            <div className="space-y-2">
+                                                <div className="flex items-center gap-2">
+                                                    <Input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} />
+                                                    <Button onClick={handleAddTime} size="icon"><PlusCircle className="h-5 w-5"/></Button>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2 pt-2">
+                                                    {times.map((time) => (
+                                                        <Badge key={time} variant="secondary" className="pl-2">
+                                                            <Clock className="w-3 h-3 mr-1.5"/>
+                                                            {time}
+                                                            <button onClick={() => handleDeleteTime(time)} className="ml-2 rounded-full hover:bg-muted-foreground/20 p-0.5">
+                                                                <Trash2 className="w-3 h-3"/>
+                                                            </button>
+                                                        </Badge>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
                                             <div className="space-y-4">
