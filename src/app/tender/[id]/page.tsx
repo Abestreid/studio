@@ -224,13 +224,15 @@ export default function TenderPage() {
             
             <div className="lg:col-span-1">
                 <div className="sticky top-24 space-y-8">
-                     <Card className="shadow-lg border-accent">
-                        <CardContent className="p-6 text-center">
-                            <h3 className="text-lg font-bold text-primary mb-2">Разблокируйте все данные</h3>
-                            <p className="text-sm text-muted-foreground mb-4">Получите полный доступ к контактам, документам и аналитике, оформив подписку.</p>
-                            <Button className="w-full">Купить доступ</Button>
-                        </CardContent>
-                    </Card>
+                     {!isLoggedIn && (
+                        <Card className="shadow-lg border-accent">
+                            <CardContent className="p-6 text-center">
+                                <h3 className="text-lg font-bold text-primary mb-2">Разблокируйте все данные</h3>
+                                <p className="text-sm text-muted-foreground mb-4">Получите полный доступ к контактам, документам и аналитике, оформив подписку.</p>
+                                <Button className="w-full">Купить доступ</Button>
+                            </CardContent>
+                        </Card>
+                     )}
                      {!isLoggedIn && (
                          <Cta
                             className="!py-8 !bg-primary"
