@@ -82,7 +82,7 @@ const NavigationMenuContent = React.forwardRef<
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName
 
 const NavigationMenuLink = React.forwardRef<
-  React.ElementRef<typeof NavigationMenuPrimitive.Link>,
+  React.ElementRef<typeof Link>,
   React.ComponentProps<typeof Link>
 >(({ className, ...props }, ref) => {
     return (
