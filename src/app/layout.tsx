@@ -9,7 +9,6 @@ import { ThemeSwitcher } from '@/components/theme-switcher';
 const golos = Golos_Text({
   subsets: ['latin', 'cyrillic'],
   display: 'swap',
-  variable: '--font-golos',
 });
 
 export const metadata: Metadata = {
@@ -23,10 +22,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" style={{scrollBehavior: 'smooth'}} className={cn(golos.variable)} suppressHydrationWarning>
+    <html lang="ru" style={{scrollBehavior: 'smooth'}} suppressHydrationWarning>
       <head>
       </head>
-      <body className={cn('antialiased bg-background font-sans')}>
+      <body className={cn('antialiased bg-background font-sans', golos.className)}>
         {children}
         <Toaster />
         <ThemeSwitcher />

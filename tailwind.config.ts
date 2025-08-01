@@ -16,10 +16,6 @@ export default {
       },
     },
     extend: {
-      fontFamily: {
-        sans: ['var(--font-golos)', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        headline: ['var(--font-golos)'],
-      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
