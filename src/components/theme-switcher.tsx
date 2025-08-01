@@ -10,30 +10,35 @@ export function ThemeSwitcher() {
   const [theme, setTheme] = useState("tendersoft");
   const [isOpen, setIsOpen] = useState(false);
 
+  // This function will apply the correct class to the document
+  const applyTheme = (themeName: string) => {
+    // First, remove all possible theme classes
+    document.documentElement.classList.remove("theme-rednet", "theme-rednet2");
+    // Then, add the correct class if it's not the default
+    if (themeName === "rednet" || themeName === "rednet2") {
+      document.documentElement.classList.add(themeName);
+    }
+  };
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "tendersoft";
     setTheme(savedTheme);
-    document.documentElement.classList.remove("theme-rednet", "theme-rednet2");
-    if (savedTheme === "rednet" || savedTheme === "rednet2") {
-      document.documentElement.classList.add(savedTheme);
-    }
-    
+    applyTheme(savedTheme);
+
     const handleStorageChange = () => {
-        const currentTheme = localStorage.getItem('theme') || 'tendersoft';
-        setTheme(currentTheme);
-        document.documentElement.classList.remove("theme-rednet", "theme-rednet2");
-        if (currentTheme === "rednet" || currentTheme === "rednet2") {
-            document.documentElement.classList.add(currentTheme);
-        }
-    }
+      const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+      setTheme(currentTheme);
+      applyTheme(currentTheme);
+    };
     
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-
   }, []);
 
   const toggleTheme = (newTheme: string) => {
+    setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
+    applyTheme(newTheme);
     // Dispatch a storage event to notify other components like the header
     window.dispatchEvent(new Event("storage"));
   };
