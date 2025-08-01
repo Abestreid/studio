@@ -1,5 +1,5 @@
 import { type Metadata } from 'next';
-import { Header } from '@/components/landing/header';
+import { Header } from '@/components/home2/header';
 import { Footer } from '@/components/landing/footer';
 import { Hero } from '@/components/home2/hero';
 import { WhyAutomate } from '@/components/home2/why-automate';

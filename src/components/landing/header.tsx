@@ -27,40 +27,44 @@ import {
     navigationMenuTriggerStyle,
   } from "@/components/ui/navigation-menu"
 import { useRouter } from 'next/navigation';
+import { content } from '@/lib/content';
 
-const platforms = [
-    { title: "Госзакупки", href: "/tenders/goszakupki" },
-    { title: "Самрук-Казына", href: "/tenders/samruk-kazyna" },
-    { title: "Коммерческие тендеры", href: "/tenders/commercial" },
-    { title: "Закупки недропользователей", href: "/tenders/nedropolzovateli" },
-]
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  )
+})
+ListItem.displayName = "ListItem"
 
-const industries = [
-    { title: "Строительство и ремонт", href: "/tenders/industry/construction" },
-    { title: "Изготовление металлоконструкций", href: "/tenders/industry/metal" },
-    { title: "Проектирование зданий и сооружений", href: "/tenders/industry/design" },
-    { title: "Оборудование", href: "/tenders/industry/equipment" },
-    { title: "Выполнение работ", href: "/tenders/industry/works" },
-    { title: "Обслуживание", href: "/tenders/industry/service" },
-    { title: "Оказание услуг", href: "/tenders/industry/services-provision" },
-    { title: "Грузоперевозки", href: "/tenders/industry/logistics" },
-    { title: "Охрана объектов", href: "/tenders/industry/security" },
-    { title: "Строительство дорог", href: "/tenders/industry/roads" },
-    { title: "Поставка", href: "/tenders/industry/supply" },
-]
-
-const systemFeatures = [
-    { title: "Детальный поиск тендеров", href: "/features/search" },
-    { title: "Расширенная аналитика", href: "/features/analytics" },
-    { title: "Проверка контрагентов", href: "/features/due-diligence" },
-]
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [theme, setTheme] = useState('tendersoft');
     const router = useRouter();
 
     const handleLoginStatus = () => {
+        const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+        setTheme(currentTheme as keyof typeof content);
         const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
         setIsLoggedIn(loggedIn);
     };
@@ -78,80 +82,26 @@ export function Header() {
         window.dispatchEvent(new Event('storage'));
         router.push('/');
     };
+    
+    const headerContent = content[theme] || content.tendersoft;
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-decoration-none">
           <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
-          <span className="text-xl font-bold text-primary">Tendersoft</span>
+          <span className="text-xl font-bold text-primary">{headerContent.header.brandName}</span>
         </Link>
         <nav className="hidden items-center gap-2 lg:flex">
-            <NavigationMenu>
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                        <NavigationMenuTrigger>Тендеры</NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                            <div className="grid w-[600px] grid-cols-2 gap-x-8 gap-y-4 p-4">
-                                <div>
-                                    <h3 className="font-semibold text-primary mb-2">Тендеры по площадкам</h3>
-                                    <ul className="space-y-1">
-                                    {platforms.map((component) => (
-                                        <ListItem key={component.title} href={component.href} title={component.title}/>
-                                    ))}
-                                    </ul>
-                                </div>
-                                <div>
-                                     <h3 className="font-semibold text-primary mb-2">Тендеры по отраслям</h3>
-                                    <ul className="space-y-1">
-                                    {industries.map((component) => (
-                                        <ListItem key={component.title} href={component.href} title={component.title}/>
-                                    ))}
-                                    </ul>
-                                </div>
-                            </div>
-                        </NavigationMenuContent>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                        <NavigationMenuTrigger>Возможности системы</NavigationMenuTrigger>
-                         <NavigationMenuContent>
-                            <ul className="grid w-[300px] gap-3 p-4">
-                            {systemFeatures.map((component) => (
-                                <ListItem key={component.title} href={component.href} title={component.title}/>
-                            ))}
-                            </ul>
-                        </NavigationMenuContent>
-                    </NavigationMenuItem>
-                     <NavigationMenuItem>
-                        <Link href="/about" legacyBehavior passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                О компании
-                            </NavigationMenuLink>
-                        </Link>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                        <Link href="/blog" legacyBehavior passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                Новости
-                            </NavigationMenuLink>
-                        </Link>
-                    </NavigationMenuItem>
-                     <NavigationMenuItem>
-                        <Link href="/contacts" legacyBehavior passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                Контакты
-                            </NavigationMenuLink>
-                        </Link>
-                    </NavigationMenuItem>
-                     <NavigationMenuItem>
-                        <Link href="/templates" legacyBehavior passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                Шаблоны
-                            </NavigationMenuLink>
-                        </Link>
-                    </NavigationMenuItem>
-                </NavigationMenuList>
-            </NavigationMenu>
+             {headerContent.header.navLinks.map((link: any) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-base font-medium text-muted-foreground transition-colors hover:text-primary"
+                >
+                  {link.label}
+                </Link>
+              ))}
         </nav>
         <div className="hidden items-center gap-4 lg:flex">
           {isLoggedIn ? (
@@ -199,12 +149,16 @@ export function Header() {
                 <SheetDescription className="sr-only">Главная навигация по сайту</SheetDescription>
                 <div className="flex h-full flex-col gap-8 p-6 pt-20">
                 <nav className="flex flex-col gap-4">
-                    {/* Mobile menu would need a different approach, maybe an Accordion */}
-                    <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary">Тендеры</Link>
-                    <Link href="/features" onClick={() => setIsMenuOpen(false)} className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary">Возможности</Link>
-                    <Link href="/about" onClick={() => setIsMenuOpen(false)} className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary">О компании</Link>
-                    <Link href="/blog" onClick={() => setIsMenuOpen(false)} className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary">Новости</Link>
-                    <Link href="/contacts" onClick={() => setIsMenuOpen(false)} className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary">Контакты</Link>
+                     {headerContent.header.navLinks.map((link: any) => (
+                    <Link
+                        key={link.label}
+                        href={link.href}
+                        onClick={() => setIsMenuOpen(false)}
+                        className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary"
+                    >
+                        {link.label}
+                    </Link>
+                    ))}
                 </nav>
                 <div className="mt-auto flex flex-col gap-3">
                    {isLoggedIn ? (
@@ -229,29 +183,3 @@ export function Header() {
     </header>
   );
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
