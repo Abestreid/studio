@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   PlusCircle,
   Bell,
@@ -36,6 +37,7 @@ import {
   UserPlus
 } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 // Mock data for the templates table
 const mockTemplates = [
@@ -77,6 +79,16 @@ const mockTemplates = [
   },
 ];
 
+const daysOfWeek = [
+    { id: 'mon', label: 'Пн' },
+    { id: 'tue', label: 'Вт' },
+    { id: 'wed', label: 'Ср' },
+    { id: 'thu', label: 'Чт' },
+    { id: 'fri', label: 'Пт' },
+    { id: 'sat', label: 'Сб' },
+    { id: 'sun', label: 'Вс' },
+]
+
 export default function TemplatesPage() {
   const [activeTab, setActiveTab] = useState('kz');
   const [templates, setTemplates] = useState(mockTemplates);
@@ -85,6 +97,13 @@ export default function TemplatesPage() {
   const [newEmail, setNewEmail] = useState('');
   const [telegrams, setTelegrams] = useState(['@manager1_tg']);
   const [newTelegram, setNewTelegram] = useState('');
+  const [selectedDays, setSelectedDays] = useState<string[]>(['mon', 'tue', 'wed', 'thu', 'fri']);
+  
+  const handleDayToggle = (dayId: string) => {
+    setSelectedDays(prev => 
+        prev.includes(dayId) ? prev.filter(d => d !== dayId) : [...prev, dayId]
+    )
+  }
 
   const handleAddEmail = () => {
     if (newEmail && !emails.includes(newEmail)) {
@@ -156,44 +175,70 @@ export default function TemplatesPage() {
                                     <DialogHeader>
                                         <DialogTitle>Массовая настройка уведомлений</DialogTitle>
                                         <DialogDescription>
-                                            Добавьте получателей, которые будут применяться ко всем вашим шаблонам с включенными уведомлениями.
+                                            Настройте расписание и добавьте получателей, которые будут применяться ко всем вашим шаблонам.
                                         </DialogDescription>
                                     </DialogHeader>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+                                    <div className="space-y-6 py-4">
                                         <div className="space-y-4">
-                                            <Label className="font-semibold">Email получатели</Label>
-                                            <div className="space-y-2">
-                                                {emails.map((email) => (
-                                                    <div key={email} className="flex items-center justify-between bg-secondary p-2 rounded-md">
-                                                        <span className="text-sm">{email}</span>
-                                                        <Button variant="ghost" size="icon" onClick={() => handleDeleteEmail(email)}>
-                                                            <Trash2 className="h-4 w-4 text-destructive"/>
-                                                        </Button>
+                                             <Label className="font-semibold">Расписание отправки</Label>
+                                             <div className="flex justify-between gap-1">
+                                                {daysOfWeek.map(day => (
+                                                    <Button 
+                                                        key={day.id} 
+                                                        variant={selectedDays.includes(day.id) ? 'default' : 'outline'}
+                                                        size="sm"
+                                                        onClick={() => handleDayToggle(day.id)}
+                                                        className="flex-1"
+                                                    >
+                                                        {day.label}
+                                                    </Button>
+                                                ))}
+                                             </div>
+                                             <div className="grid grid-cols-8 gap-2">
+                                                {Array.from({length: 24}).map((_, hour) => (
+                                                    <div key={hour} className="flex items-center space-x-2">
+                                                        <Checkbox id={`hour-${hour}`} />
+                                                        <Label htmlFor={`hour-${hour}`} className="font-normal text-xs">{`${hour.toString().padStart(2, '0')}:00`}</Label>
                                                     </div>
                                                 ))}
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <Input value={newEmail} onChange={(e) => setNewEmail(e.target.value)} placeholder="new.email@company.com" />
-                                                <Button onClick={handleAddEmail} size="icon"><PlusCircle className="h-5 w-5"/></Button>
-                                            </div>
+                                             </div>
                                         </div>
-                                         <div className="space-y-4">
-                                            <Label className="font-semibold">Telegram получатели</Label>
-                                             <div className="space-y-2">
-                                                {telegrams.map((tg) => (
-                                                    <div key={tg} className="flex items-center justify-between bg-secondary p-2 rounded-md">
-                                                        <span className="text-sm">{tg}</span>
-                                                         <Button variant="ghost" size="icon" onClick={() => handleDeleteTelegram(tg)}>
-                                                            <Trash2 className="h-4 w-4 text-destructive"/>
-                                                        </Button>
-                                                    </div>
-                                                ))}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
+                                            <div className="space-y-4">
+                                                <Label className="font-semibold">Email получатели</Label>
+                                                <div className="space-y-2">
+                                                    {emails.map((email) => (
+                                                        <div key={email} className="flex items-center justify-between bg-secondary p-2 rounded-md">
+                                                            <span className="text-sm">{email}</span>
+                                                            <Button variant="ghost" size="icon" onClick={() => handleDeleteEmail(email)}>
+                                                                <Trash2 className="h-4 w-4 text-destructive"/>
+                                                            </Button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <Input value={newEmail} onChange={(e) => setNewEmail(e.target.value)} placeholder="new.email@company.com" />
+                                                    <Button onClick={handleAddEmail} size="icon"><PlusCircle className="h-5 w-5"/></Button>
+                                                </div>
                                             </div>
-                                            <div className="flex items-center gap-2">
-                                                <Input value={newTelegram} onChange={(e) => setNewTelegram(e.target.value)} placeholder="@username" />
-                                                <Button onClick={handleAddTelegram} size="icon"><UserPlus className="h-5 w-5"/></Button>
+                                            <div className="space-y-4">
+                                                <Label className="font-semibold">Telegram получатели</Label>
+                                                <div className="space-y-2">
+                                                    {telegrams.map((tg) => (
+                                                        <div key={tg} className="flex items-center justify-between bg-secondary p-2 rounded-md">
+                                                            <span className="text-sm">{tg}</span>
+                                                            <Button variant="ghost" size="icon" onClick={() => handleDeleteTelegram(tg)}>
+                                                                <Trash2 className="h-4 w-4 text-destructive"/>
+                                                            </Button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <Input value={newTelegram} onChange={(e) => setNewTelegram(e.target.value)} placeholder="@username" />
+                                                    <Button onClick={handleAddTelegram} size="icon"><UserPlus className="h-5 w-5"/></Button>
+                                                </div>
+                                                <p className="text-xs text-muted-foreground">Для привязки нового аккаунта Telegram, отправьте боту ключ, сгенерированный в профиле.</p>
                                             </div>
-                                            <p className="text-xs text-muted-foreground">Для привязки нового аккаунта Telegram, отправьте боту ключ, сгенерированный в профиле.</p>
                                         </div>
                                     </div>
                                     <DialogFooter>
