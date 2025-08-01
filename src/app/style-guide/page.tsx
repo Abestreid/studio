@@ -140,7 +140,7 @@ export default function StyleGuidePage() {
                 hsl="220 20% 98%"
                 rgb="rgb(249 250 251)"
                 hex="#f9fafb"
-                purpose="Цвет фона интерфейса"
+                purpose="Основной фон приложения"
               />
               <ColorSwatch
                 name="Foreground"
@@ -149,43 +149,16 @@ export default function StyleGuidePage() {
                 hsl="215 28% 17%"
                 rgb="rgb(33 41 51)"
                 hex="#212933"
-                purpose="Цвет основного текста"
+                purpose="Основной цвет текста"
               />
               <ColorSwatch
-                name="Card"
+                name="Card / Popover"
                 className="bg-card border"
-                varName="--card"
+                varName="--card, --popover"
                 hsl="0 0% 100%"
                 rgb="rgb(255 255 255)"
                 hex="#ffffff"
-                purpose="Цвет карточек"
-              />
-              <ColorSwatch
-                name="Card Foreground"
-                className="bg-card-foreground"
-                varName="--card-foreground"
-                hsl="215 28% 17%"
-                rgb="rgb(33 41 51)"
-                hex="#212933"
-                purpose="Текст на карточках"
-              />
-              <ColorSwatch
-                name="Popover"
-                className="bg-popover"
-                varName="--popover"
-                hsl="0 0% 100%"
-                rgb="rgb(255 255 255)"
-                hex="#ffffff"
-                purpose="Фон всплывающих окон"
-              />
-              <ColorSwatch
-                name="Popover Foreground"
-                className="bg-popover-foreground"
-                varName="--popover-foreground"
-                hsl="215 28% 17%"
-                rgb="rgb(33 41 51)"
-                hex="#212933"
-                purpose="Текст во всплывающих"
+                purpose="Фон для карточек и всплывающих окон"
               />
               <ColorSwatch
                 name="Primary"
@@ -194,7 +167,7 @@ export default function StyleGuidePage() {
                 hsl="196 35% 26%"
                 rgb="rgb(42 74 86)"
                 hex="#2a4a56"
-                purpose="Основной бренд-цвет"
+                purpose="Основной акцентный цвет (бренд)"
               />
               <ColorSwatch
                 name="Primary Foreground"
@@ -206,31 +179,13 @@ export default function StyleGuidePage() {
                 purpose="Текст на фоне primary"
               />
               <ColorSwatch
-                name="Secondary"
+                name="Secondary / Muted / Border"
                 className="bg-secondary"
-                varName="--secondary"
+                varName="--secondary, --muted, --border"
                 hsl="216 34% 91%"
                 rgb="rgb(227 232 239)"
                 hex="#e3e8ef"
-                purpose="Второстепенный фон"
-              />
-              <ColorSwatch
-                name="Secondary Foreground"
-                className="bg-secondary-foreground"
-                varName="--secondary-foreground"
-                hsl="215 28% 17%"
-                rgb="rgb(33 41 51)"
-                hex="#212933"
-                purpose="Текст на фоне secondary"
-              />
-              <ColorSwatch
-                name="Muted"
-                className="bg-muted"
-                varName="--muted"
-                hsl="216 34% 91%"
-                rgb="rgb(227 232 239)"
-                hex="#e3e8ef"
-                purpose="Мягкий фон разделов"
+                purpose="Второстепенные фоны и границы"
               />
               <ColorSwatch
                 name="Muted Foreground"
@@ -239,25 +194,25 @@ export default function StyleGuidePage() {
                 hsl="215 20% 65%"
                 rgb="rgb(154 161 172)"
                 hex="#9aa1ac"
-                purpose="Снижение контраста текста"
+                purpose="Приглушенный цвет текста"
               />
               <ColorSwatch
-                name="Accent"
+                name="Accent / Ring"
                 className="bg-accent"
-                varName="--accent"
+                varName="--accent, --ring"
                 hsl="168 76% 36%"
                 rgb="rgb(22 160 133)"
                 hex="#16a085"
-                purpose="Акцентные элементы"
+                purpose="Цвет для акцентов и фокуса"
               />
-               <ColorSwatch
+              <ColorSwatch
                 name="Accent Dark"
                 className="bg-accent-dark"
                 varName="--accent-dark"
                 hsl="168 76% 30%"
                 rgb="rgb(19 141 117)"
                 hex="#138d75"
-                purpose="Тёмный акцент (hover)"
+                purpose="Акцент при наведении (hover)"
               />
               <ColorSwatch
                 name="Accent Foreground"
@@ -266,7 +221,7 @@ export default function StyleGuidePage() {
                 hsl="0 0% 98%"
                 rgb="rgb(250 250 250)"
                 hex="#fafafa"
-                purpose="Текст на акценте"
+                purpose="Текст на акцентном фоне"
               />
               <ColorSwatch
                 name="Destructive"
@@ -275,7 +230,7 @@ export default function StyleGuidePage() {
                 hsl="0 84.2% 60.2%"
                 rgb="rgb(239 68 68)"
                 hex="#ef4444"
-                purpose="Ошибки, предупреждения"
+                purpose="Цвет для ошибок и опасных действий"
               />
               <ColorSwatch
                 name="Destructive Foreground"
@@ -284,80 +239,17 @@ export default function StyleGuidePage() {
                 hsl="0 0% 98%"
                 rgb="rgb(250 250 250)"
                 hex="#fafafa"
-                purpose="Текст на фоне ошибки"
+                purpose="Текст на фоне destructive"
               />
-              <ColorSwatch
-                name="Border"
-                className="bg-border"
-                varName="--border"
-                hsl="216 34% 91%"
-                rgb="rgb(227 232 239)"
-                hex="#e3e8ef"
-                purpose="Цвет границ"
-              />
-              <ColorSwatch
-                name="Input"
-                className="bg-input"
-                varName="--input"
-                hsl="216 34% 91%"
-                rgb="rgb(227 232 239)"
-                hex="#e3e8ef"
-                purpose="Фон полей ввода"
-              />
-              <ColorSwatch
-                name="Ring"
-                className="bg-ring"
-                varName="--ring"
-                hsl="168 76% 36%"
-                rgb="rgb(22 160 133)"
-                hex="#16a085"
-                purpose="Фокусировка (ring)"
-              />
-              <ColorSwatch
-                name="Chart 1"
-                className="bg-chart-1"
-                varName="--chart-1"
-                hsl="12 76% 61%"
-                rgb="rgb(242 101 71)"
-                hex="#f26547"
-                purpose="Цвет графика 1"
-              />
-              <ColorSwatch
-                name="Chart 2"
-                className="bg-chart-2"
-                varName="--chart-2"
-                hsl="173 58% 39%"
-                rgb="rgb(42 165 147)"
-                hex="#2aa593"
-                purpose="Цвет графика 2"
-              />
-              <ColorSwatch
-                name="Chart 3"
-                className="bg-chart-3"
-                varName="--chart-3"
-                hsl="197 37% 24%"
-                rgb="rgb(38 72 88)"
-                hex="#264858"
-                purpose="Цвет графика 3"
-              />
-              <ColorSwatch
-                name="Chart 4"
-                className="bg-chart-4"
-                varName="--chart-4"
-                hsl="43 74% 66%"
-                rgb="rgb(243 203 103)"
-                hex="#f3cb67"
-                purpose="Цвет графика 4"
-              />
-              <ColorSwatch
-                name="Chart 5"
-                className="bg-chart-5"
-                varName="--chart-5"
-                hsl="27 87% 67%"
-                rgb="rgb(248 150 78)"
-                hex="#f8964e"
-                purpose="Цвет графика 5"
-              />
+              
+              <ColorSwatch name="Chart 1" className="bg-chart-1" varName="--chart-1" hsl="19 81% 54%" rgb="rgb(234, 108, 42)" hex="#EA6C2A" purpose="Цвет графика 1" />
+              <ColorSwatch name="Chart 2" className="bg-chart-2" varName="--chart-2" hsl="195 100% 50%" rgb="rgb(0, 198, 255)" hex="#00C6FF" purpose="Цвет графика 2" />
+              <ColorSwatch name="Chart 3" className="bg-chart-3" varName="--chart-3" hsl="149 100% 50%" rgb="rgb(0, 255, 116)" hex="#00FF74" purpose="Цвет графика 3" />
+              <ColorSwatch name="Chart 4" className="bg-chart-4" varName="--chart-4" hsl="225 100% 50%" rgb="rgb(0, 72, 255)" hex="#0048FF" purpose="Цвет графика 4" />
+              <ColorSwatch name="Chart 5" className="bg-chart-5" varName="--chart-5" hsl="48 100% 50%" rgb="rgb(255, 211, 0)" hex="#FFD300" purpose="Цвет графика 5" />
+              <ColorSwatch name="Chart 6" className="bg-chart-6" varName="--chart-6" hsl="285 100% 50%" rgb="rgb(198, 0, 255)" hex="#C600FF" purpose="Цвет графика 6" />
+              <ColorSwatch name="Chart 7" className="bg-chart-7" varName="--chart-7" hsl="0 100% 50%" rgb="rgb(255, 0, 0)" hex="#FF0000" purpose="Цвет графика 7" />
+
             </CardContent>
           </Card>
         </Section>
