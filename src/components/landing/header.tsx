@@ -26,22 +26,19 @@ export function Header() {
     const [theme, setTheme] = useState('tendersoft');
     const router = useRouter();
 
+    const handleThemeAndLogin = () => {
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(loggedIn);
+        const currentTheme = (localStorage.getItem('theme') as any) || 'tendersoft';
+        setTheme(currentTheme);
+    };
+
     useEffect(() => {
-        const handleStorageChange = () => {
-             const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-             setIsLoggedIn(loggedIn);
-             const currentTheme = localStorage.getItem('theme') || 'tendersoft';
-             setTheme(currentTheme);
-        }
-
-        handleStorageChange();
-
-        window.addEventListener('storage', handleStorageChange);
-        
+        handleThemeAndLogin();
+        window.addEventListener('storage', handleThemeAndLogin);
         return () => {
-            window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('storage', handleThemeAndLogin);
         };
-
     }, []);
 
     const handleLogout = () => {
@@ -50,7 +47,28 @@ export function Header() {
         router.push('/');
     };
 
-    const headerContent = content[theme as keyof typeof content].header;
+    const handleSetTheme = (t: any) => {
+        setTheme(t);
+        localStorage.setItem("theme", t);
+        // This is the correct way to trigger a re-render in other components
+        window.dispatchEvent(new Event("storage"));
+    };
+
+    const headerContent = content[theme as keyof typeof content]?.header;
+
+    if (!headerContent) {
+        // Fallback or loading state
+        return (
+            <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
+                <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+                    <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
+                        <div className="h-6 w-24 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                </div>
+            </header>
+        );
+    }
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
@@ -69,6 +87,12 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+           <Link
+              href="/templates"
+              className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-0.5 after:w-full after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:after:scale-x-100"
+            >
+              Шаблоны
+            </Link>
         </nav>
         <div className="hidden items-center gap-4 lg:flex">
           {isLoggedIn ? (
@@ -126,6 +150,13 @@ export function Header() {
                         {link.label}
                     </Link>
                     ))}
+                     <Link
+                        href="/templates"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary"
+                    >
+                        Шаблоны
+                    </Link>
                 </nav>
                 <div className="mt-auto flex flex-col gap-3">
                    {isLoggedIn ? (
