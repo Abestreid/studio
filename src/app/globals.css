@@ -6,13 +6,13 @@
   :root {
     --panel-background: 0 0% 100%;
     
-    --background: 220 20% 98%; /* #F9FAFB */
+    --background: 220 17% 97%; /* #F5F6F8 */
     --foreground: 215 28% 17%; /* #212933 */
     
-    --card: var(--panel-background);
+    --card: var(--background);
     --card-foreground: var(--foreground);
     
-    --popover: var(--panel-background);
+    --popover: 0 0% 100%;
     --popover-foreground: var(--foreground);
     
     --primary: 196 35% 26%; /* #2A4A56 */
@@ -22,7 +22,7 @@
     --secondary-foreground: var(--foreground);
     
     --muted: var(--secondary);
-    --muted-foreground: 215 20% 65%; /* #9AA1AC */
+    --muted-foreground: 220 9% 46%; /* #a6a9ac */
     
     --accent: 168 76% 36%; /* #16A085 */
     --accent-dark: 168 76% 30%; /* #138D75 */
@@ -43,7 +43,7 @@
     --chart-6: 285 100% 50%; /* #C600FF */
     --chart-7: 0 100% 50%; /* #FF0000 */
 
-    --radius: 1rem;
+    --radius: 1rem; /* 16px */
   }
 
   .theme-rednet {
