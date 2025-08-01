@@ -9,36 +9,41 @@ import { cn } from "@/lib/utils";
 type ThemeKey = "tendersoft" | "rednet" | "rednet2";
 
 export function ThemeSwitcher() {
+  const [isMounted, setIsMounted] = useState(false);
   const [theme, setTheme] = useState<ThemeKey>("tendersoft");
   const [isOpen, setIsOpen] = useState(false);
 
-  // This function will apply the correct class to the document
+  useEffect(() => {
+    setIsMounted(true);
+    const savedTheme = (localStorage.getItem("theme") as ThemeKey) || "tendersoft";
+    setTheme(savedTheme);
+  }, []);
+
   const applyTheme = (themeName: ThemeKey) => {
     const root = document.documentElement;
-    // First, remove all possible theme classes
     root.classList.remove("theme-rednet", "theme-rednet2");
-    // Then, add the correct class if it's not the default
     if (themeName === "rednet") {
       root.classList.add("theme-rednet");
-    }
-    if (themeName === "rednet2") {
+    } else if (themeName === "rednet2") {
       root.classList.add("theme-rednet2");
     }
   };
-
+  
   useEffect(() => {
-    const savedTheme = (localStorage.getItem("theme") as ThemeKey) || "tendersoft";
-    setTheme(savedTheme);
-    applyTheme(savedTheme);
-  }, []);
+    if (isMounted) {
+      applyTheme(theme);
+    }
+  }, [theme, isMounted]);
 
   const toggleTheme = (newTheme: ThemeKey) => {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    applyTheme(newTheme);
-    // Dispatch a storage event to notify other components like the header
     window.dispatchEvent(new Event("storage"));
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
