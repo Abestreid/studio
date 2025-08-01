@@ -218,9 +218,9 @@ export function Header() {
 }
 
 const ListItem = React.forwardRef<
-  React.ElementRef<typeof Link>,
-  React.ComponentPropsWithoutRef<typeof Link> & { title: string }
->(({ className, title, ...props }, ref) => {
+  React.ElementRef<'a'>,
+  React.ComponentPropsWithoutRef<typeof Link>
+>(({ className, title, children, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
@@ -233,6 +233,9 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
+          {children && <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>}
         </Link>
       </NavigationMenuLink>
     </li>
