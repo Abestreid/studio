@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,7 +10,7 @@
     --background: 220 17% 97%; /* #F5F6F8 */
     --foreground: 215 28% 17%; /* #212933 */
     
-    --card: 220 17% 97%;
+    --card: 0 0% 100%;
     --card-foreground: var(--foreground);
     
     --popover: 0 0% 100%;
@@ -31,7 +32,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: var(--secondary);
+    --border: 220 17% 97%; /* #F5F6F8 */
     --input: var(--secondary);
     --ring: var(--accent);
     
@@ -114,13 +115,49 @@
     white-space: nowrap;
     border-width: 0;
   }
-  .nav-link-animate, .nav-link-animate-trigger {
-    @apply relative;
+  
+  /* Underline animation for nav links */
+  .nav-link-animate {
+    @apply relative text-muted-foreground transition-colors duration-300 ease-in-out;
   }
-  .nav-link-animate::after, .nav-link-animate-trigger::after {
+
+  .nav-link-animate:hover,
+  .nav-link-animate:focus,
+  .nav-link-animate:active {
+    @apply text-accent;
+    outline: none;
+  }
+
+  .nav-link-animate::after {
     content: '';
     position: absolute;
-    bottom: 4px;
+    width: 100%;
+    height: 2px;
+    bottom: -4px; /* Adjust as needed */
+    left: 0;
+    background-color: hsl(var(--accent));
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease-out;
+  }
+
+  .nav-link-animate:hover::after,
+  .nav-link-animate:focus::after {
+    transform: scaleX(1);
+  }
+  
+  .nav-link-animate-trigger {
+    @apply relative text-base font-medium text-muted-foreground transition-colors hover:text-accent bg-transparent p-0;
+  }
+  
+  .nav-link-animate-trigger:focus {
+    outline: none;
+  }
+
+  .nav-link-animate-trigger::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -131,12 +168,13 @@
     transition: transform 0.3s ease-out;
     transform-origin: center;
   }
-  .nav-link-animate:hover::after, .nav-link-animate-trigger[data-state=open]::after, .nav-link-animate-trigger:hover::after {
+  
+  .nav-link-animate-trigger[data-state=open]::after, 
+  .nav-link-animate-trigger:hover::after,
+  .nav-link-animate-trigger:focus::after {
     transform: scaleX(1);
   }
-   .nav-link-animate-trigger {
-    @apply text-base font-medium text-muted-foreground transition-colors hover:text-accent bg-transparent p-0;
-  }
+  
   .nav-link-animate-trigger:hover, .nav-link-animate-trigger[data-state=open] {
     @apply bg-transparent;
   }

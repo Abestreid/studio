@@ -82,7 +82,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <Link href="/home2" className="flex items-center gap-2 text-decoration-none">
+        <Link href="/home2" className="flex items-center gap-2 text-decoration-none logo">
           <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
           <span className="text-xl font-bold text-primary">Tendersoft</span>
         </Link>
@@ -123,19 +123,19 @@ export function Header() {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), 'nav-link-animate')}>
-                            <Link href="/about">О компании</Link>
-                        </NavigationMenuLink>
+                        <Link href="/about" legacyBehavior passHref>
+                           <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "nav-link-animate-trigger")}>О компании</NavigationMenuLink>
+                        </Link>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), 'nav-link-animate')}>
-                           <Link href="/blog">Новости</Link>
-                        </NavigationMenuLink>
+                         <Link href="/blog" legacyBehavior passHref>
+                           <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "nav-link-animate-trigger")}>Новости</NavigationMenuLink>
+                        </Link>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), 'nav-link-animate')}>
-                           <Link href="/contacts">Контакты</Link>
-                        </NavigationMenuLink>
+                         <Link href="/contacts" legacyBehavior passHref>
+                           <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "nav-link-animate-trigger")}>Контакты</NavigationMenuLink>
+                        </Link>
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
@@ -218,14 +218,14 @@ export function Header() {
 }
 
 const ListItem = React.forwardRef<
-  React.ElementRef<typeof Link>,
-  React.ComponentPropsWithoutRef<typeof Link> & { title: string }
->(({ className, title, children, href, ...props }, ref) => {
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
         <Link
-          href={href!}
+          href={props.href!}
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
@@ -246,3 +246,4 @@ ListItem.displayName = "ListItem"
 
 
     
+
