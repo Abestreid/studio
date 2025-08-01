@@ -1,4 +1,5 @@
 
+
 export interface Tender {
   id: string;
   title: string;
@@ -6,6 +7,7 @@ export interface Tender {
   url: string;
   source: string;
   priceTotal: number;
+  price: string; // Add formatted price string for display
   industry: string;
   startDate: string;
   endDate: string;
@@ -30,6 +32,11 @@ export interface Tender {
   characteristics: TenderCharacteristic[];
   documents: TenderDocument[];
   lots: TenderLot[];
+  // Added for tender card display
+  location: string;
+  published: string;
+  deadline: string;
+  type: string;
 }
 
 export interface TenderGroup {
@@ -81,11 +88,16 @@ const formatPhoneNumber = (phone: string | undefined): string | undefined => {
 };
 
 // Function to clean and parse price
-const parsePrice = (price: string | number | undefined): number | undefined => {
+const parsePrice = (price: string | number | undefined): number => {
   if (typeof price === 'number') return price;
-  if (!price) return undefined;
-  return parseFloat(price.replace(/[^\d.]/g, ''));
+  if (!price) return 0;
+  return parseFloat(price.replace(/[^\d.]/g, '')) || 0;
 };
+
+const formatPrice = (price: number | undefined): string => {
+    if (price === undefined || price === 0) return '—';
+    return price.toLocaleString('ru-RU', { style: 'currency', currency: 'BYN', minimumFractionDigits: 2 });
+}
 
 const cleanTenderData = (data: any): Tender => {
   const characteristicsMap = new Map<string, string>();
@@ -94,6 +106,8 @@ const cleanTenderData = (data: any): Tender => {
   });
 
   const getCharacteristic = (name: string) => characteristicsMap.get(name);
+  
+  const priceTotal = parsePrice(data.priceTotal)
 
   return {
     id: data.id,
@@ -101,7 +115,8 @@ const cleanTenderData = (data: any): Tender => {
     customer: data.customer,
     url: data.url,
     source: data.source,
-    priceTotal: parsePrice(data.priceTotal) || 0,
+    priceTotal: priceTotal,
+    price: formatPrice(priceTotal),
     industry: data.industry,
     startDate: data.startDate,
     endDate: data.endDate,
@@ -141,6 +156,12 @@ const cleanTenderData = (data: any): Tender => {
       calculationMethod: lot.calculationMethod,
       okrb: lot.okrb,
     })) : [],
+    // Fields for TenderCard
+    location: data.city?.trim() || data.oblast?.trim() || 'Регион не указан',
+    published: data.startDate || 'Дата не указана',
+    deadline: data.endDate || 'Срок не указан',
+    type: getCharacteristic('Вид предмета закупки') || 'Не указан',
+    platform: data.source || 'Площадка не указана',
   };
 };
 

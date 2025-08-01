@@ -9,18 +9,20 @@ import { type Tender } from '@/lib/tenders';
 import { getStatusVariant } from '@/lib/utils';
 
 
-export function TenderCard({ 
-  id,
-  title,
-  location,
-  customer,
-  platform,
-  published,
-  deadline,
-  type,
-  price,
-  status
-}: Tender) {
+export function TenderCard(tender: Tender) {
+  const {
+    id,
+    title,
+    location,
+    customer,
+    platform,
+    published,
+    deadline,
+    type,
+    price,
+    status
+  } = tender;
+
   return (
     <Link href={`/tender/${id}`} className="block text-decoration-none group">
         <article className="flex flex-col md:flex-row gap-4 p-4 rounded-xl shadow-sm bg-white hover:shadow-lg transition-all duration-300 border hover:border-accent hover:-translate-y-1">
