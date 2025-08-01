@@ -26,6 +26,8 @@ import {
   Phone,
   Mail,
   LocateFixed,
+  Info,
+  Banknote,
 } from "lucide-react";
 import { useEffect, useState } from 'react';
 import { fetchTenders, type Tender, type TenderLot, type TenderDocument } from '@/lib/tenders';
@@ -33,6 +35,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useParams } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { getStatusVariant } from '@/lib/utils';
+import { Separator } from "@/components/ui/separator";
 
 export default function TenderPage() {
   const params = useParams<{ id: string }>();
@@ -106,11 +109,21 @@ export default function TenderPage() {
 
   const InfoRow = ({ label, children, icon, className }: { label: string, children: React.ReactNode, icon?: React.ReactNode, className?: string }) => (
     <div className={cn("flex flex-col sm:flex-row sm:items-start sm:justify-between py-3 border-b border-dashed last:border-b-0", className)}>
-        <div className="text-muted-foreground w-full sm:w-1/3 shrink-0 mb-1 sm:mb-0 flex items-center gap-2">
+        <div className="text-muted-foreground w-full sm:w-2/5 shrink-0 mb-1 sm:mb-0 flex items-center gap-2">
             {icon}
             {label}
         </div>
-        <div className="font-medium text-primary sm:text-right w-full sm:w-2/3">{(children === '' || children === null || children === undefined) ? '-' : children}</div>
+        <div className="font-medium text-primary sm:text-right w-full sm:w-3/5">{(children === '' || children === null || children === undefined) ? '-' : children}</div>
+    </div>
+  )
+  
+   const SidebarInfoRow = ({ label, children, icon }: { label: string, children: React.ReactNode, icon?: React.ReactNode }) => (
+    <div className="flex items-start gap-3">
+        <div className="text-muted-foreground mt-0.5">{icon}</div>
+        <div className="flex-1">
+            <p className="text-xs text-muted-foreground">{label}</p>
+            <p className="font-semibold text-primary">{children}</p>
+        </div>
     </div>
   )
 
@@ -126,7 +139,7 @@ export default function TenderPage() {
   return (
     <div className="bg-background text-foreground flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow py-8 sm:py-12 bg-accent/10">
+      <main className="flex-grow py-8 sm:py-12 bg-accent/5">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div className="text-sm text-muted-foreground">
@@ -162,8 +175,8 @@ export default function TenderPage() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <div className="lg:col-span-3 space-y-8">
                 <Card className="shadow-md">
                     <CardHeader>
                         <CardTitle className="text-primary">Основные данные</CardTitle>
@@ -171,9 +184,6 @@ export default function TenderPage() {
                     <CardContent className="text-sm">
                        <InfoRow label="Наименование закупки" icon={<ClipboardList className="w-4 h-4" />}>{tender.title}</InfoRow>
                        <InfoRow label="Отрасль" icon={<Building className="w-4 h-4" />}>{tender.industry}</InfoRow>
-                       <InfoRow label="Начало контракта" icon={<Calendar className="w-4 h-4" />}>{tender.startDate}</InfoRow>
-                       <InfoRow label="Окончание контракта" icon={<Calendar className="w-4 h-4" />}>{tender.endDate}</InfoRow>
-                       <InfoRow label="Итоговая стоимость" icon={<DollarSign className="w-4 h-4" />}>{tender.priceTotal} BYN</InfoRow>
                        <InfoRow label="Город" icon={<MapPin className="w-4 h-4" />}>{tender.city}</InfoRow>
                        <InfoRow label="Область" icon={<LocateFixed className="w-4 h-4" />}>{tender.oblast}</InfoRow>
                        <InfoRow label="Площадка" icon={<Building className="w-4 h-4" />}>
@@ -211,24 +221,6 @@ export default function TenderPage() {
                     </Card>
                 )}
 
-                 <Card className="shadow-md">
-                    <CardHeader>
-                        <CardTitle className="text-primary">Сведения о заказчике</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm">
-                        {isLoggedIn ? (
-                            <>
-                                <InfoRow label="Наименование организации">{tender.customer}</InfoRow>
-                                <InfoRow label="УНП организации">{tender.unp}</InfoRow>
-                                {tender.orgAddress && <InfoRow label="Место нахождения">{tender.orgAddress}</InfoRow>}
-                                {tender.orgContactName && <InfoRow label="Контактное лицо" icon={<User className="w-4 h-4"/>}>{tender.orgContactName}</InfoRow>}
-                                {tender.orgContactPhone && <InfoRow label="Телефон" icon={<Phone className="w-4 h-4"/>}>{tender.orgContactPhone}</InfoRow>}
-                                {tender.orgContactEmail && <InfoRow label="Email" icon={<Mail className="w-4 h-4"/>}>{tender.orgContactEmail}</InfoRow>}
-                            </>
-                        ) : <PremiumPlaceholder />}
-                    </CardContent>
-                </Card>
-                
                 {tender.documents && tender.documents.length > 0 && (
                     <Card className="shadow-md">
                         <CardHeader>
@@ -274,17 +266,44 @@ export default function TenderPage() {
 
             </div>
             
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-2">
                 <div className="sticky top-24 space-y-8">
-                     {!isLoggedIn && (
-                        <Card className="shadow-lg border-accent">
-                            <CardContent className="p-6 text-center">
-                                <h3 className="text-lg font-bold text-primary mb-2">Разблокируйте все данные</h3>
-                                <p className="text-sm text-muted-foreground mb-4">Получите полный доступ к контактам, документам и аналитике, оформив подписку.</p>
-                                <Button className="w-full">Купить доступ</Button>
-                            </CardContent>
-                        </Card>
-                     )}
+                     <Card className="shadow-md">
+                        <CardHeader>
+                            <CardTitle className="text-xl text-primary flex items-center gap-2"><Info className="w-5 h-5"/>Ключевая информация</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4 text-sm">
+                           <SidebarInfoRow label="Общая стоимость" icon={<Banknote className="w-4 h-4" />}>
+                                {tender.priceTotal.toLocaleString('ru-RU')} BYN
+                            </SidebarInfoRow>
+                            <Separator />
+                             <SidebarInfoRow label="Начало контракта" icon={<Calendar className="w-4 h-4" />}>
+                                {tender.startDate || 'Не указано'}
+                            </SidebarInfoRow>
+                             <Separator />
+                             <SidebarInfoRow label="Окончание контракта" icon={<Calendar className="w-4 h-4" />}>
+                                {tender.endDate || 'Не указано'}
+                             </SidebarInfoRow>
+                        </CardContent>
+                    </Card>
+                    
+                    <Card className="shadow-md">
+                        <CardHeader>
+                            <CardTitle className="text-xl text-primary flex items-center gap-2"><Building className="w-5 h-5"/>Сведения о заказчике</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-sm">
+                            {isLoggedIn ? (
+                                <div className="space-y-4">
+                                    <SidebarInfoRow label="Наименование" icon={<Building className="w-4 h-4" />}>{tender.customer}</SidebarInfoRow>
+                                    <SidebarInfoRow label="УНП" icon={<ClipboardList className="w-4 h-4" />}>{tender.unp}</SidebarInfoRow>
+                                    {tender.orgAddress && <SidebarInfoRow label="Адрес" icon={<MapPin className="w-4 h-4"/>}>{tender.orgAddress}</SidebarInfoRow>}
+                                    {tender.orgContactName && <SidebarInfoRow label="Контактное лицо" icon={<User className="w-4 h-4"/>}>{tender.orgContactName}</SidebarInfoRow>}
+                                    {tender.orgContactPhone && <SidebarInfoRow label="Телефон" icon={<Phone className="w-4 h-4"/>}>{tender.orgContactPhone}</SidebarInfoRow>}
+                                    {tender.orgContactEmail && <SidebarInfoRow label="Email" icon={<Mail className="w-4 h-4"/>}>{tender.orgContactEmail}</SidebarInfoRow>}
+                                </div>
+                            ) : <PremiumPlaceholder />}
+                        </CardContent>
+                    </Card>
                      {!isLoggedIn && (
                          <Cta
                             className="!py-8 !bg-primary"
@@ -302,4 +321,3 @@ export default function TenderPage() {
     </div>
   );
 }
-
