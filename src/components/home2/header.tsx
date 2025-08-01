@@ -123,25 +123,25 @@ export function Header() {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                            <Link href="/about">
+                        <Link href="/about" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 О компании
-                            </Link>
-                        </NavigationMenuLink>
+                            </NavigationMenuLink>
+                        </Link>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                            <Link href="/blog">
+                        <Link href="/blog" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 Новости
-                            </Link>
-                        </NavigationMenuLink>
+                            </NavigationMenuLink>
+                        </Link>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                         <NavigationMenuLink asChild>
-                            <Link href="/contacts">
+                        <Link href="/contacts" legacyBehavior passHref>
+                           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 Контакты
-                            </Link>
-                         </NavigationMenuLink>
+                           </NavigationMenuLink>
+                        </Link>
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
@@ -225,14 +225,14 @@ export function Header() {
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<typeof Link>
+  React.ComponentPropsWithoutRef<"a">
 >(({ className, title, children, href, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
         <Link
-          ref={ref}
           href={href!}
+          ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
             className
