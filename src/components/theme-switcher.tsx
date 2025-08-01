@@ -6,36 +6,33 @@ import { Button } from "./ui/button";
 import { Palette, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type ThemeKey = "tendersoft" | "rednet" | "rednet2";
+
 export function ThemeSwitcher() {
-  const [theme, setTheme] = useState("tendersoft");
+  const [theme, setTheme] = useState<ThemeKey>("tendersoft");
   const [isOpen, setIsOpen] = useState(false);
 
   // This function will apply the correct class to the document
-  const applyTheme = (themeName: string) => {
+  const applyTheme = (themeName: ThemeKey) => {
+    const root = document.documentElement;
     // First, remove all possible theme classes
-    document.documentElement.classList.remove("theme-rednet", "theme-rednet2");
+    root.classList.remove("theme-rednet", "theme-rednet2");
     // Then, add the correct class if it's not the default
-    if (themeName === "rednet" || themeName === "rednet2") {
-      document.documentElement.classList.add(themeName);
+    if (themeName === "rednet") {
+      root.classList.add("theme-rednet");
+    }
+    if (themeName === "rednet2") {
+      root.classList.add("theme-rednet2");
     }
   };
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "tendersoft";
+    const savedTheme = (localStorage.getItem("theme") as ThemeKey) || "tendersoft";
     setTheme(savedTheme);
     applyTheme(savedTheme);
-
-    const handleStorageChange = () => {
-      const currentTheme = localStorage.getItem('theme') || 'tendersoft';
-      setTheme(currentTheme);
-      applyTheme(currentTheme);
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const toggleTheme = (newTheme: string) => {
+  const toggleTheme = (newTheme: ThemeKey) => {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     applyTheme(newTheme);
