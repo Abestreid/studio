@@ -123,19 +123,25 @@ export function Header() {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <NavigationMenuLink href="/about">
-                            О компании
+                        <NavigationMenuLink asChild>
+                            <Link href="/about">
+                                О компании
+                            </Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <NavigationMenuLink href="/blog">
-                            Новости
+                        <NavigationMenuLink asChild>
+                            <Link href="/blog">
+                                Новости
+                            </Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                         <NavigationMenuLink href="/contacts">
-                            Контакты
-                        </NavigationMenuLink>
+                         <NavigationMenuLink asChild>
+                            <Link href="/contacts">
+                                Контакты
+                            </Link>
+                         </NavigationMenuLink>
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
@@ -218,14 +224,15 @@ export function Header() {
 }
 
 const ListItem = React.forwardRef<
-  React.ElementRef<'a'>,
+  React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<typeof Link>
->(({ className, title, children, ...props }, ref) => {
+>(({ className, title, children, href, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
         <Link
           ref={ref}
+          href={href || '#'}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
             className
@@ -242,3 +249,5 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
+
+    
