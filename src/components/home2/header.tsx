@@ -123,25 +123,19 @@ export function Header() {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <Link href="/about" passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                О компании
-                            </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink href="/about" className={navigationMenuTriggerStyle()}>
+                            О компании
+                        </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <Link href="/blog" passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                Новости
-                            </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink href="/blog" className={navigationMenuTriggerStyle()}>
+                            Новости
+                        </NavigationMenuLink>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <Link href="/contacts" passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                Контакты
-                            </NavigationMenuLink>
-                        </Link>
+                         <NavigationMenuLink href="/contacts" className={navigationMenuTriggerStyle()}>
+                            Контакты
+                        </NavigationMenuLink>
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
@@ -226,20 +220,20 @@ export function Header() {
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+>(({ className, title, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
-        <Link href={props.href || '#'} ref={ref} className={cn(
+        <a
+          ref={ref}
+          className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
             className
           )}
-          {...props}>
+          {...props}
+        >
           <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </Link>
+        </a>
       </NavigationMenuLink>
     </li>
   )
