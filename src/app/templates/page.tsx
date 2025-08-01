@@ -11,6 +11,17 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
   PlusCircle,
   Bell,
   BookOpen,
@@ -21,7 +32,8 @@ import {
   Mail,
   Trash2,
   Power,
-  FileClock
+  FileClock,
+  UserPlus
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -68,6 +80,34 @@ const mockTemplates = [
 export default function TemplatesPage() {
   const [activeTab, setActiveTab] = useState('kz');
   const [templates, setTemplates] = useState(mockTemplates);
+  
+  const [emails, setEmails] = useState(['info@mycompany.com', 'sales@mycompany.com']);
+  const [newEmail, setNewEmail] = useState('');
+  const [telegrams, setTelegrams] = useState(['@manager1_tg']);
+  const [newTelegram, setNewTelegram] = useState('');
+
+  const handleAddEmail = () => {
+    if (newEmail && !emails.includes(newEmail)) {
+      setEmails([...emails, newEmail]);
+      setNewEmail('');
+    }
+  };
+
+  const handleDeleteEmail = (emailToDelete: string) => {
+    setEmails(emails.filter(email => email !== emailToDelete));
+  };
+  
+  const handleAddTelegram = () => {
+    if (newTelegram && !telegrams.includes(newTelegram)) {
+      setTelegrams([...telegrams, newTelegram]);
+      setNewTelegram('');
+    }
+  };
+
+  const handleDeleteTelegram = (tgToDelete: string) => {
+    setTelegrams(telegrams.filter(tg => tg !== tgToDelete));
+  };
+
 
   const filteredTemplates = templates.filter(t => activeTab === 'kz' ? t.country === 'Казахстан' : t.country === 'Беларусь');
 
@@ -108,7 +148,59 @@ export default function TemplatesPage() {
                             <Button asChild>
                                 <Link href={`/templates/new?country=${activeTab}`}><PlusCircle className="mr-2 h-4 w-4"/>Создать шаблон</Link>
                             </Button>
-                            <Button variant="outline"><Bell className="mr-2 h-4 w-4"/>Настройка уведомлений</Button>
+                             <Dialog>
+                                <DialogTrigger asChild>
+                                     <Button variant="outline"><Bell className="mr-2 h-4 w-4"/>Настройка уведомлений</Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[600px]">
+                                    <DialogHeader>
+                                        <DialogTitle>Массовая настройка уведомлений</DialogTitle>
+                                        <DialogDescription>
+                                            Добавьте получателей, которые будут применяться ко всем вашим шаблонам с включенными уведомлениями.
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+                                        <div className="space-y-4">
+                                            <Label className="font-semibold">Email получатели</Label>
+                                            <div className="space-y-2">
+                                                {emails.map((email) => (
+                                                    <div key={email} className="flex items-center justify-between bg-secondary p-2 rounded-md">
+                                                        <span className="text-sm">{email}</span>
+                                                        <Button variant="ghost" size="icon" onClick={() => handleDeleteEmail(email)}>
+                                                            <Trash2 className="h-4 w-4 text-destructive"/>
+                                                        </Button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Input value={newEmail} onChange={(e) => setNewEmail(e.target.value)} placeholder="new.email@company.com" />
+                                                <Button onClick={handleAddEmail} size="icon"><PlusCircle className="h-5 w-5"/></Button>
+                                            </div>
+                                        </div>
+                                         <div className="space-y-4">
+                                            <Label className="font-semibold">Telegram получатели</Label>
+                                             <div className="space-y-2">
+                                                {telegrams.map((tg) => (
+                                                    <div key={tg} className="flex items-center justify-between bg-secondary p-2 rounded-md">
+                                                        <span className="text-sm">{tg}</span>
+                                                         <Button variant="ghost" size="icon" onClick={() => handleDeleteTelegram(tg)}>
+                                                            <Trash2 className="h-4 w-4 text-destructive"/>
+                                                        </Button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Input value={newTelegram} onChange={(e) => setNewTelegram(e.target.value)} placeholder="@username" />
+                                                <Button onClick={handleAddTelegram} size="icon"><UserPlus className="h-5 w-5"/></Button>
+                                            </div>
+                                            <p className="text-xs text-muted-foreground">Для привязки нового аккаунта Telegram, отправьте боту ключ, сгенерированный в профиле.</p>
+                                        </div>
+                                    </div>
+                                    <DialogFooter>
+                                        <Button type="submit">Сохранить</Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
                             <Button variant="outline"><FileClock className="mr-2 h-4 w-4"/>Журнал доставки</Button>
                             <Button variant="ghost" size="icon"><HelpCircle className="h-5 w-5 text-muted-foreground"/></Button>
                         </div>
