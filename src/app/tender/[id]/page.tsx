@@ -20,14 +20,19 @@ import {
   Clock,
   MapPin,
   Building,
+  DollarSign,
+  ClipboardList,
+  User,
+  Phone,
+  Mail,
+  LocateFixed,
 } from "lucide-react";
 import { useEffect, useState } from 'react';
-import { allTenders, type Tender } from '@/lib/tenders';
+import { fetchTenders, type Tender, type TenderLot, type TenderDocument } from '@/lib/tenders';
 import { useToast } from "@/hooks/use-toast";
 import { useParams } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { getStatusVariant } from '@/lib/utils';
-
 
 export default function TenderPage() {
   const params = useParams<{ id: string }>();
@@ -37,16 +42,18 @@ export default function TenderPage() {
   const { toast } = useToast();
   
   useEffect(() => {
-    const tenderId = params.id;
-    const foundTender = allTenders.find(t => t.id === tenderId) || null;
-    setTender(foundTender);
+    const loadTender = async () => {
+      const tenders = await fetchTenders();
+      const foundTender = tenders.find(t => t.id === params.id) || null;
+      setTender(foundTender);
 
-    if (tenderId) {
-        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        setIsFavorite(favorites.includes(tenderId));
-    }
+      if (params.id) {
+          const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+          setIsFavorite(favorites.includes(params.id));
+      }
+    };
+    loadTender();
   }, [params.id]);
-
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -103,7 +110,7 @@ export default function TenderPage() {
             {icon}
             {label}
         </div>
-        <div className="font-medium text-primary sm:text-right w-full sm:w-2/3">{children}</div>
+        <div className="font-medium text-primary sm:text-right w-full sm:w-2/3">{(children === '' || children === null || children === undefined) ? '-' : children}</div>
     </div>
   )
 
@@ -128,7 +135,7 @@ export default function TenderPage() {
               <span className="text-foreground">{tender.title}</span>
             </div>
             <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent/10">
-                <Link href="/">
+                <Link href="/"> {/* This should link back to a search results page or similar */}
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Назад к списку
                 </Link>
@@ -138,9 +145,9 @@ export default function TenderPage() {
           <div className="bg-card p-6 rounded-xl shadow-md mb-8">
              <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                 <div>
-                    <Badge variant={getStatusVariant(tender.status)} className="text-sm py-1 px-3 self-start lg:self-center mb-2 bg-green-100/80 text-green-700 border-green-200">
+                    <Badge variant={getStatusVariant(tender.status || '')} className="text-sm py-1 px-3 self-start lg:self-center mb-2 bg-green-100/80 text-green-700 border-green-200">
                         <CheckCircle className="w-4 h-4 mr-2" />
-                        {tender.status}
+                        {tender.status || 'Статус не указан'}
                     </Badge>
                     <h1 className="text-2xl sm:text-3xl font-bold text-primary">{tender.title}</h1>
                     <p className="text-muted-foreground mt-1">Номер: {tender.id}</p>
@@ -162,64 +169,109 @@ export default function TenderPage() {
                         <CardTitle className="text-primary">Основные данные</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm">
-                       <InfoRow label="Опубликовано" icon={<Calendar className="w-4 h-4"/>}>{tender.published}</InfoRow>
-                       <InfoRow label="Подача заявок до" icon={<Clock className="w-4 h-4"/>}>
-                           <div className="flex items-center justify-end gap-2">
-                                {tender.deadline}
-                                {tender.deadlineDays && <Badge variant="destructive">Время истекает!</Badge>}
-                           </div>
+                       <InfoRow label="Наименование закупки" icon={<ClipboardList className="w-4 h-4" />}>{tender.title}</InfoRow>
+                       <InfoRow label="Отрасль" icon={<Building className="w-4 h-4" />}>{tender.industry}</InfoRow>
+                       <InfoRow label="Начало контракта" icon={<Calendar className="w-4 h-4" />}>{tender.startDate}</InfoRow>
+                       <InfoRow label="Окончание контракта" icon={<Calendar className="w-4 h-4" />}>{tender.endDate}</InfoRow>
+                       <InfoRow label="Итоговая стоимость" icon={<DollarSign className="w-4 h-4" />}>{tender.priceTotal} BYN</InfoRow>
+                       <InfoRow label="Город" icon={<MapPin className="w-4 h-4" />}>{tender.city}</InfoRow>
+                       <InfoRow label="Область" icon={<LocateFixed className="w-4 h-4" />}>{tender.oblast}</InfoRow>
+                       <InfoRow label="Площадка" icon={<Building className="w-4 h-4" />}>
+                           <Link href={tender.url} target="_blank" className="text-accent hover:underline flex items-center gap-2 justify-end">
+                                {tender.source} <LinkIcon className="w-4 h-4"/>
+                            </Link>
                        </InfoRow>
-                       <InfoRow label="Предельная стоимость" icon={<div className="w-4 h-4"/>}>
-                            <span className="font-bold text-accent text-lg">{tender.price}</span>
-                       </InfoRow>
-                       <InfoRow label="Отрасль" icon={<div className="w-4 h-4"/>}>{tender.industry}</InfoRow>
-                       <InfoRow label="Город" icon={<MapPin className="w-4 h-4"/>}>{tender.location}</InfoRow>
-                       <InfoRow label="Площадка" icon={<Building className="w-4 h-4"/>}>
-                           {tender.operator ? (
-                                <Link href={tender.operator.siteUrl} target="_blank" className="text-accent hover:underline flex items-center gap-2 justify-end">
-                                    {tender.platform} <LinkIcon className="w-4 h-4"/>
-                                </Link>
-                           ) : tender.platform}
-                       </InfoRow>
-                       <InfoRow label="Процедура" icon={<div className="w-4 h-4"/>}>{tender.procurementType}</InfoRow>
                     </CardContent>
                 </Card>
+
+                {tender.lots && tender.lots.length > 0 && (
+                    <Card className="shadow-md">
+                        <CardHeader>
+                            <CardTitle className="text-primary">Лоты</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {tender.lots.map((lot: TenderLot, index: number) => (
+                                <div key={index} className="mb-4 pb-4 border-b border-dashed last:border-b-0 last:mb-0 last:pb-0">
+                                    <h3 className="font-semibold text-base mb-2">Лот {lot.lotNumber}: {lot.subject}</h3>
+                                    <InfoRow label="Количество"> {lot.quantity}</InfoRow>
+                                    <InfoRow label="Стоимость"> {lot.cost}</InfoRow>
+                                    <InfoRow label="Статус"> {lot.status}</InfoRow>
+                                    {lot.rangeTime && <InfoRow label="Период подачи/действия">{lot.rangeTime}</InfoRow>}
+                                    {lot.speakTime && <InfoRow label="Дата переговоров">{lot.speakTime}</InfoRow>}
+                                    {lot.deliveryPlace && <InfoRow label="Место поставки">{lot.deliveryPlace}</InfoRow>}
+                                    {lot.fullAddress && <InfoRow label="Полный адрес">{lot.fullAddress}</InfoRow>}
+                                    {lot.paymentTerm && <InfoRow label="Условия оплаты">{lot.paymentTerm}</InfoRow>}
+                                    {lot.termDelivery && <InfoRow label="Срок поставки">{lot.termDelivery}</InfoRow>}
+                                    {lot.sourceOfFinancing && <InfoRow label="Источник финансирования">{lot.sourceOfFinancing}</InfoRow>}
+                                    {lot.calculationMethod && <InfoRow label="Метод расчета">{lot.calculationMethod}</InfoRow>}
+                                    {lot.okrb && <InfoRow label="Код ОКРБ">{lot.okrb}</InfoRow>}
+                                </div>
+                            ))}
+                        </CardContent>
+                    </Card>
+                )}
 
                  <Card className="shadow-md">
                     <CardHeader>
                         <CardTitle className="text-primary">Сведения о заказчике</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm">
-                        {isLoggedIn && tender.customerDetails ? (
+                        {isLoggedIn ? (
                             <>
-                                <InfoRow label="Наименование организации">{tender.customerDetails.name}</InfoRow>
-                                <InfoRow label="УНП организации">{tender.customerDetails.unp}</InfoRow>
-                                <InfoRow label="Место нахождения">{tender.customerDetails.address}</InfoRow>
-                                <InfoRow label="Контакты">{tender.customerDetails.contactPerson}</InfoRow>
+                                <InfoRow label="Наименование организации">{tender.customer}</InfoRow>
+                                <InfoRow label="УНП организации">{tender.unp}</InfoRow>
+                                {tender.orgAddress && <InfoRow label="Место нахождения">{tender.orgAddress}</InfoRow>}
+                                {tender.orgContactName && <InfoRow label="Контактное лицо" icon={<User className="w-4 h-4"/>}>{tender.orgContactName}</InfoRow>}
+                                {tender.orgContactPhone && <InfoRow label="Телефон" icon={<Phone className="w-4 h-4"/>}>{tender.orgContactPhone}</InfoRow>}
+                                {tender.orgContactEmail && <InfoRow label="Email" icon={<Mail className="w-4 h-4"/>}>{tender.orgContactEmail}</InfoRow>}
                             </>
                         ) : <PremiumPlaceholder />}
                     </CardContent>
                 </Card>
                 
-                 <Card className="shadow-md">
-                    <CardHeader>
-                        <CardTitle className="text-primary">Документы</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                         {isLoggedIn && tender.document ? (
-                            <div className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors">
-                                <div className="flex items-center gap-2">
-                                    <FileText className="w-5 h-5 text-accent"/>
-                                    <span className="text-sm font-medium">{tender.document}</span>
+                {tender.documents && tender.documents.length > 0 && (
+                    <Card className="shadow-md">
+                        <CardHeader>
+                            <CardTitle className="text-primary">Документы</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {isLoggedIn ? (
+                                <div className="space-y-3">
+                                    {tender.documents.map((doc: TenderDocument, index: number) => (
+                                        <div key={index} className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors">
+                                            <div className="flex items-center gap-2">
+                                                <FileText className="w-5 h-5 text-accent"/>
+                                                <span className="text-sm font-medium">{doc.name}</span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <a href={doc.url} target="_blank" rel="noopener noreferrer" title="Скачать документ">
+                                                    <Download className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
+                                                </a>
+                                                <a href={doc.url} target="_blank" rel="noopener noreferrer" title="Открыть в новой вкладке">
+                                                    <LinkIcon className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <Download className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
-                                    <LinkIcon className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
-                                </div>
-                            </div>
-                        ) : <PremiumPlaceholder />}
-                    </CardContent>
-                </Card>
+                            ) : <PremiumPlaceholder />}
+                        </CardContent>
+                    </Card>
+                )}
+
+                {tender.characteristics && tender.characteristics.length > 0 && (
+                    <Card className="shadow-md">
+                        <CardHeader>
+                            <CardTitle className="text-primary">Характеристики</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-sm">
+                            {tender.characteristics.map((char, index) => (
+                                <InfoRow key={index} label={char.name}>{char.value}</InfoRow>
+                            ))}
+                        </CardContent>
+                    </Card>
+                )}
+
             </div>
             
             <div className="lg:col-span-1">

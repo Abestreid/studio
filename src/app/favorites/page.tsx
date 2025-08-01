@@ -17,19 +17,28 @@ import { ListFilter, Search, FileX2, User } from 'lucide-react';
 import { Cta } from '@/components/landing/cta';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { allTenders, Tender } from '@/lib/tenders';
+import { fetchTenders, Tender } from '@/lib/tenders';
 
 
 export default function FavoritesPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [allTenders, setAllTenders] = useState<Tender[]>([]);
     const [favoriteTenders, setFavoriteTenders] = useState<Tender[]>([]);
+
+    useEffect(() => {
+        const loadTenders = async () => {
+            const tenders = await fetchTenders();
+            setAllTenders(tenders);
+        }
+        loadTenders();
+    }, []);
 
     useEffect(() => {
         const checkAuthAndLoadFavorites = () => {
             const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
             setIsLoggedIn(loggedIn);
             
-            if (loggedIn) {
+            if (loggedIn && allTenders.length > 0) {
                 const favoriteIds: string[] = JSON.parse(localStorage.getItem('favorites') || '[]');
                 const favorited = allTenders.filter(tender => favoriteIds.includes(tender.id));
                 setFavoriteTenders(favorited);
@@ -43,8 +52,13 @@ export default function FavoritesPage() {
         // Listen for storage changes to update UI across tabs
         window.addEventListener('storage', checkAuthAndLoadFavorites);
         
+        // Rerun when allTenders is loaded
+        if (allTenders.length > 0) {
+            checkAuthAndLoadFavorites();
+        }
+
         return () => window.removeEventListener('storage', checkAuthAndLoadFavorites);
-    }, []);
+    }, [allTenders]);
 
     const hasFavorites = favoriteTenders.length > 0;
 
