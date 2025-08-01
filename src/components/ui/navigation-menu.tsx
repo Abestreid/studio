@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -81,12 +82,12 @@ const NavigationMenuContent = React.forwardRef<
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName
 
 const NavigationMenuLink = React.forwardRef<
-  React.ElementRef<typeof Link>,
+  React.ElementRef<typeof NavigationMenuPrimitive.Link>,
   React.ComponentProps<typeof Link>
->((props, ref) => {
+>(({ className, ...props }, ref) => {
     return (
-        <NavigationMenuPrimitive.Link asChild>
-            <Link ref={ref} className={cn(navigationMenuTriggerStyle(), props.className)} {...props}/>
+        <NavigationMenuPrimitive.Link ref={ref} asChild>
+            <Link className={cn(navigationMenuTriggerStyle(), className)} {...props}/>
         </NavigationMenuPrimitive.Link>
     );
 });

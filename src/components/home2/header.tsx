@@ -123,17 +123,17 @@ export function Header() {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <NavigationMenuLink href="/about" className={navigationMenuTriggerStyle()}>
+                        <NavigationMenuLink href="/about">
                             О компании
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <NavigationMenuLink href="/blog" className={navigationMenuTriggerStyle()}>
+                        <NavigationMenuLink href="/blog">
                             Новости
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                         <NavigationMenuLink href="/contacts" className={navigationMenuTriggerStyle()}>
+                         <NavigationMenuLink href="/contacts">
                             Контакты
                         </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -218,13 +218,13 @@ export function Header() {
 }
 
 const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
+  React.ElementRef<typeof Link>,
+  React.ComponentPropsWithoutRef<typeof Link> & { title: string }
 >(({ className, title, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
+        <Link
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
@@ -233,7 +233,7 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   )
