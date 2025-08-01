@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" style={{scrollBehavior: 'smooth'}} className={cn(golos.variable)}>
+    <html lang="ru" style={{scrollBehavior: 'smooth'}} className={cn(golos.variable)} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -32,7 +32,7 @@ export default function RootLayout({
           rel="stylesheet"
         ></link>
       </head>
-      <body className="font-body antialiased bg-background" suppressHydrationWarning>
+      <body className="font-body antialiased bg-background">
         {children}
         <Toaster />
         <ThemeSwitcher />
