@@ -114,6 +114,31 @@
     white-space: nowrap;
     border-width: 0;
   }
+  .nav-link-animate, .nav-link-animate-trigger {
+    @apply relative;
+  }
+  .nav-link-animate::after, .nav-link-animate-trigger::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: hsl(var(--accent));
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+  }
+  .nav-link-animate:hover::after, .nav-link-animate-trigger[data-state=open]::after, .nav-link-animate-trigger:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+   .nav-link-animate-trigger {
+    @apply text-base font-medium text-muted-foreground transition-colors hover:text-accent bg-transparent p-0;
+  }
+  .nav-link-animate-trigger:hover, .nav-link-animate-trigger[data-state=open] {
+    @apply bg-transparent;
+  }
 }
 
 .search-pill {

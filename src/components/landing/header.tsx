@@ -92,12 +92,12 @@ export function Header() {
           <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
           <span className="text-xl font-bold text-primary">{headerContent.header.brandName}</span>
         </Link>
-        <nav className="hidden items-center gap-2 lg:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
              {headerContent.header.navLinks.map((link: any) => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="text-base font-medium text-muted-foreground transition-colors hover:text-primary"
+                  className="text-base font-medium text-muted-foreground transition-colors hover:text-accent nav-link-animate"
                 >
                   {link.label}
                 </Link>

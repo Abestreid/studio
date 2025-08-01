@@ -90,7 +90,7 @@ export function Header() {
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger>Тендеры</NavigationMenuTrigger>
+                        <NavigationMenuTrigger className="nav-link-animate-trigger">Тендеры</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <div className="grid w-[600px] grid-cols-2 gap-x-8 gap-y-4 p-4">
                                 <div>
@@ -113,7 +113,7 @@ export function Header() {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger>Возможности системы</NavigationMenuTrigger>
+                        <NavigationMenuTrigger className="nav-link-animate-trigger">Возможности системы</NavigationMenuTrigger>
                          <NavigationMenuContent>
                             <ul className="grid w-[300px] gap-3 p-4">
                             {systemFeatures.map((component) => (
@@ -123,17 +123,17 @@ export function Header() {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                        <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), 'nav-link-animate')}>
                             <Link href="/about">О компании</Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                        <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), 'nav-link-animate')}>
                            <Link href="/blog">Новости</Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
                      <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                        <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), 'nav-link-animate')}>
                            <Link href="/contacts">Контакты</Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
@@ -218,14 +218,14 @@ export function Header() {
 }
 
 const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
+  React.ElementRef<typeof Link>,
   React.ComponentPropsWithoutRef<typeof Link> & { title: string }
 >(({ className, title, children, href, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
         <Link
-          href={href}
+          href={href!}
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
