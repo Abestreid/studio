@@ -13,19 +13,17 @@ export function ThemeSwitcher() {
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "tendersoft";
     setTheme(savedTheme);
-    if (savedTheme === "rednet") {
-      document.documentElement.classList.add("theme-rednet");
-    } else {
-      document.documentElement.classList.remove("theme-rednet");
+    document.documentElement.classList.remove("theme-rednet", "theme-rednet2");
+    if (savedTheme === "rednet" || savedTheme === "rednet2") {
+      document.documentElement.classList.add(savedTheme);
     }
     
     const handleStorageChange = () => {
         const currentTheme = localStorage.getItem('theme') || 'tendersoft';
         setTheme(currentTheme);
-        if (currentTheme === "rednet") {
-            document.documentElement.classList.add("theme-rednet");
-        } else {
-            document.documentElement.classList.remove("theme-rednet");
+        document.documentElement.classList.remove("theme-rednet", "theme-rednet2");
+        if (currentTheme === "rednet" || currentTheme === "rednet2") {
+            document.documentElement.classList.add(currentTheme);
         }
     }
     
@@ -59,6 +57,13 @@ export function ThemeSwitcher() {
             variant={theme === "rednet" ? "default" : "outline"}
           >
             redneT (BY)
+          </Button>
+           <Button
+            onClick={() => toggleTheme("rednet2")}
+            size="sm"
+            variant={theme === "rednet2" ? "default" : "outline"}
+          >
+            redneT (BY) 2
           </Button>
         </div>
       )}

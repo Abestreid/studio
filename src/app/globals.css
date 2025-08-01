@@ -54,6 +54,14 @@
     --radius: 0.5rem;
   }
 
+  .theme-rednet2 {
+    --primary: 348 97% 16%; /* #540111 */
+    --accent: 359 29% 45%; /* #965251 */
+    --accent-dark: 359 29% 40%;
+    --ring: 359 29% 45%;
+    --radius: 0.5rem;
+  }
+
   .dark {
     --background: 215 28% 17%;
     --foreground: 0 0% 98%;
