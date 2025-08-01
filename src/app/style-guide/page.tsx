@@ -55,7 +55,7 @@ import { DatePickerWithRange } from '@/components/analytics/date-range-picker';
 import { TendersByMonthChart } from '@/components/analytics/tenders-by-month-chart';
 import { TendersByIndustryChart } from '@/components/analytics/tenders-by-industry-chart';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Terminal, LogOut, UserCircle, Check, User } from 'lucide-react';
+import { Terminal, LogOut, UserCircle, Check, User, FileX2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -476,6 +476,21 @@ export default function StyleGuidePage() {
                     </div>
                 </div>
             </SubSection>
+
+             <SubSection title="Пустое состояние списка">
+                <div className="w-full">
+                    <div className="text-center bg-card border rounded-lg py-16 px-6">
+                        <FileX2 className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                        <h2 className="text-2xl font-semibold text-primary mb-2">Список избранного пуст</h2>
+                        <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                            Вы еще не добавили ни одного тендера. Начните поиск, чтобы найти интересные закупки и добавьте их в избранное для удобного отслеживания.
+                        </p>
+                         <Button size="lg" asChild>
+                            <Link href="/">Начать поиск</Link>
+                        </Button>
+                    </div>
+                </div>
+            </SubSection>
             
             {/* Analytics Components */}
             <Card>
@@ -559,5 +574,3 @@ export default function StyleGuidePage() {
     </div>
   );
 }
-
-    
