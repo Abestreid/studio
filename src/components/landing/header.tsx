@@ -2,6 +2,7 @@
 'use client';
 
 import Link from 'next/link';
+import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -139,6 +140,13 @@ export function Header() {
                         <Link href="/contacts" legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 Контакты
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
+                     <NavigationMenuItem>
+                        <Link href="/templates" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                Шаблоны
                             </NavigationMenuLink>
                         </Link>
                     </NavigationMenuItem>
