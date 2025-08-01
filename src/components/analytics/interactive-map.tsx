@@ -17,8 +17,26 @@ export function InteractiveMap() {
   const [geoJson, setGeoJson] = useState(null);
   const [loading, setLoading] = useState(true);
   const echartsRef = useRef<any>(null);
+  const [themeColors, setThemeColors] = useState({
+    primary: 'hsl(196 35% 26%)',
+    accent: 'hsl(168 76% 36%)',
+    secondary: 'hsl(216 34% 91%)',
+    foreground: 'hsl(215 28% 17%)',
+  });
 
-  // 1) Load geoJSON
+  // 1) Load theme colors on mount
+  useEffect(() => {
+    const computedStyle = getComputedStyle(document.documentElement);
+    setThemeColors({
+      primary: `hsl(${computedStyle.getPropertyValue('--primary').trim()})`,
+      accent: `hsl(${computedStyle.getPropertyValue('--accent').trim()})`,
+      secondary: `hsl(${computedStyle.getPropertyValue('--secondary').trim()})`,
+      foreground: `hsl(${computedStyle.getPropertyValue('--foreground').trim()})`,
+    });
+  }, []);
+
+
+  // 2) Load geoJSON
   useEffect(() => {
     fetch('/geo/by.json')
       .then(res => {
@@ -34,7 +52,7 @@ export function InteractiveMap() {
       .catch(error => console.error("Failed to load geoJSON", error));
   }, []);
 
-  // 2) Load statistics data (mock API call)
+  // 3) Load statistics data (mock API call)
   useEffect(() => {
     setLoading(true);
     // Simulate API call
@@ -45,7 +63,7 @@ export function InteractiveMap() {
     }, 300); // Simulate network delay
   }, [year]);
 
-  // 3) ECharts options
+  // 4) ECharts options using theme colors
   const getOption = () => {
       const currentMetricData = data.map(d => bySum ? d.sum : d.count);
       const maxValue = currentMetricData.length > 0 ? Math.max(...currentMetricData) : 0;
@@ -72,11 +90,11 @@ export function InteractiveMap() {
             top: 'bottom',
             text: bySum ? ['Max сумма','Min сумма'] : ['Max кол-во','Min кол-во'],
             inRange: {
-                color: ['#e0f2f1', '#2A4A56'] // Light Teal to Primary Blue
+                color: [themeColors.secondary, themeColors.primary]
             },
             calculable: true,
             textStyle: {
-                color: 'hsl(var(--foreground))'
+                color: themeColors.foreground
             }
         },
         series: [
@@ -84,7 +102,7 @@ export function InteractiveMap() {
                 name: 'Беларусь',
                 type: 'map',
                 map: 'Belarus',
-                roam: true, // Allows zooming and panning
+                roam: true,
                 label: {
                     show: false,
                 },
@@ -98,7 +116,7 @@ export function InteractiveMap() {
                         color: '#fff'
                     },
                     itemStyle: {
-                        areaColor: '#16A085' // Accent color on hover
+                        areaColor: themeColors.accent
                     }
                 }
             }
