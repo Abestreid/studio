@@ -99,10 +99,10 @@ export default function TenderPage() {
 
   const InfoRow = ({ label, children, icon, className }: { label: string, children: React.ReactNode, icon?: React.ReactNode, className?: string }) => (
     <div className={cn("flex flex-col sm:flex-row sm:items-start sm:justify-between py-3 border-b border-dashed last:border-b-0", className)}>
-        <p className="text-muted-foreground w-full sm:w-1/3 shrink-0 mb-1 sm:mb-0 flex items-center gap-2">
+        <div className="text-muted-foreground w-full sm:w-1/3 shrink-0 mb-1 sm:mb-0 flex items-center gap-2">
             {icon}
             {label}
-        </p>
+        </div>
         <div className="font-medium text-primary sm:text-right w-full sm:w-2/3">{children}</div>
     </div>
   )
@@ -250,3 +250,4 @@ export default function TenderPage() {
     </div>
   );
 }
+
