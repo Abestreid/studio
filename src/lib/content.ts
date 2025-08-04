@@ -7,8 +7,9 @@ export const content = {
         header: {
             brandName: 'Tendersoft',
             navLinks: [
-                { href: '/', label: 'Тендеры Казахстана' },
+                { href: '/', label: 'Поиск' },
                 { href: '/analytics', label: 'Аналитика' },
+                { href: '/templates', label: 'Шаблоны' },
                 { href: '/favorites', label: 'Избранное' },
                 { href: '/pricing', label: 'Тарифы' },
                 { href: '/blog', label: 'Блог' },
@@ -120,8 +121,9 @@ export const content = {
         header: {
             brandName: 'redneT',
             navLinks: [
-                { href: '/', label: 'Тендеры Беларуси' },
+                { href: '/', label: 'Поиск' },
                 { href: '/analytics', label: 'Аналитика' },
+                { href: '/templates', label: 'Шаблоны' },
                 { href: '/favorites', label: 'Избранное' },
                 { href: '/pricing', label: 'Тарифы' },
                 { href: '/blog', label: 'Блог' },
@@ -209,8 +211,9 @@ export const content = {
         header: {
             brandName: 'redneT',
             navLinks: [
-                { href: '/', label: 'Тендеры Беларуси' },
+                { href: '/', label: 'Поиск' },
                 { href: '/analytics', label: 'Аналитика' },
+                { href: '/templates', label: 'Шаблоны' },
                 { href: '/favorites', label: 'Избранное' },
                 { href: '/pricing', label: 'Тарифы' },
                 { href: '/blog', label: 'Блог' },
@@ -594,3 +597,5 @@ export const mockApiData = {
        { region: 'Могилевская область', sum: 5800000, count: 190 },
     ]
 };
+
+    
