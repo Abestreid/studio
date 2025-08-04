@@ -28,6 +28,12 @@ import {
   LocateFixed,
   Info,
   Banknote,
+  Briefcase,
+  FileBadge,
+  Code2,
+  Wallet,
+  CalendarCheck,
+  Building2,
 } from "lucide-react";
 import { useEffect, useState } from 'react';
 import { fetchTenders, type Tender, type TenderLot, type TenderDocument } from '@/lib/tenders';
@@ -116,6 +122,16 @@ export default function TenderPage() {
         <div className="font-medium text-primary sm:text-right w-full sm:w-3/5">{(children === '' || children === null || children === undefined) ? '-' : children}</div>
     </div>
   )
+
+  const LotInfoItem = ({ label, children, icon, className }: { label: string, children: React.ReactNode, icon?: React.ReactNode, className?:string }) => (
+    <div className={cn("flex items-start gap-2", className)}>
+        {icon && <div className="text-muted-foreground mt-0.5">{icon}</div>}
+        <div className="flex-1">
+            <p className="text-xs text-muted-foreground">{label}</p>
+            <p className="font-medium text-primary/90 text-sm">{children}</p>
+        </div>
+    </div>
+  )
   
    const SidebarInfoRow = ({ label, children, icon, className, contentClassName }: { label: string, children: React.ReactNode, icon?: React.ReactNode, className?:string, contentClassName?:string }) => (
     <div className={cn("flex items-start gap-3", className)}>
@@ -148,7 +164,7 @@ export default function TenderPage() {
               <span className="text-foreground">{tender.title}</span>
             </div>
             <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent/10">
-                <Link href="/"> {/* This should link back to a search results page or similar */}
+                <Link href="/">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Назад к списку
                 </Link>
@@ -179,14 +195,14 @@ export default function TenderPage() {
             <div className="lg:col-span-3 space-y-8">
                 <Card className="shadow-md">
                     <CardHeader>
-                        <CardTitle className="text-primary">Основные данные</CardTitle>
+                        <CardTitle className="text-primary flex items-center gap-2"><ClipboardList className="w-5 h-5 text-accent"/>Основные данные</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm">
                        <InfoRow label="Наименование закупки" icon={<ClipboardList className="w-4 h-4" />}>{tender.title}</InfoRow>
                        <InfoRow label="Отрасль" icon={<Building className="w-4 h-4" />}>{tender.industry}</InfoRow>
                        <InfoRow label="Город" icon={<MapPin className="w-4 h-4" />}>{tender.city}</InfoRow>
                        <InfoRow label="Область" icon={<LocateFixed className="w-4 h-4" />}>{tender.oblast}</InfoRow>
-                       <InfoRow label="Площадка" icon={<Building className="w-4 h-4" />}>
+                       <InfoRow label="Площадка" icon={<Building2 className="w-4 h-4" />}>
                            <Link href={tender.url} target="_blank" className="text-accent hover:underline flex items-center gap-2 justify-end">
                                 {tender.source} <LinkIcon className="w-4 h-4"/>
                             </Link>
@@ -195,26 +211,37 @@ export default function TenderPage() {
                 </Card>
 
                 {tender.lots && tender.lots.length > 0 && (
-                    <Card className="shadow-md">
+                     <Card className="shadow-md">
                         <CardHeader>
-                            <CardTitle className="text-primary">Лоты</CardTitle>
+                            <CardTitle className="text-primary flex items-center gap-2"><Briefcase className="w-5 h-5 text-accent"/>Лоты</CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="space-y-6">
                             {tender.lots.map((lot: TenderLot, index: number) => (
-                                <div key={index} className="mb-4 pb-4 border-b border-dashed last:border-b-0 last:mb-0 last:pb-0">
-                                    <h3 className="font-semibold text-base mb-2">Лот {lot.lotNumber}: {lot.subject}</h3>
-                                    <InfoRow label="Количество"> {lot.quantity}</InfoRow>
-                                    <InfoRow label="Стоимость"> {lot.cost}</InfoRow>
-                                    <InfoRow label="Статус"> {lot.status}</InfoRow>
-                                    {lot.rangeTime && <InfoRow label="Период подачи/действия">{lot.rangeTime}</InfoRow>}
-                                    {lot.speakTime && <InfoRow label="Дата переговоров">{lot.speakTime}</InfoRow>}
-                                    {lot.deliveryPlace && <InfoRow label="Место поставки">{lot.deliveryPlace}</InfoRow>}
-                                    {lot.fullAddress && <InfoRow label="Полный адрес">{lot.fullAddress}</InfoRow>}
-                                    {lot.paymentTerm && <InfoRow label="Условия оплаты">{lot.paymentTerm}</InfoRow>}
-                                    {lot.termDelivery && <InfoRow label="Срок поставки">{lot.termDelivery}</InfoRow>}
-                                    {lot.sourceOfFinancing && <InfoRow label="Источник финансирования">{lot.sourceOfFinancing}</InfoRow>}
-                                    {lot.calculationMethod && <InfoRow label="Метод расчета">{lot.calculationMethod}</InfoRow>}
-                                    {lot.okrb && <InfoRow label="Код ОКРБ">{lot.okrb}</InfoRow>}
+                                <div key={index} className="border rounded-xl p-4">
+                                    <div className="flex justify-between items-start gap-4 mb-3">
+                                        <div className="flex-grow">
+                                            <h3 className="font-semibold text-base mb-2">Лот {lot.lotNumber}: {lot.subject}</h3>
+                                            <Badge variant="outline" className="bg-green-100/60 border-green-300 text-green-700">{lot.status}</Badge>
+                                        </div>
+                                        <div className="text-right shrink-0">
+                                            <p className="font-bold text-lg text-primary">{lot.cost}</p>
+                                            <p className="text-xs text-muted-foreground">{lot.quantity}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 py-4 border-y border-dashed">
+                                        {lot.rangeTime && <LotInfoItem label="Период подачи/действия" icon={<Calendar className="w-4 h-4"/>}>{lot.rangeTime}</LotInfoItem>}
+                                        {lot.sourceOfFinancing && <LotInfoItem label="Источник финансирования" icon={<Wallet className="w-4 h-4"/>}>{lot.sourceOfFinancing}</LotInfoItem>}
+                                        {lot.speakTime && <LotInfoItem label="Дата переговоров" icon={<Clock className="w-4 h-4"/>}>{lot.speakTime}</LotInfoItem>}
+                                        {lot.calculationMethod && <LotInfoItem label="Метод расчета" icon={<FileBadge className="w-4 h-4"/>}>{lot.calculationMethod}</LotInfoItem>}
+                                        {lot.deliveryPlace && <LotInfoItem label="Место поставки" icon={<MapPin className="w-4 h-4"/>}>{lot.deliveryPlace}</LotInfoItem>}
+                                        {lot.okrb && <LotInfoItem label="Код ОКРБ" icon={<Code2 className="w-4 h-4"/>}>{lot.okrb}</LotInfoItem>}
+                                    </div>
+
+                                    <div className="space-y-4 pt-4">
+                                        {lot.paymentTerm && <LotInfoItem label="Условия оплаты" icon={<Info className="w-4 h-4"/>}>{lot.paymentTerm}</LotInfoItem>}
+                                        {lot.termDelivery && <LotInfoItem label="Срок поставки" icon={<CalendarCheck className="w-4 h-4"/>}>{lot.termDelivery}</LotInfoItem>}
+                                    </div>
                                 </div>
                             ))}
                         </CardContent>
@@ -248,7 +275,7 @@ export default function TenderPage() {
                                 <p className="text-xl font-bold text-primary">{tender.price}</p>
                             </div>
                            <div className="bg-secondary/40 p-4 rounded-lg">
-                             <SidebarInfoRow label="Начало контракта" icon={<Calendar className="w-4 h-4 text-primary" />}>
+                             <SidebarInfoRow label="Начало контракта" icon={<Calendar className="w-4 h-4" />}>
                                 {tender.startDate || 'Не указано'}
                             </SidebarInfoRow>
                            </div>
@@ -270,11 +297,11 @@ export default function TenderPage() {
                                     <SidebarInfoRow label="Наименование">{tender.customer}</SidebarInfoRow>
                                     <SidebarInfoRow label="УНП"><Badge variant="outline" className="text-sm">{tender.unp}</Badge></SidebarInfoRow>
                                     <Separator className="my-2"/>
-                                    {tender.orgContactName && <SidebarInfoRow label="Контактное лицо" icon={<User className="w-4 h-4 text-muted-foreground"/>}>{tender.orgContactName}</SidebarInfoRow>}
-                                    {tender.orgContactPhone && <SidebarInfoRow label="Телефон" icon={<Phone className="w-4 h-4 text-muted-foreground"/>}>{tender.orgContactPhone}</SidebarInfoRow>}
-                                    {tender.orgAddress && <SidebarInfoRow label="Адрес" icon={<MapPin className="w-4 h-4 text-muted-foreground"/>}>{tender.orgAddress}</SidebarInfoRow>}
+                                    {tender.orgContactName && <SidebarInfoRow label="Контактное лицо" icon={<User className="w-4 h-4"/>}>{tender.orgContactName}</SidebarInfoRow>}
+                                    {tender.orgContactPhone && <SidebarInfoRow label="Телефон" icon={<Phone className="w-4 h-4"/>}>{tender.orgContactPhone}</SidebarInfoRow>}
+                                    {tender.orgAddress && <SidebarInfoRow label="Адрес" icon={<MapPin className="w-4 h-4"/>}>{tender.orgAddress}</SidebarInfoRow>}
                                     {tender.orgContactEmail &&
-                                        <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white">
+                                        <Button className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground">
                                             <Mail className="mr-2 h-4 w-4" /> Связаться с заказчиком
                                         </Button>
                                     }
@@ -286,26 +313,20 @@ export default function TenderPage() {
                     {tender.documents && tender.documents.length > 0 && (
                         <Card className="shadow-md">
                             <CardHeader>
-                                <CardTitle className="text-primary">Документы</CardTitle>
+                                <CardTitle className="text-primary flex items-center gap-2"><FileText className="w-5 h-5 text-accent"/>Документы</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 {isLoggedIn ? (
                                     <div className="space-y-3">
                                         {tender.documents.map((doc: TenderDocument, index: number) => (
-                                            <div key={index} className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors">
-                                                <div className="flex items-center gap-2">
-                                                    <FileText className="w-5 h-5 text-accent"/>
-                                                    <span className="text-sm font-medium">{doc.name}</span>
+                                            <a key={index} href={doc.url} target="_blank" rel="noopener noreferrer" title={doc.name}
+                                                className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors group">
+                                                <div className="flex items-center gap-2 overflow-hidden">
+                                                    <FileText className="w-5 h-5 text-accent shrink-0"/>
+                                                    <span className="text-sm font-medium truncate group-hover:underline">{doc.name}</span>
                                                 </div>
-                                                <div className="flex items-center gap-3">
-                                                    <a href={doc.url} target="_blank" rel="noopener noreferrer" title="Скачать документ">
-                                                        <Download className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
-                                                    </a>
-                                                    <a href={doc.url} target="_blank" rel="noopener noreferrer" title="Открыть в новой вкладке">
-                                                        <LinkIcon className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                                <Download className="w-5 h-5 text-muted-foreground group-hover:text-primary cursor-pointer shrink-0 ml-2"/>
+                                            </a>
                                         ))}
                                     </div>
                                 ) : <PremiumPlaceholder />}
@@ -314,12 +335,14 @@ export default function TenderPage() {
                     )}
 
                      {!isLoggedIn && (
-                         <Cta
-                            className="!py-8 !bg-primary"
-                            title="Начните получать тендеры первыми"
-                            description="Поиск, мониторинг, аналитика и командная работа — экономьте время и выигрывайте больше."
-                            buttonText="Попробовать бесплатно"
-                        />
+                         <div className="hidden lg:block">
+                            <Cta
+                                className="!py-8 !bg-primary"
+                                title="Разблокируйте все данные"
+                                description="Получите полный доступ к контактам, документам и аналитике, оформив подписку."
+                                buttonText="Купить доступ"
+                            />
+                         </div>
                     )}
                 </div>
             </div>
@@ -329,4 +352,5 @@ export default function TenderPage() {
       <Footer />
     </div>
   );
-}
+
+    
