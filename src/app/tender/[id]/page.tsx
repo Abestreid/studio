@@ -137,8 +137,8 @@ export default function TenderPage() {
     <div className={cn("flex items-start gap-3", className)}>
         {icon && <div className="text-muted-foreground mt-0.5">{icon}</div>}
         <div className="flex-1">
-            <p className="text-xs text-muted-foreground">{label}</p>
-            <p className={cn("font-semibold text-primary", contentClassName)}>{children}</p>
+            <div className="text-xs text-muted-foreground">{label}</div>
+            <div className={cn("font-semibold text-primary", contentClassName)}>{children}</div>
         </div>
     </div>
   )
@@ -352,5 +352,4 @@ export default function TenderPage() {
       <Footer />
     </div>
   );
-
-    
+}
