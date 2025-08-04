@@ -117,12 +117,12 @@ export default function TenderPage() {
     </div>
   )
   
-   const SidebarInfoRow = ({ label, children, icon }: { label: string, children: React.ReactNode, icon?: React.ReactNode }) => (
-    <div className="flex items-start gap-3">
-        <div className="text-muted-foreground mt-0.5">{icon}</div>
+   const SidebarInfoRow = ({ label, children, icon, className, contentClassName }: { label: string, children: React.ReactNode, icon?: React.ReactNode, className?:string, contentClassName?:string }) => (
+    <div className={cn("flex items-start gap-3", className)}>
+        {icon && <div className="text-muted-foreground mt-0.5">{icon}</div>}
         <div className="flex-1">
             <p className="text-xs text-muted-foreground">{label}</p>
-            <p className="font-semibold text-primary">{children}</p>
+            <p className={cn("font-semibold text-primary", contentClassName)}>{children}</p>
         </div>
     </div>
   )
@@ -221,36 +221,6 @@ export default function TenderPage() {
                     </Card>
                 )}
 
-                {tender.documents && tender.documents.length > 0 && (
-                    <Card className="shadow-md">
-                        <CardHeader>
-                            <CardTitle className="text-primary">Документы</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            {isLoggedIn ? (
-                                <div className="space-y-3">
-                                    {tender.documents.map((doc: TenderDocument, index: number) => (
-                                        <div key={index} className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors">
-                                            <div className="flex items-center gap-2">
-                                                <FileText className="w-5 h-5 text-accent"/>
-                                                <span className="text-sm font-medium">{doc.name}</span>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <a href={doc.url} target="_blank" rel="noopener noreferrer" title="Скачать документ">
-                                                    <Download className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
-                                                </a>
-                                                <a href={doc.url} target="_blank" rel="noopener noreferrer" title="Открыть в новой вкладке">
-                                                    <LinkIcon className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : <PremiumPlaceholder />}
-                        </CardContent>
-                    </Card>
-                )}
-
                 {tender.characteristics && tender.characteristics.length > 0 && (
                     <Card className="shadow-md">
                         <CardHeader>
@@ -270,40 +240,79 @@ export default function TenderPage() {
                 <div className="sticky top-24 space-y-8">
                      <Card className="shadow-md">
                         <CardHeader>
-                            <CardTitle className="text-xl text-primary flex items-center gap-2"><Info className="w-5 h-5"/>Ключевая информация</CardTitle>
+                            <CardTitle className="text-xl text-primary flex items-center gap-2"><Banknote className="w-5 h-5 text-accent"/>Ключевая информация</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4 text-sm">
-                           <SidebarInfoRow label="Общая стоимость" icon={<Banknote className="w-4 h-4" />}>
-                                {tender.priceTotal.toLocaleString('ru-RU')} BYN
-                            </SidebarInfoRow>
-                            <Separator />
-                             <SidebarInfoRow label="Начало контракта" icon={<Calendar className="w-4 h-4" />}>
+                            <div className="bg-accent/10 p-4 rounded-lg text-center">
+                                <p className="text-xs text-muted-foreground">Общая стоимость</p>
+                                <p className="text-xl font-bold text-primary">{tender.price}</p>
+                            </div>
+                           <div className="bg-secondary/40 p-4 rounded-lg">
+                             <SidebarInfoRow label="Начало контракта" icon={<Calendar className="w-4 h-4 text-primary" />}>
                                 {tender.startDate || 'Не указано'}
                             </SidebarInfoRow>
-                             <Separator />
-                             <SidebarInfoRow label="Окончание контракта" icon={<Calendar className="w-4 h-4" />}>
+                           </div>
+                           <div className="bg-secondary/40 p-4 rounded-lg">
+                             <SidebarInfoRow label="Окончание контракта" icon={<Calendar className="w-4 h-4 text-red-500" />}>
                                 {tender.endDate || 'Не указано'}
                              </SidebarInfoRow>
+                           </div>
                         </CardContent>
                     </Card>
                     
                     <Card className="shadow-md">
                         <CardHeader>
-                            <CardTitle className="text-xl text-primary flex items-center gap-2"><Building className="w-5 h-5"/>Сведения о заказчике</CardTitle>
+                            <CardTitle className="text-xl text-primary flex items-center gap-2"><Building className="w-5 h-5 text-accent"/>Сведения о заказчике</CardTitle>
                         </CardHeader>
                         <CardContent className="text-sm">
                             {isLoggedIn ? (
                                 <div className="space-y-4">
-                                    <SidebarInfoRow label="Наименование" icon={<Building className="w-4 h-4" />}>{tender.customer}</SidebarInfoRow>
-                                    <SidebarInfoRow label="УНП" icon={<ClipboardList className="w-4 h-4" />}>{tender.unp}</SidebarInfoRow>
-                                    {tender.orgAddress && <SidebarInfoRow label="Адрес" icon={<MapPin className="w-4 h-4"/>}>{tender.orgAddress}</SidebarInfoRow>}
-                                    {tender.orgContactName && <SidebarInfoRow label="Контактное лицо" icon={<User className="w-4 h-4"/>}>{tender.orgContactName}</SidebarInfoRow>}
-                                    {tender.orgContactPhone && <SidebarInfoRow label="Телефон" icon={<Phone className="w-4 h-4"/>}>{tender.orgContactPhone}</SidebarInfoRow>}
-                                    {tender.orgContactEmail && <SidebarInfoRow label="Email" icon={<Mail className="w-4 h-4"/>}>{tender.orgContactEmail}</SidebarInfoRow>}
+                                    <SidebarInfoRow label="Наименование">{tender.customer}</SidebarInfoRow>
+                                    <SidebarInfoRow label="УНП"><Badge variant="outline" className="text-sm">{tender.unp}</Badge></SidebarInfoRow>
+                                    <Separator className="my-2"/>
+                                    {tender.orgContactName && <SidebarInfoRow label="Контактное лицо" icon={<User className="w-4 h-4 text-muted-foreground"/>}>{tender.orgContactName}</SidebarInfoRow>}
+                                    {tender.orgContactPhone && <SidebarInfoRow label="Телефон" icon={<Phone className="w-4 h-4 text-muted-foreground"/>}>{tender.orgContactPhone}</SidebarInfoRow>}
+                                    {tender.orgAddress && <SidebarInfoRow label="Адрес" icon={<MapPin className="w-4 h-4 text-muted-foreground"/>}>{tender.orgAddress}</SidebarInfoRow>}
+                                    {tender.orgContactEmail &&
+                                        <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white">
+                                            <Mail className="mr-2 h-4 w-4" /> Связаться с заказчиком
+                                        </Button>
+                                    }
                                 </div>
                             ) : <PremiumPlaceholder />}
                         </CardContent>
                     </Card>
+                    
+                    {tender.documents && tender.documents.length > 0 && (
+                        <Card className="shadow-md">
+                            <CardHeader>
+                                <CardTitle className="text-primary">Документы</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                {isLoggedIn ? (
+                                    <div className="space-y-3">
+                                        {tender.documents.map((doc: TenderDocument, index: number) => (
+                                            <div key={index} className="flex items-center justify-between p-3 border rounded-md hover:bg-secondary/30 transition-colors">
+                                                <div className="flex items-center gap-2">
+                                                    <FileText className="w-5 h-5 text-accent"/>
+                                                    <span className="text-sm font-medium">{doc.name}</span>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <a href={doc.url} target="_blank" rel="noopener noreferrer" title="Скачать документ">
+                                                        <Download className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
+                                                    </a>
+                                                    <a href={doc.url} target="_blank" rel="noopener noreferrer" title="Открыть в новой вкладке">
+                                                        <LinkIcon className="w-5 h-5 text-muted-foreground hover:text-primary cursor-pointer"/>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : <PremiumPlaceholder />}
+                            </CardContent>
+                        </Card>
+                    )}
+
                      {!isLoggedIn && (
                          <Cta
                             className="!py-8 !bg-primary"
