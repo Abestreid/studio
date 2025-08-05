@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useActionState, useEffect, useState, useId, useRef } from 'react';
@@ -21,6 +20,17 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/colla
 import { content } from '@/lib/content';
 import { cn } from '@/lib/utils';
 import { Checkbox } from '../ui/checkbox';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { OkrbTree } from '../okrb-tree';
+
 
 const initialState: SearchState = {};
 
@@ -138,7 +148,28 @@ export function Hero() {
                       </div>
                       <div>
                           <Input id={`${formId}-okrb_code`} name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 rounded-md"/>
-                          <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2">Открыть справочник</Button>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                                <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2">Открыть справочник</Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
+                                <DialogHeader>
+                                <DialogTitle>Справочник ОКРБ</DialogTitle>
+                                <DialogDescription>
+                                    Выберите один или несколько кодов для поиска.
+                                </DialogDescription>
+                                </DialogHeader>
+                                <div className="relative flex-grow overflow-hidden">
+                                     <div className="absolute inset-0 overflow-auto pr-6">
+                                        <OkrbTree />
+                                     </div>
+                                </div>
+                                <DialogFooter>
+                                <Button type="button" variant="secondary">Закрыть</Button>
+                                <Button type="button">Применить</Button>
+                                </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
                       </div>
                       <div className="md:col-span-2">
                           <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-white h-12 rounded-md"/>
