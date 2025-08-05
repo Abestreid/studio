@@ -196,13 +196,13 @@ export function Hero() {
                           </RadioGroup>
                            <div className="space-y-2">
                                 <Label className="text-sm font-medium">Выберите площадки:</Label>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-2">
+                                <div className="chip-group">
                                     {tenderSources.map(source => (
-                                        <div key={source} className="flex items-center space-x-2">
-                                            <Checkbox id={`${formId}-${source}`} name="source" value={source} />
-                                            <Label htmlFor={`${formId}-${source}`} className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        <div key={source}>
+                                            <input type="checkbox" id={`${formId}-${source}`} name="source" value={source} className="form-check-input"/>
+                                            <label htmlFor={`${formId}-${source}`} className="form-check-label">
                                                 {source}
-                                            </Label>
+                                            </label>
                                         </div>
                                     ))}
                                 </div>
@@ -266,5 +266,7 @@ export function Hero() {
     </section>
   );
 }
+
+    
 
     

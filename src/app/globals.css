@@ -188,16 +188,12 @@
     @apply flex flex-wrap gap-2;
 }
 
-.chip-group label {
-    @apply cursor-pointer;
-}
-
 .chip-group .form-check-input {
     @apply sr-only;
 }
 
 .chip-group .form-check-label {
-    @apply px-4 py-2 rounded-full border bg-white text-sm font-medium transition-colors;
+    @apply cursor-pointer px-4 py-2 rounded-full border bg-white text-sm font-medium transition-colors hover:bg-secondary;
 }
 
 .chip-group .form-check-input:checked + .form-check-label {
@@ -258,3 +254,5 @@
 .chip-group-sm .form-check-input:checked + .form-check-label {
     @apply bg-accent text-accent-foreground border-accent;
 }
+
+    
