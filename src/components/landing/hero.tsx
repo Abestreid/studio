@@ -20,10 +20,15 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { content } from '@/lib/content';
 import { cn } from '@/lib/utils';
+import { Checkbox } from '../ui/checkbox';
 
 const initialState: SearchState = {};
 
-const tenderSources = ["goszakupki.by", "icetrade.by", "butb.by"];
+const tenderSources = [
+    "goszakupki.by", "icetrade.by", "butb.by", "a-100development.by", 
+    "becloud.by", "vitoperator.by", "zakupki.minsktrans.by", "polymir.by", 
+    "mgcn.by", "naftan.by"
+];
 
 export function Hero() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
@@ -189,15 +194,19 @@ export function Hero() {
                                   <Label htmlFor={`${formId}-gov`} className="text-sm font-normal">Государственные закупки</Label>
                               </div>
                           </RadioGroup>
-                          <div className="chip-group-sm">
-                              <span className="text-sm font-medium mr-2">Местонахождение заказчика:</span>
-                              {tenderSources.map(source => (
-                                  <label key={source}>
-                                      <input type="checkbox" name="source" value={source} className="form-check-input" />
-                                      <span className="form-check-label">{source}</span>
-                                  </label>
-                              ))}
-                          </div>
+                           <div className="space-y-2">
+                                <Label className="text-sm font-medium">Выберите площадки:</Label>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-2">
+                                    {tenderSources.map(source => (
+                                        <div key={source} className="flex items-center space-x-2">
+                                            <Checkbox id={`${formId}-${source}`} name="source" value={source} />
+                                            <Label htmlFor={`${formId}-${source}`} className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                                {source}
+                                            </Label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                       </div>
                   </div>
               </CollapsibleContent>
@@ -257,3 +266,5 @@ export function Hero() {
     </section>
   );
 }
+
+    
