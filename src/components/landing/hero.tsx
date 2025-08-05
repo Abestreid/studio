@@ -160,9 +160,9 @@ export function Hero() {
                             value={okrbInputValue}
                             onChange={(e) => setOkrbInputValue(e.target.value)}
                           />
-                          <Dialog open={isOkrbDialogOpen} onOpenChange={setIsOkrbDialogOpen}>
+                           <Dialog open={isOkrbDialogOpen} onOpenChange={setIsOkrbDialogOpen}>
                             <DialogTrigger asChild>
-                                <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2" onClick={handleOpenOkrbDialog}>Открыть справочник</Button>
+                               <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2">Открыть справочник</Button>
                             </DialogTrigger>
                             <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
                                 <DialogHeader>
@@ -214,10 +214,10 @@ export function Hero() {
                           <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" placeholder="Дата размещения до" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" placeholder="Дата окончания приема предложений с" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                          <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" placeholder="Дата оконания приема предлоджиний с" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" placeholder="Дата окончания приема предложений до" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                          <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" placeholder="Дата оконания приема предлоджиний до" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                        <div>
                           <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" placeholder="Срок поставки от" className="bg-white h-12 text-muted-foreground rounded-md"/>
@@ -237,7 +237,7 @@ export function Hero() {
                               </div>
                           </RadioGroup>
                            <div className="space-y-2">
-                                <Label className="text-sm font-medium text-center block">Местонахождение заказчика</Label>
+                                <Label className="text-sm font-medium text-center block">Выберите площадки</Label>
                                 <div className="chip-group">
                                     {tenderSources.map(source => (
                                         <div key={source}>
