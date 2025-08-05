@@ -66,14 +66,14 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0 }) => {
             className="flex items-center"
             style={{ paddingLeft: `${paddingLeft}px` }}
           >
-            <AccordionTrigger
-              className="hover:no-underline py-1 flex-1"
-            >
-               <div className="flex items-center gap-2">
-                 <Checkbox id={node.id} />
-                 <Label htmlFor={node.id} className="font-normal cursor-pointer text-left">{node.name}</Label>
-               </div>
-            </AccordionTrigger>
+             <div className="flex items-center gap-2 py-1">
+                <Checkbox id={node.id} />
+                <AccordionTrigger
+                    className="hover:no-underline p-0 flex-1"
+                    >
+                    <Label htmlFor={node.id} className="font-normal cursor-pointer text-left">{node.name}</Label>
+                </AccordionTrigger>
+             </div>
           </div>
           <AccordionContent>
             {node.children!.map((child) => (
