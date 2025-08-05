@@ -133,9 +133,9 @@ export function Hero() {
                 <Input id={`${formId}-query`} name="query" placeholder="Что ищем? место поставки, закупки, тендер" className="bg-white h-12 rounded-full" onChange={handleQueryChange}/>
               </div>
 
-              <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+              <div className="md:col-span-2">
                  <Select name="region">
-                    <SelectTrigger id={`${formId}-region`} className="bg-white h-12 rounded-full">
+                    <SelectTrigger id={`${formId}-region`} className="bg-white h-12 rounded-md">
                     <SelectValue placeholder="Место поставки" />
                     </SelectTrigger>
                     <SelectContent>
@@ -144,24 +144,14 @@ export function Hero() {
                         <SelectItem value="kz">Казахстан</SelectItem>
                     </SelectContent>
                 </Select>
-                 <Select name="industry">
-                    <SelectTrigger id={`${formId}-industry`} className="bg-white h-12 rounded-full">
-                    <SelectValue placeholder="Отрасль" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="Все отрасли">Все отрасли</SelectItem>
-                        <SelectItem value="it">IT</SelectItem>
-                        <SelectItem value="construction">Строительство</SelectItem>
-                    </SelectContent>
-                </Select>
               </div>
 
               <CollapsibleContent asChild className="md:col-span-2">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                      <div>
+                      <div className="md:col-span-2">
                           <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
                       </div>
-                      <div>
+                       <div className="md:col-span-2">
                           <Input 
                             id={`${formId}-okrb_code`} 
                             name="okrb_code" 
@@ -195,8 +185,8 @@ export function Hero() {
                       </div>
                       <div className="md:col-span-2">
                           <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-white h-12 rounded-md"/>
-                          <div className="flex items-center gap-4 mt-2">
-                            <RadioGroup defaultValue="search_in_name" className="flex">
+                          <div className="flex items-center gap-4 mt-2 justify-center">
+                            <RadioGroup defaultValue="search_in_name" name="subject_match_type" className="flex">
                                   <div className="flex items-center space-x-2">
                                       <RadioGroupItem value="exact" id={`${formId}-exact`} />
                                       <Label htmlFor={`${formId}-exact`} className="text-sm font-normal">Точное соответствие</Label>
@@ -212,32 +202,31 @@ export function Hero() {
                           <Input id={`${formId}-exclude_words`} name="exclude_words" placeholder="Укажите слова исключения" className="bg-white h-12 rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-price_from`} name="price_from" type="number" placeholder="Предельная стоимость от" className="mt-1 bg-white h-12 rounded-md" />
+                          <Input id={`${formId}-price_from`} name="price_from" type="number" placeholder="Предельная стоимость от" className="bg-white h-12 rounded-md" />
                       </div>
                       <div>
-                          <Input id={`${formId}-price_to`} name="price_to" type="number" placeholder="Предельная стоимость до" className="mt-1 bg-white h-12 rounded-md"/>
+                          <Input id={`${formId}-price_to`} name="price_to" type="number" placeholder="Предельная стоимость до" className="bg-white h-12 rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" placeholder="Дата размещения с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                          <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" placeholder="Дата размещения с" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" placeholder="Дата размещения до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                          <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" placeholder="Дата размещения до" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" placeholder="Дата окончания приема предлоджиний с" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                          <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" placeholder="Дата окончания приема предложений с" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" placeholder="Дата окончания приема предлоджиний до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                          <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" placeholder="Дата окончания приема предложений до" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                      </div>
+                       <div>
+                          <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" placeholder="Срок поставки от" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" placeholder="Срок поставки от" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
+                          <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" placeholder="Срок поставки до" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
-                      <div>
-                          <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" placeholder="Срок поставки до" className="mt-1 bg-white h-12 text-muted-foreground rounded-md"/>
-                      </div>
-                      <div className="md:col-span-2 space-y-3">
-                          <RadioGroup defaultValue="all" className="flex items-center gap-4">
-                              <Label className="text-sm font-medium">Тип закупки:</Label>
+                      <div className="md:col-span-2 space-y-3 mt-4">
+                          <RadioGroup defaultValue="all" name="funding_type" className="flex items-center gap-4 justify-center">
                               <div className="flex items-center space-x-2">
                                   <RadioGroupItem value="own" id={`${formId}-own`} />
                                   <Label htmlFor={`${formId}-own`} className="text-sm font-normal">Собственные средства</Label>
@@ -248,7 +237,7 @@ export function Hero() {
                               </div>
                           </RadioGroup>
                            <div className="space-y-2">
-                                <Label className="text-sm font-medium">Выберите площадки:</Label>
+                                <Label className="text-sm font-medium text-center block">Местонахождение заказчика</Label>
                                 <div className="chip-group">
                                     {tenderSources.map(source => (
                                         <div key={source}>
