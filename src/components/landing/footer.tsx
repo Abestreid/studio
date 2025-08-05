@@ -1,6 +1,10 @@
+
+'use client';
+
 import Link from 'next/link';
 import { MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 const productLinks = [
   { href: '/analytics', label: 'Аналитика' },
@@ -23,13 +27,33 @@ const contacts = [
 
 
 export function Footer() {
+  const [theme, setTheme] = useState('tendersoft');
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+      setTheme(currentTheme);
+    };
+
+    handleStorageChange();
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  const logoSrc = (theme === 'rednet' || theme === 'rednet2') 
+        ? '/images/logo-rednet.svg' 
+        : 'https://tendersoft.kz/logonavbar.svg';
+
   return (
     <footer className="text-white bg-primary">
       <div className="container mx-auto px-4 md:px-6 py-12 sm:py-16">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-4 text-left">
              <Link href="/" className="flex items-center justify-start gap-2 text-decoration-none mb-4">
-                <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
+                <Image src={logoSrc} alt="Tendersoft Logo" width={40} height={40} />
                 <span className="text-xl font-bold text-white">Tendersoft</span>
             </Link>
             <p className="mt-4 text-sm text-white/70 max-w-sm mx-auto lg:mx-0">

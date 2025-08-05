@@ -84,12 +84,15 @@ export function Header() {
     };
     
     const headerContent = content[theme] || content.tendersoft;
+    const logoSrc = (theme === 'rednet' || theme === 'rednet2') 
+        ? '/images/logo-rednet.svg' 
+        : 'https://tendersoft.kz/logonavbar.svg';
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 text-decoration-none logo">
-          <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
+          <Image src={logoSrc} alt="Tendersoft Logo" width={40} height={40} />
           <span className="text-xl font-bold text-primary">{headerContent.header.brandName}</span>
         </Link>
         <nav className="hidden items-center gap-8 lg:flex">
