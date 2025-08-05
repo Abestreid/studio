@@ -136,9 +136,9 @@ export function Hero() {
                       <div>
                           <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
                       </div>
-                      <div className="relative">
-                          <Input id={`${formId}-okrb_code`} name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 pr-36 rounded-md"/>
-                          <Button type="button" variant="link" className="absolute right-2 top-1/2 -translate-y-1/2 h-auto text-sm">Открыть справочник</Button>
+                      <div>
+                          <Input id={`${formId}-okrb_code`} name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 rounded-md"/>
+                          <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2">Открыть справочник</Button>
                       </div>
                       <div className="md:col-span-2">
                           <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-white h-12 rounded-md"/>
@@ -266,6 +266,8 @@ export function Hero() {
     </section>
   );
 }
+
+    
 
     
 
