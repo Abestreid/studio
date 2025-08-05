@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/accordion';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
+import { cn } from '@/lib/utils';
 
 interface OkrbNodeData {
   id: string;
@@ -61,15 +62,19 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0 }) => {
     return (
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value={node.id} className="border-b-0">
-          <AccordionTrigger
-            className="hover:no-underline py-1"
+          <div
+            className="flex items-center"
             style={{ paddingLeft: `${paddingLeft}px` }}
           >
-            <div className="flex items-center gap-2">
-              <Checkbox id={node.id} />
-              <Label htmlFor={node.id} className="font-normal cursor-pointer">{node.name}</Label>
-            </div>
-          </AccordionTrigger>
+            <AccordionTrigger
+              className="hover:no-underline py-1 flex-1"
+            >
+               <div className="flex items-center gap-2">
+                 <Checkbox id={node.id} />
+                 <Label htmlFor={node.id} className="font-normal cursor-pointer text-left">{node.name}</Label>
+               </div>
+            </AccordionTrigger>
+          </div>
           <AccordionContent>
             {node.children!.map((child) => (
               <TreeNode key={child.id} node={child} level={level + 1} />
