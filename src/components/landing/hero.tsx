@@ -50,6 +50,10 @@ export function Hero() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [theme, setTheme] = useState('tendersoft');
   const [isOkrbDialogOpen, setIsOkrbDialogOpen] = useState(false);
+  
+  const [okrbInputValue, setOkrbInputValue] = useState('');
+  const [tempSelectedOkrb, setTempSelectedOkrb] = useState<string[]>([]);
+
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -98,6 +102,16 @@ export function Hero() {
 
   const heroTitle = isLoggedIn ? "Добро пожаловать, user01!" : heroContent.title;
   const heroSubtitle = isLoggedIn ? "Найдите свой следующий контракт или просмотрите сохраненные фильтры." : heroContent.subtitle;
+
+  const handleOpenOkrbDialog = () => {
+    setTempSelectedOkrb(okrbInputValue ? okrbInputValue.split(', ') : []);
+    setIsOkrbDialogOpen(true);
+  }
+  
+  const handleApplyOkrbSelection = () => {
+    setOkrbInputValue(tempSelectedOkrb.join(', '));
+    setIsOkrbDialogOpen(false);
+  }
 
 
   return (
@@ -148,10 +162,17 @@ export function Hero() {
                           <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-okrb_code`} name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 rounded-md"/>
+                          <Input 
+                            id={`${formId}-okrb_code`} 
+                            name="okrb_code" 
+                            placeholder="Введите код или название позиции ОКРБ" 
+                            className="bg-white h-12 rounded-md"
+                            value={okrbInputValue}
+                            onChange={(e) => setOkrbInputValue(e.target.value)}
+                          />
                           <Dialog open={isOkrbDialogOpen} onOpenChange={setIsOkrbDialogOpen}>
                             <DialogTrigger asChild>
-                                <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2">Открыть справочник</Button>
+                                <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2" onClick={handleOpenOkrbDialog}>Открыть справочник</Button>
                             </DialogTrigger>
                             <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
                                 <DialogHeader>
@@ -162,12 +183,12 @@ export function Hero() {
                                 </DialogHeader>
                                 <div className="relative flex-grow overflow-hidden">
                                      <div className="absolute inset-0 overflow-auto pr-6">
-                                        <OkrbTree />
+                                        <OkrbTree selectedIds={tempSelectedOkrb} onSelectionChange={setTempSelectedOkrb}/>
                                      </div>
                                 </div>
                                 <DialogFooter>
                                 <Button type="button" variant="secondary" onClick={() => setIsOkrbDialogOpen(false)}>Закрыть</Button>
-                                <Button type="button" onClick={() => setIsOkrbDialogOpen(false)}>Применить</Button>
+                                <Button type="button" onClick={handleApplyOkrbSelection}>Применить</Button>
                                 </DialogFooter>
                             </DialogContent>
                           </Dialog>

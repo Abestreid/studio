@@ -52,11 +52,19 @@ const okrbData: OkrbNodeData[] = [
 interface TreeNodeProps {
   node: OkrbNodeData;
   level?: number;
+  selectedIds: string[];
+  onSelectionChange: (id: string, isSelected: boolean) => void;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0 }) => {
+const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0, selectedIds, onSelectionChange }) => {
   const hasChildren = node.children && node.children.length > 0;
-  const paddingLeft = level * 24; // 24px indent per level
+  const paddingLeft = level * 24;
+  const isSelected = selectedIds.includes(node.id);
+
+  const handleCheckedChange = (checked: boolean | 'indeterminate') => {
+    onSelectionChange(node.id, checked === true);
+  };
+
 
   if (hasChildren) {
     return (
@@ -67,7 +75,11 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0 }) => {
             style={{ paddingLeft: `${paddingLeft}px` }}
           >
              <div className="flex items-center gap-2 py-1 flex-1">
-                <Checkbox id={node.id} className="rounded-full"/>
+                <Checkbox 
+                    id={node.id}
+                    checked={isSelected}
+                    onCheckedChange={handleCheckedChange}
+                    className="rounded-full"/>
                 <AccordionTrigger
                     className="hover:no-underline p-0 flex-1 justify-start gap-1"
                     >
@@ -77,7 +89,13 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0 }) => {
           </div>
           <AccordionContent>
             {node.children!.map((child) => (
-              <TreeNode key={child.id} node={child} level={level + 1} />
+              <TreeNode 
+                key={child.id} 
+                node={child} 
+                level={level + 1} 
+                selectedIds={selectedIds}
+                onSelectionChange={onSelectionChange}
+                />
             ))}
           </AccordionContent>
         </AccordionItem>
@@ -88,20 +106,45 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0 }) => {
   return (
     <div
       className="flex items-center gap-2 py-1"
-      style={{ paddingLeft: `${paddingLeft + 16}px` }} // Extra padding for non-trigger items
+      style={{ paddingLeft: `${paddingLeft + 16}px` }}
     >
-      <Checkbox id={node.id} className="rounded-full" />
+      <Checkbox 
+        id={node.id}
+        checked={isSelected}
+        onCheckedChange={handleCheckedChange}
+        className="rounded-full" />
        <Label htmlFor={node.id} className="font-normal cursor-pointer">{node.name}</Label>
     </div>
   );
 };
 
-export const OkrbTree = () => {
-  return (
-    <div className="w-full">
-      {okrbData.map((rootNode) => (
-        <TreeNode key={rootNode.id} node={rootNode} />
-      ))}
-    </div>
-  );
+interface OkrbTreeProps {
+    selectedIds: string[];
+    onSelectionChange: (ids: string[]) => void;
+}
+
+export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChange }) => {
+
+    const handleNodeSelectionChange = (id: string, isSelected: boolean) => {
+        let newSelectedIds;
+        if (isSelected) {
+            newSelectedIds = [...selectedIds, id];
+        } else {
+            newSelectedIds = selectedIds.filter(selectedId => selectedId !== id);
+        }
+        onSelectionChange(newSelectedIds);
+    };
+
+    return (
+        <div className="w-full">
+        {okrbData.map((rootNode) => (
+            <TreeNode 
+                key={rootNode.id} 
+                node={rootNode} 
+                selectedIds={selectedIds}
+                onSelectionChange={handleNodeSelectionChange}
+            />
+        ))}
+        </div>
+    );
 };
