@@ -57,16 +57,111 @@ import { TendersByIndustryChart } from '@/components/analytics/tenders-by-indust
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Terminal, LogOut, UserCircle, Check, User, FileX2 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
 import { PricingCard } from '@/components/pricing-card';
 import { pricingTiers, mockTender, recentWins } from '@/lib/content';
+import { useToast } from '@/hooks/use-toast';
 
 const tiers = pricingTiers;
 
+interface ColorInfo {
+    hex: string;
+    rgb: string;
+    hsl: string;
+}
+
+const colorVars = [
+    { name: 'Background', varName: '--background', purpose: 'Основной фон приложения', className: 'bg-background' },
+    { name: 'Foreground', varName: '--foreground', purpose: 'Основной цвет текста', className: 'bg-foreground' },
+    { name: 'Card / Popover', varName: '--card', purpose: 'Фон для карточек', className: 'bg-card border' },
+    { name: 'Primary', varName: '--primary', purpose: 'Основной акцентный цвет', className: 'bg-primary' },
+    { name: 'Primary Foreground', varName: '--primary-foreground', purpose: 'Текст на фоне primary', className: 'bg-primary-foreground' },
+    { name: 'Secondary', varName: '--secondary', purpose: 'Второстепенные фоны', className: 'bg-secondary' },
+    { name: 'Muted Foreground', varName: '--muted-foreground', purpose: 'Приглушенный цвет текста', className: 'bg-muted-foreground' },
+    { name: 'Accent / Ring', varName: '--accent', purpose: 'Цвет для акцентов', className: 'bg-accent' },
+    { name: 'Accent Dark', varName: '--accent-dark', purpose: 'Акцент при наведении', className: 'bg-accent-dark' },
+    { name: 'Accent Foreground', varName: '--accent-foreground', purpose: 'Текст на акцентном фоне', className: 'bg-accent-foreground' },
+    { name: 'Destructive', varName: '--destructive', purpose: 'Цвет для ошибок', className: 'bg-destructive' },
+    { name: 'Destructive Foreground', varName: '--destructive-foreground', purpose: 'Текст на фоне destructive', className: 'bg-destructive-foreground' },
+    { name: 'Chart 1', varName: '--chart-1', purpose: 'Цвет графика 1', className: 'bg-chart-1' },
+    { name: 'Chart 2', varName: '--chart-2', purpose: 'Цвет графика 2', className: 'bg-chart-2' },
+    { name: 'Chart 3', varName: '--chart-3', purpose: 'Цвет графика 3', className: 'bg-chart-3' },
+    { name: 'Chart 4', varName: '--chart-4', purpose: 'Цвет графика 4', className: 'bg-chart-4' },
+    { name: 'Chart 5', varName: '--chart-5', purpose: 'Цвет графика 5', className: 'bg-chart-5' },
+];
+
 export default function StyleGuidePage() {
   const [isAnnual, setIsAnnual] = useState(false);
+  const { toast } = useToast();
+  const [theme, setTheme] = useState('tendersoft');
+  const [colorValues, setColorValues] = useState<Record<string, ColorInfo>>({});
+
+  const hslToHex = (h: number, s: number, l: number): string => {
+      l /= 100;
+      const a = s * Math.min(l, 1 - l) / 100;
+      const f = (n: number) => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+      };
+      return `#${f(0)}${f(8)}${f(4)}`;
+  };
+
+  const hslStringToValues = (hslStr: string): [number, number, number] => {
+      const [h, s, l] = hslStr.trim().replace(/%/g, '').split(' ').map(Number);
+      return [h, s, l];
+  };
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+      setTheme(currentTheme);
+    };
+    handleThemeChange();
+    window.addEventListener('storage', handleThemeChange);
+    return () => window.removeEventListener('storage', handleThemeChange);
+  }, []);
+
+  useEffect(() => {
+      const fetchColors = () => {
+        const computedStyle = getComputedStyle(document.documentElement);
+        const newColorValues: Record<string, ColorInfo> = {};
+
+        colorVars.forEach(v => {
+            const hslStr = computedStyle.getPropertyValue(v.varName).trim();
+            if (hslStr) {
+                const [h, s, l] = hslStringToValues(hslStr);
+                const hex = hslToHex(h,s,l);
+                const rgb = `rgb(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)})`;
+
+                newColorValues[v.varName] = {
+                    hsl: `${h} ${s}% ${l}%`,
+                    hex: hex,
+                    rgb: rgb,
+                };
+            }
+        });
+        setColorValues(newColorValues);
+      };
+
+      // Initial fetch
+      fetchColors();
+
+      // We need to re-fetch after a short delay to ensure CSS variables have been applied after a theme switch
+      const timer = setTimeout(fetchColors, 50);
+
+      return () => clearTimeout(timer);
+  }, [theme]);
+  
+  const handleCopy = (text: string, type: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+        title: 'Скопировано!',
+        description: `${type}-код ${text} скопирован в буфер обмена.`,
+    });
+  };
 
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="mb-12">
@@ -90,33 +185,31 @@ export default function StyleGuidePage() {
     name,
     className,
     varName,
-    hsl,
-    rgb,
-    hex,
     purpose,
   }: {
     name: string;
     className: string;
     varName: string;
-    hsl: string;
-    rgb: string;
-    hex: string;
     purpose: string;
-  }) => (
-    <div className="flex items-start gap-4">
-      <div className={cn('w-20 h-20 rounded-lg shadow-inner shrink-0', className)}></div>
-      <div className="text-xs">
-        <p className="font-bold text-sm mb-1">{name}</p>
-        <p className="text-muted-foreground font-mono">{varName}</p>
-        <p className="text-muted-foreground font-mono">{purpose}</p>
-        <div className="mt-2 space-y-1">
-          <p><strong className="font-medium">HEX:</strong> {hex}</p>
-          <p><strong className="font-medium">RGB:</strong> {rgb}</p>
-          <p><strong className="font-medium">HSL:</strong> {hsl}</p>
+  }) => {
+    const colors = colorValues[varName] || { hex: '...', rgb: '...', hsl: '...' };
+
+    return (
+        <div className="flex items-start gap-4">
+        <div className={cn('w-20 h-20 rounded-lg shadow-inner shrink-0', className)}></div>
+        <div className="text-xs">
+            <p className="font-bold text-sm mb-1">{name}</p>
+            <p className="text-muted-foreground font-mono">{varName}</p>
+            <p className="text-muted-foreground">{purpose}</p>
+            <div className="mt-2 space-y-1 font-mono">
+                <p className="cursor-pointer" onClick={() => handleCopy(colors.hex, 'HEX')}><strong className="font-medium">HEX:</strong> {colors.hex}</p>
+                <p className="cursor-pointer" onClick={() => handleCopy(colors.rgb, 'RGB')}><strong className="font-medium">RGB:</strong> {colors.rgb}</p>
+                <p className="cursor-pointer" onClick={() => handleCopy(colors.hsl, 'HSL')}><strong className="font-medium">HSL:</strong> {colors.hsl}</p>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+        </div>
+    );
+  };
 
   return (
     <div className="bg-background text-foreground flex flex-col min-h-screen">
@@ -131,127 +224,13 @@ export default function StyleGuidePage() {
           </div>
 
          <Section title="Цветовая палитра">
-          <Card>
-            <CardContent className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
-              <ColorSwatch
-                name="Background"
-                className="bg-background"
-                varName="--background"
-                hsl="220 20% 98%"
-                rgb="rgb(249 250 251)"
-                hex="#f9fafb"
-                purpose="Основной фон приложения"
-              />
-              <ColorSwatch
-                name="Foreground"
-                className="bg-foreground"
-                varName="--foreground"
-                hsl="215 28% 17%"
-                rgb="rgb(33 41 51)"
-                hex="#212933"
-                purpose="Основной цвет текста"
-              />
-              <ColorSwatch
-                name="Card / Popover"
-                className="bg-card border"
-                varName="--card, --popover"
-                hsl="0 0% 100%"
-                rgb="rgb(255 255 255)"
-                hex="#ffffff"
-                purpose="Фон для карточек и всплывающих окон"
-              />
-              <ColorSwatch
-                name="Primary"
-                className="bg-primary"
-                varName="--primary"
-                hsl="196 35% 26%"
-                rgb="rgb(42 74 86)"
-                hex="#2a4a56"
-                purpose="Основной акцентный цвет (бренд)"
-              />
-              <ColorSwatch
-                name="Primary Foreground"
-                className="bg-primary-foreground"
-                varName="--primary-foreground"
-                hsl="0 0% 98%"
-                rgb="rgb(250 250 250)"
-                hex="#fafafa"
-                purpose="Текст на фоне primary"
-              />
-              <ColorSwatch
-                name="Secondary / Muted / Border"
-                className="bg-secondary"
-                varName="--secondary, --muted, --border"
-                hsl="216 34% 91%"
-                rgb="rgb(227 232 239)"
-                hex="#e3e8ef"
-                purpose="Второстепенные фоны и границы"
-              />
-              <ColorSwatch
-                name="Muted Foreground"
-                className="bg-muted-foreground"
-                varName="--muted-foreground"
-                hsl="215 20% 65%"
-                rgb="rgb(154 161 172)"
-                hex="#9aa1ac"
-                purpose="Приглушенный цвет текста"
-              />
-              <ColorSwatch
-                name="Accent / Ring"
-                className="bg-accent"
-                varName="--accent, --ring"
-                hsl="168 76% 36%"
-                rgb="rgb(22 160 133)"
-                hex="#16a085"
-                purpose="Цвет для акцентов и фокуса"
-              />
-              <ColorSwatch
-                name="Accent Dark"
-                className="bg-accent-dark"
-                varName="--accent-dark"
-                hsl="168 76% 30%"
-                rgb="rgb(19 141 117)"
-                hex="#138d75"
-                purpose="Акцент при наведении (hover)"
-              />
-              <ColorSwatch
-                name="Accent Foreground"
-                className="bg-accent-foreground"
-                varName="--accent-foreground"
-                hsl="0 0% 98%"
-                rgb="rgb(250 250 250)"
-                hex="#fafafa"
-                purpose="Текст на акцентном фоне"
-              />
-              <ColorSwatch
-                name="Destructive"
-                className="bg-destructive"
-                varName="--destructive"
-                hsl="0 84.2% 60.2%"
-                rgb="rgb(239 68 68)"
-                hex="#ef4444"
-                purpose="Цвет для ошибок и опасных действий"
-              />
-              <ColorSwatch
-                name="Destructive Foreground"
-                className="bg-destructive-foreground"
-                varName="--destructive-foreground"
-                hsl="0 0% 98%"
-                rgb="rgb(250 250 250)"
-                hex="#fafafa"
-                purpose="Текст на фоне destructive"
-              />
-              
-              <ColorSwatch name="Chart 1" className="bg-chart-1" varName="--chart-1" hsl="19 81% 54%" rgb="rgb(234, 108, 42)" hex="#EA6C2A" purpose="Цвет графика 1" />
-              <ColorSwatch name="Chart 2" className="bg-chart-2" varName="--chart-2" hsl="195 100% 50%" rgb="rgb(0, 198, 255)" hex="#00C6FF" purpose="Цвет графика 2" />
-              <ColorSwatch name="Chart 3" className="bg-chart-3" varName="--chart-3" hsl="149 100% 50%" rgb="rgb(0, 255, 116)" hex="#00FF74" purpose="Цвет графика 3" />
-              <ColorSwatch name="Chart 4" className="bg-chart-4" varName="--chart-4" hsl="225 100% 50%" rgb="rgb(0, 72, 255)" hex="#0048FF" purpose="Цвет графика 4" />
-              <ColorSwatch name="Chart 5" className="bg-chart-5" varName="--chart-5" hsl="48 100% 50%" rgb="rgb(255, 211, 0)" hex="#FFD300" purpose="Цвет графика 5" />
-              <ColorSwatch name="Chart 6" className="bg-chart-6" varName="--chart-6" hsl="285 100% 50%" rgb="rgb(198, 0, 255)" hex="#C600FF" purpose="Цвет графика 6" />
-              <ColorSwatch name="Chart 7" className="bg-chart-7" varName="--chart-7" hsl="0 100% 50%" rgb="rgb(255, 0, 0)" hex="#FF0000" purpose="Цвет графика 7" />
-
-            </CardContent>
-          </Card>
+            <Card>
+                <CardContent className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
+                {colorVars.map((v) => (
+                    <ColorSwatch key={v.varName} {...v} />
+                ))}
+                </CardContent>
+            </Card>
         </Section>
 
 
