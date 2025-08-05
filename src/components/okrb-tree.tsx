@@ -66,10 +66,10 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0 }) => {
             className="flex items-center"
             style={{ paddingLeft: `${paddingLeft}px` }}
           >
-             <div className="flex items-center gap-2 py-1">
-                <Checkbox id={node.id} />
+             <div className="flex items-center gap-2 py-1 flex-1">
+                <Checkbox id={node.id} className="rounded-full"/>
                 <AccordionTrigger
-                    className="hover:no-underline p-0 flex-1"
+                    className="hover:no-underline p-0 flex-1 justify-start gap-1"
                     >
                     <Label htmlFor={node.id} className="font-normal cursor-pointer text-left">{node.name}</Label>
                 </AccordionTrigger>
@@ -90,7 +90,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0 }) => {
       className="flex items-center gap-2 py-1"
       style={{ paddingLeft: `${paddingLeft + 16}px` }} // Extra padding for non-trigger items
     >
-      <Checkbox id={node.id} />
+      <Checkbox id={node.id} className="rounded-full" />
        <Label htmlFor={node.id} className="font-normal cursor-pointer">{node.name}</Label>
     </div>
   );

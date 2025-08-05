@@ -49,6 +49,7 @@ export function Hero() {
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [theme, setTheme] = useState('tendersoft');
+  const [isOkrbDialogOpen, setIsOkrbDialogOpen] = useState(false);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -148,7 +149,7 @@ export function Hero() {
                       </div>
                       <div>
                           <Input id={`${formId}-okrb_code`} name="okrb_code" placeholder="Введите код или название позиции ОКРБ" className="bg-white h-12 rounded-md"/>
-                          <Dialog>
+                          <Dialog open={isOkrbDialogOpen} onOpenChange={setIsOkrbDialogOpen}>
                             <DialogTrigger asChild>
                                 <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2">Открыть справочник</Button>
                             </DialogTrigger>
@@ -165,8 +166,8 @@ export function Hero() {
                                      </div>
                                 </div>
                                 <DialogFooter>
-                                <Button type="button" variant="secondary">Закрыть</Button>
-                                <Button type="button">Применить</Button>
+                                <Button type="button" variant="secondary" onClick={() => setIsOkrbDialogOpen(false)}>Закрыть</Button>
+                                <Button type="button" onClick={() => setIsOkrbDialogOpen(false)}>Применить</Button>
                                 </DialogFooter>
                             </DialogContent>
                           </Dialog>
@@ -297,9 +298,3 @@ export function Hero() {
     </section>
   );
 }
-
-    
-
-    
-
-    
