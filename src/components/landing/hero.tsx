@@ -102,11 +102,6 @@ export function Hero() {
 
   const heroTitle = isLoggedIn ? "Добро пожаловать, user01!" : heroContent.title;
   const heroSubtitle = isLoggedIn ? "Найдите свой следующий контракт или просмотрите сохраненные фильтры." : heroContent.subtitle;
-
-  const handleOpenOkrbDialog = () => {
-    setTempSelectedOkrb(okrbInputValue ? okrbInputValue.split(', ') : []);
-    setIsOkrbDialogOpen(true);
-  }
   
   const handleApplyOkrbSelection = () => {
     setOkrbInputValue(tempSelectedOkrb.join(', '));
@@ -202,28 +197,36 @@ export function Hero() {
                           <Input id={`${formId}-exclude_words`} name="exclude_words" placeholder="Укажите слова исключения" className="bg-white h-12 rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-price_from`} name="price_from" type="number" placeholder="Предельная стоимость от" className="bg-white h-12 rounded-md" />
+                        <Label htmlFor={`${formId}-price_from`}>Предельная стоимость от</Label>
+                        <Input id={`${formId}-price_from`} name="price_from" type="number" className="bg-white h-12 rounded-md" />
                       </div>
                       <div>
-                          <Input id={`${formId}-price_to`} name="price_to" type="number" placeholder="Предельная стоимость до" className="bg-white h-12 rounded-md"/>
+                        <Label htmlFor={`${formId}-price_to`}>Предельная стоимость до</Label>
+                        <Input id={`${formId}-price_to`} name="price_to" type="number" className="bg-white h-12 rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" placeholder="Дата размещения с" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                        <Label htmlFor={`${formId}-date_pub_from`}>Дата размещения с</Label>
+                        <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" placeholder="Дата размещения до" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                        <Label htmlFor={`${formId}-date_pub_to`}>Дата размещения до</Label>
+                        <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" placeholder="Дата оконания приема предлоджиний с" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                        <Label htmlFor={`${formId}-date_end_from`}>Дата оконания приема предлоджиний с</Label>
+                        <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" placeholder="Дата оконания приема предлоджиний до" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                        <Label htmlFor={`${formId}-date_end_to`}>Дата оконания приема предлоджиний до</Label>
+                        <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                        <div>
-                          <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" placeholder="Срок поставки от" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                        <Label htmlFor={`${formId}-delivery_from`}>Срок поставки от</Label>
+                        <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div>
-                          <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" placeholder="Срок поставки до" className="bg-white h-12 text-muted-foreground rounded-md"/>
+                        <Label htmlFor={`${formId}-delivery_to`}>Срок поставки до</Label>
+                        <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" className="bg-white h-12 text-muted-foreground rounded-md"/>
                       </div>
                       <div className="md:col-span-2 space-y-3 mt-4">
                           <RadioGroup defaultValue="all" name="funding_type" className="flex items-center gap-4 justify-center">
@@ -238,7 +241,7 @@ export function Hero() {
                           </RadioGroup>
                            <div className="space-y-2">
                                 <Label className="text-sm font-medium text-center block">Выберите площадки</Label>
-                                <div className="chip-group">
+                                <div className="chip-group justify-center">
                                     {tenderSources.map(source => (
                                         <div key={source}>
                                             <input type="checkbox" id={`${formId}-${source}`} name="source" value={source} className="form-check-input"/>
