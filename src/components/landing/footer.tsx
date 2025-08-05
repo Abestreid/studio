@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { content } from '@/lib/content';
 
 const productLinks = [
   { href: '/analytics', label: 'Аналитика' },
@@ -46,6 +47,8 @@ export function Footer() {
   const logoSrc = (theme === 'rednet' || theme === 'rednet2') 
         ? '/images/logo-rednet.svg' 
         : 'https://tendersoft.kz/logonavbar.svg';
+        
+  const brandName = content[theme as keyof typeof content]?.header?.brandName || 'Tendersoft';
 
   return (
     <footer className="text-white bg-primary">
@@ -53,8 +56,8 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-4 text-left">
              <Link href="/" className="flex items-center justify-start gap-2 text-decoration-none mb-4">
-                <Image src={logoSrc} alt="Tendersoft Logo" width={40} height={40} />
-                <span className="text-xl font-bold text-white">Tendersoft</span>
+                <Image src={logoSrc} alt={`${brandName} Logo`} width={40} height={40} />
+                <span className="text-xl font-bold text-white">{brandName}</span>
             </Link>
             <p className="mt-4 text-sm text-white/70 max-w-sm mx-auto lg:mx-0">
                 IT-решения для поиска и мониторинга тендеров, защиты финансовых рисков и проверки контрагентов в Казахстане и Беларуси.
