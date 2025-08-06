@@ -10,44 +10,13 @@ import {
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { cn } from '@/lib/utils';
+import { Skeleton } from './ui/skeleton';
 
 interface OkrbNodeData {
   id: string;
   name: string;
   children?: OkrbNodeData[];
 }
-
-const okrbData: OkrbNodeData[] = [
-    { id: 'A', name: '[A] - Продукция сельского хозяйства, лесного хозяйства, рыболовства и рыбоводства' },
-    { id: 'B', name: '[B] - Продукция добычи полезных ископаемых' },
-    { 
-        id: 'C', 
-        name: '[C] - Продукция обрабатывающей промышленности',
-        children: [
-            { id: 'C.10', name: '[C.10] - Продукты пищевые' },
-            { id: 'C.11', name: '[C.11] - Напитки' },
-        ]
-    },
-    { id: 'D', name: '[D] - Электроэнергия, газ, пар, горячая вода и кондиционированный воздух' },
-    { id: 'E', name: '[E] - Услуги по снабжению водой, очистке сточных вод, утилизации и обезвреживанию отходов' },
-    { id: 'F', name: '[F] - Здания и сооружения; работы общестроительные по возведению зданий и сооружений' },
-    { id: 'G', name: '[G] - Услуги по оптовой и розничной торговле; услуги по ремонту автомобилей и мотоциклов' },
-    { id: 'H', name: '[H] - Услуги транспорта и услуги по хранению грузов' },
-    { id: 'I', name: '[I] - Услуги по временному проживанию и общественному питанию' },
-    { id: 'J', name: '[J] - Услуги в области информации и связи' },
-    { id: 'K', name: '[K] - Услуги финансовые и страховые' },
-    { id: 'L', name: '[L] - Услуги, связанные с недвижимым имуществом' },
-    { id: 'M', name: '[M] - Услуги профессиональные, научные и технические' },
-    { id: 'N', name: '[N] - Услуги административные и вспомогательные' },
-    { id: 'O', name: '[O] - Услуги в области государственного управления и обороны, предоставляемые обществу в целом; услуги по обязательному социальному страхованию' },
-    { id: 'P', name: '[P] - Услуги в области образования' },
-    { id: 'Q', name: '[Q] - Услуги в области здравоохранения и социального обслуживания населения' },
-    { id: 'R', name: '[R] - Услуги в области искусства, развлечений и отдыха' },
-    { id: 'S', name: '[S] - Услуги прочие' },
-    { id: 'T', name: '[T] - Услуги частных домашних хозяйств в качестве работодателей; различная продукция и услуги, произведенные частными домашними хозяйствами для собственного потребления' },
-    { id: 'U', name: '[U] - Услуги экстерриториальных организаций и органов' },
-];
-
 
 interface TreeNodeProps {
   node: OkrbNodeData;
@@ -71,21 +40,19 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0, selectedIds, onSel
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value={node.id} className="border-b-0">
           <div
-            className="flex items-center"
+            className="flex items-center gap-2 py-1"
             style={{ paddingLeft: `${paddingLeft}px` }}
           >
-             <div className="flex items-center gap-2 py-1 flex-1">
-                <Checkbox 
-                    id={node.id}
-                    checked={isSelected}
-                    onCheckedChange={handleCheckedChange}
-                    className="rounded-full"/>
-                <AccordionTrigger
-                    className="hover:no-underline p-0 flex-1 justify-start gap-1"
-                    >
-                    <Label htmlFor={node.id} className="font-normal cursor-pointer text-left">{node.name}</Label>
-                </AccordionTrigger>
-             </div>
+             <Checkbox 
+                id={node.id}
+                checked={isSelected}
+                onCheckedChange={handleCheckedChange}
+                className="rounded-full"/>
+            <AccordionTrigger
+                className="hover:no-underline p-0 flex-1 justify-start gap-1"
+                >
+                <Label htmlFor={node.id} className="font-normal cursor-pointer text-left">{node.name}</Label>
+            </AccordionTrigger>
           </div>
           <AccordionContent>
             {node.children!.map((child) => (
@@ -106,7 +73,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0, selectedIds, onSel
   return (
     <div
       className="flex items-center gap-2 py-1"
-      style={{ paddingLeft: `${paddingLeft + 16}px` }}
+      style={{ paddingLeft: `${paddingLeft + 34}px` }} // 24px for level + 10px for alignment
     >
       <Checkbox 
         id={node.id}
@@ -124,6 +91,29 @@ interface OkrbTreeProps {
 }
 
 export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChange }) => {
+    const [okrbData, setOkrbData] = React.useState<OkrbNodeData[]>([]);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const fetchOkrbData = async () => {
+            try {
+                const response = await fetch('http://93.177.124.62:8000/api/okrbs');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data: OkrbNodeData[] = await response.json();
+                setOkrbData(data);
+            } catch (error) {
+                console.error("Failed to fetch OKRB data:", error);
+                // Optionally, set an error state to show a message to the user
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchOkrbData();
+    }, []);
+
 
     const handleNodeSelectionChange = (id: string, isSelected: boolean) => {
         let newSelectedIds;
@@ -134,6 +124,17 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
         }
         onSelectionChange(newSelectedIds);
     };
+
+    if (loading) {
+        return (
+            <div className="space-y-2">
+                <p className="text-center text-muted-foreground">Загрузка справочника...</p>
+                {Array.from({ length: 10 }).map((_, i) => (
+                    <Skeleton key={i} className="h-8 w-full" />
+                ))}
+            </div>
+        );
+    }
 
     return (
         <div className="w-full">
