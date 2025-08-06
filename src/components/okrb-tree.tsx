@@ -15,51 +15,48 @@ import { Skeleton } from './ui/skeleton';
 interface OkrbNodeData {
   id: string; // Keep id as string to match usage
   name: string;
-  children?: OkrbNodeData[];
+  children: OkrbNodeData[];
 }
 
 interface TreeNodeProps {
   node: OkrbNodeData;
-  level?: number;
   selectedIds: string[];
   onSelectionChange: (id: string, isSelected: boolean) => void;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0, selectedIds, onSelectionChange }) => {
+const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChange }) => {
   const hasChildren = node.children && node.children.length > 0;
-  const paddingLeft = level * 24;
   const isSelected = selectedIds.includes(node.id);
 
   const handleCheckedChange = (checked: boolean | 'indeterminate') => {
     onSelectionChange(node.id, checked === true);
   };
 
+  const content = (
+      <div className="flex items-center gap-2 w-full">
+        <Checkbox 
+            id={node.id}
+            checked={isSelected}
+            onCheckedChange={handleCheckedChange}
+            className="rounded-full" />
+        <Label htmlFor={node.id} className="font-normal cursor-pointer text-left flex-1">{node.name}</Label>
+      </div>
+  );
 
   if (hasChildren) {
     return (
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value={node.id} className="border-b-0">
-           <div
-            className="flex items-center gap-2 py-1"
-            style={{ paddingLeft: `${paddingLeft}px` }}
-          >
-             <Checkbox 
-                id={node.id}
-                checked={isSelected}
-                onCheckedChange={handleCheckedChange}
-                className="rounded-full"/>
-            <AccordionTrigger
-                className="hover:no-underline p-0 flex-1 justify-start gap-1"
-                >
-                <Label htmlFor={node.id} className="font-normal cursor-pointer text-left">{node.name}</Label>
-            </AccordionTrigger>
-          </div>
-          <AccordionContent>
+          <AccordionTrigger
+              className="hover:no-underline p-1 -ml-1 rounded-md hover:bg-accent/10 data-[state=open]:bg-accent/10"
+              >
+              {content}
+          </AccordionTrigger>
+          <AccordionContent className="pl-6">
             {node.children!.map((child) => (
               <TreeNode 
                 key={child.id} 
                 node={child} 
-                level={level + 1} 
                 selectedIds={selectedIds}
                 onSelectionChange={onSelectionChange}
                 />
@@ -71,16 +68,8 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0, selectedIds, onSel
   }
 
   return (
-    <div
-      className="flex items-center gap-2 py-1"
-      style={{ paddingLeft: `${paddingLeft + 34}px` }} // 24px for level + 10px for alignment
-    >
-      <Checkbox 
-        id={node.id}
-        checked={isSelected}
-        onCheckedChange={handleCheckedChange}
-        className="rounded-full" />
-       <Label htmlFor={node.id} className="font-normal cursor-pointer">{node.name}</Label>
+    <div className="flex items-center py-1 pl-8 pr-1 rounded-md hover:bg-accent/10">
+      {content}
     </div>
   );
 };
@@ -97,47 +86,39 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
 
     React.useEffect(() => {
         const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNodeData[] => {
-            const tree: OkrbNodeData[] = [];
-            const lookup: { [key: string]: OkrbNodeData } = {};
+            const nodeMap: { [key: string]: OkrbNodeData } = {};
 
-            // Initialize lookup table
+            // Initialize all nodes
             items.forEach(item => {
-                lookup[item.code] = { id: item.code, name: `[${item.code}] - ${item.name.trim()}`, children: [] };
+                nodeMap[item.code] = { 
+                    id: item.code, 
+                    name: `[${item.code}] - ${item.name.trim()}`, 
+                    children: [] 
+                };
             });
 
+            const rootNodes: OkrbNodeData[] = [];
+
+            // Parent-child linking
             items.forEach(item => {
-                const parts = item.code.split('.');
-                if (parts.length > 1) {
-                    const parentCode = parts.slice(0, -1).join('.');
-                    if (lookup[parentCode]) {
-                        // Ensure children array exists
-                        if (!lookup[parentCode].children) {
-                            lookup[parentCode].children = [];
-                        }
-                        lookup[parentCode].children!.push(lookup[item.code]);
+                const node = nodeMap[item.code];
+                const dotIndex = item.code.lastIndexOf('.');
+                
+                if (dotIndex > -1) {
+                    const parentCode = item.code.substring(0, dotIndex);
+                    const parent = nodeMap[parentCode];
+                    if (parent) {
+                        parent.children.push(node);
                     } else {
-                        // Root node (e.g., code has no parent in the list)
-                        tree.push(lookup[item.code]);
+                        // If parent doesn't exist, treat it as a root node
+                        rootNodes.push(node);
                     }
                 } else {
-                    // Root node
-                    tree.push(lookup[item.code]);
+                    rootNodes.push(node);
                 }
             });
 
-             // Filter out nodes that have been nested
-            const rootCodes = new Set(tree.map(node => node.id));
-            items.forEach(item => {
-                const parts = item.code.split('.');
-                 if (parts.length > 1) {
-                    const parentCode = parts.slice(0, -1).join('.');
-                     if (lookup[parentCode]) {
-                        rootCodes.delete(item.code);
-                    }
-                }
-            })
-
-            return tree.filter(node => rootCodes.has(node.id));
+            return rootNodes;
         };
 
         const fetchOkrbData = async () => {
