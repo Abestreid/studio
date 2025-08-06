@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -12,6 +13,7 @@ import { Label } from './ui/label';
 import { Skeleton } from './ui/skeleton';
 import { Input } from './ui/input';
 import { ChevronDown, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface OkrbNodeData {
   id: string;
@@ -44,9 +46,10 @@ interface TreeNodeProps {
   selectedIds: string[];
   onSelectionChange: (id: string, isSelected: boolean) => void;
   searchTerm: string;
+  defaultOpen: boolean;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChange, searchTerm }) => {
+const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChange, searchTerm, defaultOpen }) => {
   const hasChildren = node.children && node.children.length > 0;
   const isSelected = selectedIds.includes(node.id);
 
@@ -56,22 +59,22 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
   
   if (hasChildren) {
     return (
-      <Accordion type="single" collapsible className="w-full" defaultValue={searchTerm ? node.id : undefined}>
+      <Accordion type="single" collapsible className="w-full" defaultValue={defaultOpen ? node.id : undefined}>
         <AccordionItem value={node.id} className="border-b-0">
-             <div className="flex items-center p-1 rounded-md hover:bg-accent/10 data-[state=open]:bg-accent/10 border-b border-dotted">
+            <div className="flex items-center p-1 rounded-md hover:bg-accent/10 border-b border-dotted">
                 <div className="flex items-center flex-1 gap-2">
                     <Checkbox 
                         id={node.id}
                         checked={isSelected}
                         onCheckedChange={handleCheckedChange}
                         />
-                    <AccordionTrigger className="p-0 hover:no-underline [&>svg]:hidden">
-                       <ChevronDown className="w-4 h-4 transition-transform duration-200 shrink-0 group-data-[state=open]:-rotate-180" />
-                    </AccordionTrigger>
                     <Label htmlFor={node.id} className="font-normal cursor-pointer flex-1">
                         <HighlightedText text={node.name} highlight={searchTerm} />
                     </Label>
                 </div>
+                 <AccordionTrigger className="p-1 hover:no-underline rounded-md hover:bg-secondary [&>svg]:size-4">
+                    <ChevronDown className="transition-transform duration-200 shrink-0 group-data-[state=open]:-rotate-180" />
+                </AccordionTrigger>
             </div>
           <AccordionContent className="pl-6">
             {node.children!.map((child) => (
@@ -81,6 +84,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
                 selectedIds={selectedIds}
                 onSelectionChange={onSelectionChange}
                 searchTerm={searchTerm}
+                defaultOpen={defaultOpen}
                 />
             ))}
           </AccordionContent>
@@ -91,7 +95,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
 
   return (
     <div className="flex items-center p-1 rounded-md hover:bg-accent/10 border-b border-dotted">
-        <div className="flex items-center gap-2 pl-6">
+        <div className="flex items-center gap-2 ml-[22px]">
             <Checkbox 
                 id={node.id}
                 checked={isSelected}
@@ -123,9 +127,9 @@ const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNod
         if (code.includes('.')) {
             parentCode = code.substring(0, code.lastIndexOf('.'));
         } else if (/^\d\d$/.test(code)) {
-            parentCode = code.substring(0, 1);
-            if (!items.some(i => i.code.trim() === parentCode)) {
-                parentCode = null;
+            const letter = code.substring(0,1)
+            if (items.some(i => i.code.trim() === letter)) {
+              parentCode = letter;
             }
         }
         
@@ -159,6 +163,8 @@ const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNod
             node.children.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
         }
     });
+    
+    roots.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
 
     return roots.filter(node => !node.parentCode);
 };
@@ -171,21 +177,28 @@ const filterTree = (nodes: OkrbNodeData[], filterText: string): OkrbNodeData[] =
     const lowerCaseFilter = filterText.toLowerCase();
 
     const recursiveFilter = (node: OkrbNodeData): OkrbNodeData | null => {
-        const hasMatchingChildren = node.children.length > 0;
-        const filteredChildren = hasMatchingChildren 
-            ? node.children.map(child => recursiveFilter(child)).filter((child): child is OkrbNodeData => child !== null)
-            : [];
+        // If the node itself matches, we keep it and all its children.
+        if (node.name.toLowerCase().includes(lowerCaseFilter)) {
+            return node;
+        }
 
-        const isMatch = node.name.toLowerCase().includes(lowerCaseFilter);
-        
-        if (isMatch || filteredChildren.length > 0) {
+        // If the node doesn't match, check its children.
+        const filteredChildren = node.children
+            .map(child => recursiveFilter(child))
+            .filter((child): child is OkrbNodeData => child !== null);
+
+        // If any children matched, we keep this parent node, but with only the matched children.
+        if (filteredChildren.length > 0) {
             return { ...node, children: filteredChildren };
         }
 
+        // If neither the node nor its children match, we discard it.
         return null;
     };
 
-    return nodes.map(node => recursiveFilter(node)).filter((node): node is OkrbNodeData => node !== null);
+    return nodes
+        .map(node => recursiveFilter(node))
+        .filter((node): node is OkrbNodeData => node !== null);
 };
 
 export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChange }) => {
@@ -250,11 +263,7 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
 
     return (
         <div className="w-full flex flex-col h-full max-h-[50vh]">
-             <div className="px-2 pt-2">
-                <h3 className="text-lg font-semibold text-primary">Справочник ОКРБ</h3>
-                <p className="text-sm text-muted-foreground">Выберите один или несколько кодов для поиска.</p>
-            </div>
-            <div className="p-2 mb-2 sticky top-0 bg-white z-10">
+            <div className="p-2 sticky top-0 bg-white z-10 border-b">
                 <Input 
                     placeholder="Поиск по коду или названию..."
                     value={searchTerm}
@@ -270,6 +279,7 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
                         selectedIds={selectedIds}
                         onSelectionChange={handleNodeSelectionChange}
                         searchTerm={searchTerm}
+                        defaultOpen={!!searchTerm}
                         />
                 )) : (
                      <div className="text-center text-muted-foreground p-8">Ничего не найдено.</div>
