@@ -31,27 +31,26 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
   const handleCheckedChange = (checked: boolean | 'indeterminate') => {
     onSelectionChange(node.id, checked === true);
   };
-
+  
   const content = (
-      <div className="flex items-center gap-2 w-full">
+     <div className="flex items-center gap-2">
         <Checkbox 
             id={node.id}
             checked={isSelected}
             onCheckedChange={handleCheckedChange}
             className="rounded-full" />
-        <Label htmlFor={node.id} className="font-normal cursor-pointer text-left flex-1">{node.name}</Label>
-      </div>
+        <Label htmlFor={node.id} className="font-normal cursor-pointer">{node.name}</Label>
+    </div>
   );
 
   if (hasChildren) {
     return (
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value={node.id} className="border-b-0">
-          <AccordionTrigger
-              className="hover:no-underline p-1 -ml-1 rounded-md hover:bg-accent/10 data-[state=open]:bg-accent/10"
-              >
-              {content}
-          </AccordionTrigger>
+            <div className="flex items-center p-1 rounded-md hover:bg-accent/10 data-[state=open]:bg-accent/10">
+                <div className="flex-1">{content}</div>
+                 <AccordionTrigger className="p-1 hover:no-underline" />
+            </div>
           <AccordionContent className="pl-6">
             {node.children!.map((child) => (
               <TreeNode 
@@ -74,10 +73,65 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
   );
 };
 
+
 interface OkrbTreeProps {
     selectedIds: string[];
     onSelectionChange: (ids: string[]) => void;
 }
+
+const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNodeData[] => {
+    const nodeMap: { [key: string]: OkrbNodeData } = {};
+    const roots: OkrbNodeData[] = [];
+
+    // Initialize all nodes
+    items.forEach(item => {
+        nodeMap[item.code] = { 
+            id: item.code, 
+            name: `[${item.code}] - ${item.name.trim()}`, 
+            children: [] 
+        };
+    });
+
+    // Parent-child linking
+    items.forEach(item => {
+        const node = nodeMap[item.code];
+        const dotIndex = item.code.lastIndexOf('.');
+        
+        if (dotIndex > -1) {
+            const parentCode = item.code.substring(0, dotIndex);
+            if (nodeMap[parentCode]) {
+                nodeMap[parentCode].children.push(node);
+            } else {
+                // If parent doesn't exist for some reason, treat it as a root.
+                 roots.push(node);
+            }
+        } else {
+            // No dot means it's a root-level category (like "A", "B", "C").
+            const firstCharCode = item.code.match(/^[A-Z]/);
+             if(firstCharCode) {
+                roots.push(node);
+             } else {
+                 const parentCode = item.code.substring(0,1);
+                 if(nodeMap[parentCode]) {
+                    nodeMap[parentCode].children.push(node);
+                 } else {
+                    roots.push(node);
+                 }
+             }
+        }
+    });
+
+    // This handles cases where a child might appear before its parent in the flat list.
+    // We do a final check to ensure only true roots are in the root list.
+    const allChildIds = new Set<string>();
+    Object.values(nodeMap).forEach(node => {
+        node.children.forEach(child => {
+            allChildIds.add(child.id);
+        });
+    });
+
+    return roots.filter(node => !allChildIds.has(node.id));
+};
 
 export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChange }) => {
     const [okrbData, setOkrbData] = React.useState<OkrbNodeData[]>([]);
@@ -85,44 +139,9 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
     const [error, setError] = React.useState<string | null>(null);
 
     React.useEffect(() => {
-        const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNodeData[] => {
-            const nodeMap: { [key: string]: OkrbNodeData } = {};
-
-            // Initialize all nodes
-            items.forEach(item => {
-                nodeMap[item.code] = { 
-                    id: item.code, 
-                    name: `[${item.code}] - ${item.name.trim()}`, 
-                    children: [] 
-                };
-            });
-
-            const rootNodes: OkrbNodeData[] = [];
-
-            // Parent-child linking
-            items.forEach(item => {
-                const node = nodeMap[item.code];
-                const dotIndex = item.code.lastIndexOf('.');
-                
-                if (dotIndex > -1) {
-                    const parentCode = item.code.substring(0, dotIndex);
-                    const parent = nodeMap[parentCode];
-                    if (parent) {
-                        parent.children.push(node);
-                    } else {
-                        // If parent doesn't exist, treat it as a root node
-                        rootNodes.push(node);
-                    }
-                } else {
-                    rootNodes.push(node);
-                }
-            });
-
-            return rootNodes;
-        };
-
         const fetchOkrbData = async () => {
             try {
+                // Use local file to avoid CORS issues
                 const response = await fetch('/okrb.json');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
