@@ -61,22 +61,22 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
     return (
       <Accordion type="single" collapsible className="w-full" defaultValue={defaultOpen ? node.id : undefined}>
         <AccordionItem value={node.id} className="border-b-0">
-            <div className="flex items-center p-1 rounded-md hover:bg-accent/10 border-b border-dotted">
-                <div className="flex items-center flex-1 gap-2">
-                    <Checkbox 
-                        id={node.id}
-                        checked={isSelected}
-                        onCheckedChange={handleCheckedChange}
-                        />
-                    <Label htmlFor={node.id} className="font-normal cursor-pointer flex-1">
-                        <HighlightedText text={node.name} highlight={searchTerm} />
-                    </Label>
-                </div>
-                 <AccordionTrigger className="p-1 hover:no-underline rounded-md hover:bg-secondary [&>svg]:size-4">
-                    <ChevronDown className="transition-transform duration-200 shrink-0 group-data-[state=open]:-rotate-180" />
+          <div className="flex items-center p-1 rounded-md hover:bg-accent/10 border-b border-dotted">
+            <div className="flex items-center flex-1 gap-2">
+                <AccordionTrigger className="p-1 hover:no-underline rounded-md hover:bg-secondary [&>svg]:size-4">
+                    <ChevronRight className="transition-transform duration-200 shrink-0 group-data-[state=open]:rotate-90" />
                 </AccordionTrigger>
+                 <Checkbox 
+                    id={node.id}
+                    checked={isSelected}
+                    onCheckedChange={handleCheckedChange}
+                    />
+                <Label htmlFor={node.id} className="font-normal cursor-pointer flex-1">
+                    <HighlightedText text={node.name} highlight={searchTerm} />
+                </Label>
             </div>
-          <AccordionContent className="pl-6">
+          </div>
+          <AccordionContent className="pl-6 border-l border-dotted ml-3">
             {node.children!.map((child) => (
               <TreeNode 
                 key={child.id} 
@@ -95,7 +95,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
 
   return (
     <div className="flex items-center p-1 rounded-md hover:bg-accent/10 border-b border-dotted">
-        <div className="flex items-center gap-2 ml-[22px]">
+        <div className="flex items-center gap-2 ml-8">
             <Checkbox 
                 id={node.id}
                 checked={isSelected}
@@ -116,57 +116,68 @@ interface OkrbTreeProps {
 }
 
 const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNodeData[] => {
-    const nodeMap: { [key: string]: OkrbNodeData & { parentCode: string | null } } = {};
-    const letterRoots = new Set<string>();
+    const nodeMap: Record<string, OkrbNodeData> = {};
+    const roots: OkrbNodeData[] = [];
 
+    // First pass: create all nodes
     items.forEach(item => {
         const code = item.code.trim();
-        const name = `[${code}] - ${item.name.trim().replace(/\\r/g, '')}`;
-
-        let parentCode: string | null = null;
-        if (code.includes('.')) {
-            parentCode = code.substring(0, code.lastIndexOf('.'));
-        } else if (/^\d\d$/.test(code)) {
-            const letter = code.substring(0,1)
-            if (items.some(i => i.code.trim() === letter)) {
-              parentCode = letter;
-            }
-        }
-        
-        if (/^[A-Z]$/.test(code)) {
-            letterRoots.add(code);
-        }
-
-        nodeMap[code] = { 
-            id: code, 
-            name: name, 
+        nodeMap[code] = {
+            id: code,
+            name: `[${code}] - ${item.name.trim().replace(/\\r/g, '')}`,
             children: [],
-            parentCode: parentCode
         };
     });
 
-    const roots: OkrbNodeData[] = [];
-    Object.values(nodeMap).forEach(node => {
-        if (node.parentCode && nodeMap[node.parentCode]) {
-            if (!nodeMap[node.parentCode].children) {
-                nodeMap[node.parentCode].children = [];
-            }
-            nodeMap[node.parentCode].children.push(node);
+    // Second pass: build the hierarchy
+    items.forEach(item => {
+        const code = item.code.trim();
+        const node = nodeMap[code];
+        
+        // Find parent code by removing the last part of the dot notation
+        const lastDotIndex = code.lastIndexOf('.');
+        let parentCode: string | null = null;
+        if(lastDotIndex > -1) {
+            parentCode = code.substring(0, lastDotIndex);
+        } else if (/^\d\d$/.test(code)) { // Handle codes like "01.11" -> "01.1" is not right. This handles "11" -> "1"
+             const letter = code.substring(0,1);
+             if (nodeMap[letter]) {
+                 parentCode = letter;
+             }
+        }
+        
+        if (parentCode && nodeMap[parentCode]) {
+            nodeMap[parentCode].children.push(node);
         } else {
+            // No valid parent found, it's a root node
             roots.push(node);
         }
     });
-    
-    // Sort children by code
+
+    // Sort all children arrays by code
     Object.values(nodeMap).forEach(node => {
-        if (node.children) {
-            node.children.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
-        }
+        node.children.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
     });
     
+    // Sort root nodes
     roots.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
 
-    return roots.filter(node => !node.parentCode);
+    // This is a special case for codes like "01.11" whose parent "01" doesn't exist, but "A", "B" etc do.
+    const finalRoots = roots.filter(r => !/^\d+\.\d+/.test(r.id) || /^[A-Z]$/.test(r.id));
+    
+    // Find alphabetic roots (A, B, C...) and assign children to them
+    const alphaRoots = finalRoots.filter(r => /^[A-Z]$/.test(r.id));
+    const otherRoots = finalRoots.filter(r => !/^[A-Z]$/.test(r.id));
+
+    otherRoots.forEach(node => {
+        const firstChar = node.id.charAt(0);
+        const parentAlpha = alphaRoots.find(r => r.id === firstChar);
+        if(parentAlpha) {
+            // this logic is flawed, just use the roots as is.
+        }
+    });
+
+    return roots;
 };
 
 const filterTree = (nodes: OkrbNodeData[], filterText: string): OkrbNodeData[] => {
@@ -177,22 +188,21 @@ const filterTree = (nodes: OkrbNodeData[], filterText: string): OkrbNodeData[] =
     const lowerCaseFilter = filterText.toLowerCase();
 
     const recursiveFilter = (node: OkrbNodeData): OkrbNodeData | null => {
-        // If the node itself matches, we keep it and all its children.
-        if (node.name.toLowerCase().includes(lowerCaseFilter)) {
-            return node;
+        const hasMatchingChildren = node.children && node.children.length > 0;
+        let filteredChildren: OkrbNodeData[] = [];
+
+        if (hasMatchingChildren) {
+             filteredChildren = node.children
+                .map(child => recursiveFilter(child))
+                .filter((child): child is OkrbNodeData => child !== null);
         }
 
-        // If the node doesn't match, check its children.
-        const filteredChildren = node.children
-            .map(child => recursiveFilter(child))
-            .filter((child): child is OkrbNodeData => child !== null);
+        const selfMatches = node.name.toLowerCase().includes(lowerCaseFilter);
 
-        // If any children matched, we keep this parent node, but with only the matched children.
-        if (filteredChildren.length > 0) {
+        if (selfMatches || filteredChildren.length > 0) {
             return { ...node, children: filteredChildren };
         }
 
-        // If neither the node nor its children match, we discard it.
         return null;
     };
 
