@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { Search, SlidersHorizontal, Trash2, X } from 'lucide-react';
 import { TenderCard } from '../tender-card';
 import { searchTenders, type SearchState } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -19,16 +19,7 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { content } from '@/lib/content';
 import { cn } from '@/lib/utils';
-import { Checkbox } from '../ui/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Badge } from '../ui/badge';
 import { OkrbTree } from '../okrb-tree';
 
 
@@ -49,10 +40,10 @@ export function Hero() {
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [theme, setTheme] = useState('tendersoft');
-  const [isOkrbDialogOpen, setIsOkrbDialogOpen] = useState(false);
-  
-  const [okrbInputValue, setOkrbInputValue] = useState('');
-  const [tempSelectedOkrb, setTempSelectedOkrb] = useState<string[]>([]);
+
+  const [selectedOkrb, setSelectedOkrb] = useState<string[]>([]);
+  const [isOkrbTreeVisible, setIsOkrbTreeVisible] = useState(false);
+  const okrbWrapperRef = useRef<HTMLDivElement>(null);
 
 
   useEffect(() => {
@@ -65,7 +56,18 @@ export function Hero() {
     
     handleStorageChange();
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (okrbWrapperRef.current && !okrbWrapperRef.current.contains(event.target as Node)) {
+        setIsOkrbTreeVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+        window.removeEventListener('storage', handleStorageChange);
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
 
@@ -94,6 +96,14 @@ export function Hero() {
       (formAction as any)();
     }
   }
+  
+  const handleRemoveOkrb = (codeToRemove: string) => {
+    setSelectedOkrb(prev => prev.filter(code => code !== codeToRemove));
+  };
+
+  const handleClearOkrb = () => {
+      setSelectedOkrb([]);
+  }
 
   const hasResults = hasSearched && state.results && state.results.length > 0;
   const noResultsMessage = hasSearched && state.message;
@@ -103,11 +113,6 @@ export function Hero() {
   const heroTitle = isLoggedIn ? "Добро пожаловать, user01!" : heroContent.title;
   const heroSubtitle = isLoggedIn ? "Найдите свой следующий контракт или просмотрите сохраненные фильтры." : heroContent.subtitle;
   
-  const handleApplyOkrbSelection = () => {
-    setOkrbInputValue(tempSelectedOkrb.join(', '));
-    setIsOkrbDialogOpen(false);
-  }
-
 
   return (
     <section className={cn("bg-gradient-to-br from-primary to-accent pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20")}>
@@ -146,37 +151,40 @@ export function Hero() {
                       <div className="md:col-span-2">
                           <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-white h-12 rounded-md"/>
                       </div>
-                       <div className="md:col-span-2">
-                          <Input 
-                            id={`${formId}-okrb_code`} 
-                            name="okrb_code" 
-                            placeholder="Введите код или название позиции ОКРБ" 
-                            className="bg-white h-12 rounded-md"
-                            value={okrbInputValue}
-                            onChange={(e) => setOkrbInputValue(e.target.value)}
-                          />
-                           <Dialog open={isOkrbDialogOpen} onOpenChange={setIsOkrbDialogOpen}>
-                            <DialogTrigger asChild>
-                               <Button type="button" variant="link" className="h-auto text-sm -mt-1 p-0 pl-2">Открыть справочник</Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
-                                <DialogHeader>
-                                <DialogTitle>Справочник ОКРБ</DialogTitle>
-                                <DialogDescription>
-                                    Выберите один или несколько кодов для поиска.
-                                </DialogDescription>
-                                </DialogHeader>
-                                <div className="relative flex-grow overflow-hidden">
-                                     <div className="absolute inset-0 overflow-auto pr-6">
-                                        <OkrbTree selectedIds={tempSelectedOkrb} onSelectionChange={setTempSelectedOkrb}/>
-                                     </div>
+                       <div className="md:col-span-2 space-y-2" ref={okrbWrapperRef}>
+                            <div className="relative">
+                                <Input 
+                                    id={`${formId}-okrb_code`} 
+                                    name="okrb_code" 
+                                    placeholder="Введите код или название позиции ОКРБ" 
+                                    className="bg-white h-12 rounded-md pr-10"
+                                    onFocus={() => setIsOkrbTreeVisible(true)}
+                                    value={selectedOkrb.join(', ')}
+                                    readOnly
+                                />
+                                {selectedOkrb.length > 0 && (
+                                    <Button type="button" variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" onClick={handleClearOkrb}>
+                                        <Trash2 className="w-4 h-4 text-destructive"/>
+                                    </Button>
+                                )}
+                            </div>
+                             {selectedOkrb.length > 0 && (
+                                <div className="p-2 border rounded-md bg-secondary/30 flex flex-wrap gap-2">
+                                    {selectedOkrb.map(code => (
+                                        <Badge key={code} variant="secondary" className="pl-2 pr-1">
+                                            {code}
+                                            <button onClick={() => handleRemoveOkrb(code)} className="ml-1.5 rounded-full hover:bg-muted-foreground/20 p-0.5">
+                                                <X className="w-3 h-3"/>
+                                            </button>
+                                        </Badge>
+                                    ))}
                                 </div>
-                                <DialogFooter>
-                                <Button type="button" variant="secondary" onClick={() => setIsOkrbDialogOpen(false)}>Закрыть</Button>
-                                <Button type="button" onClick={handleApplyOkrbSelection}>Применить</Button>
-                                </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
+                            )}
+                            {isOkrbTreeVisible && (
+                                <div className="border rounded-md shadow-lg bg-white p-2 absolute z-10 w-[calc(100%-3rem)] max-w-4xl">
+                                    <OkrbTree selectedIds={selectedOkrb} onSelectionChange={setSelectedOkrb}/>
+                                </div>
+                            )}
                       </div>
                       <div className="md:col-span-2">
                           <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-white h-12 rounded-md"/>

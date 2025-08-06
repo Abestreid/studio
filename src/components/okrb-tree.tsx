@@ -18,14 +18,34 @@ interface OkrbNodeData {
   children: OkrbNodeData[];
 }
 
+const HighlightedText = ({ text, highlight }: { text: string, highlight: string }) => {
+    if (!highlight.trim()) {
+        return <>{text}</>;
+    }
+    const regex = new RegExp(`(${highlight})`, 'gi');
+    const parts = text.split(regex);
+    return (
+        <span>
+            {parts.map((part, i) =>
+                regex.test(part) ? (
+                    <strong key={i} className="font-bold text-accent">{part}</strong>
+                ) : (
+                    part
+                )
+            )}
+        </span>
+    );
+};
+
+
 interface TreeNodeProps {
   node: OkrbNodeData;
   selectedIds: string[];
   onSelectionChange: (id: string, isSelected: boolean) => void;
-  depth: number;
+  searchTerm: string;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChange, depth }) => {
+const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChange, searchTerm }) => {
   const hasChildren = node.children && node.children.length > 0;
   const isSelected = selectedIds.includes(node.id);
 
@@ -40,26 +60,28 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
             checked={isSelected}
             onCheckedChange={handleCheckedChange}
              />
-        <Label htmlFor={node.id} className="font-normal cursor-pointer flex-1">{node.name}</Label>
+        <Label htmlFor={node.id} className="font-normal cursor-pointer flex-1">
+             <HighlightedText text={node.name} highlight={searchTerm} />
+        </Label>
     </div>
   );
 
   if (hasChildren) {
     return (
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full" defaultValue={searchTerm ? node.id : undefined}>
         <AccordionItem value={node.id} className="border-b-0">
             <div className="flex items-center p-1 rounded-md hover:bg-accent/10 data-[state=open]:bg-accent/10">
                 <div className="flex-1">{content}</div>
-                 <AccordionTrigger className="p-2 hover:no-underline" />
+                <AccordionTrigger className="p-2 hover:no-underline" />
             </div>
-          <AccordionContent className="pl-6">
+          <AccordionContent className="pl-6 border-l ml-3">
             {node.children!.map((child) => (
               <TreeNode 
                 key={child.id} 
                 node={child} 
                 selectedIds={selectedIds}
                 onSelectionChange={onSelectionChange}
-                depth={depth+1}
+                searchTerm={searchTerm}
                 />
             ))}
           </AccordionContent>
@@ -82,50 +104,53 @@ interface OkrbTreeProps {
 }
 
 const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNodeData[] => {
-    const nodeMap: { [key: string]: OkrbNodeData } = {};
+    const nodeMap: { [key: string]: OkrbNodeData & { parentCode: string | null } } = {};
     
+    // First pass: create all nodes and put them in a map
     items.forEach(item => {
-        nodeMap[item.code] = { 
-            id: item.code, 
-            name: `[${item.code}] - ${item.name.trim()}`, 
-            children: [] 
+        const code = item.code.trim();
+        const parentCodeMatch = code.match(/^(.*)\.\d+$/);
+        let parentCode = parentCodeMatch ? parentCodeMatch[1] : null;
+
+        // Handle letter-only codes
+        if (!parentCode && /^\d+$/.test(code)) {
+            parentCode = code.substring(0,1);
+        }
+        
+        // Handle codes like 01.1 -> A
+         if (code.length === 1 && /[A-Z]/.test(code)) {
+            parentCode = null;
+        } else if (code.match(/^\d\d\.\d$/)) {
+             parentCode = code.substring(0,1);
+             if (!Object.values(nodeMap).find(n => n.id === parentCode)) {
+                parentCode = null; // No letter parent exists
+             }
+        }
+
+
+        nodeMap[code] = { 
+            id: code, 
+            name: `[${code}] - ${item.name.trim().replace(/\\r/g, '')}`, 
+            children: [],
+            parentCode: parentCode
         };
     });
 
     const roots: OkrbNodeData[] = [];
-    items.forEach(item => {
-        const node = nodeMap[item.code];
-        const dotIndex = item.code.lastIndexOf('.');
-        const isRootCandidate = /^[A-Z]$/.test(item.code);
-
-        if (isRootCandidate) {
-          roots.push(node)
-          return;
-        }
-
-        if (dotIndex > -1) {
-            const parentCode = item.code.substring(0, dotIndex);
-            if (nodeMap[parentCode]) {
-                nodeMap[parentCode].children.push(node);
-            } else {
-                 roots.push(node);
-            }
+    
+    // Second pass: link children to their parents
+    Object.values(nodeMap).forEach(node => {
+        if (node.parentCode && nodeMap[node.parentCode]) {
+            nodeMap[node.parentCode].children.push(node);
         } else {
-             const parentCode = item.code.substring(0,1);
-             if (nodeMap[parentCode]) {
-                nodeMap[parentCode].children.push(node)
-             } else {
-                roots.push(node)
-             }
+            roots.push(node);
         }
     });
-    
-    // Final filtering to get only true roots
+
+    // This handles cases where a child might have been pushed as a root initially
     const allChildIds = new Set<string>();
     Object.values(nodeMap).forEach(node => {
-        node.children.forEach(child => {
-            allChildIds.add(child.id);
-        });
+        node.children.forEach(child => allChildIds.add(child.id));
     });
 
     return roots.filter(node => !allChildIds.has(node.id));
@@ -174,7 +199,7 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
                 setOkrbData(treeData);
             } catch (error) {
                 console.error("Failed to fetch OKRB data:", error);
-                setError('Не удалось загрузить локальный справочник okrb.json.');
+                setError('Не удалось загрузить справочник. Попробуйте перезагрузить страницу.');
             } finally {
                 setLoading(false);
             }
@@ -198,8 +223,8 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
 
     if (loading) {
         return (
-            <div className="space-y-2">
-                <p className="text-center text-muted-foreground">Загрузка справочника...</p>
+            <div className="space-y-2 p-2">
+                <p className="text-center text-muted-foreground text-sm">Загрузка справочника...</p>
                 {Array.from({ length: 10 }).map((_, i) => (
                     <Skeleton key={i} className="h-8 w-full" />
                 ))}
@@ -217,26 +242,25 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
     }
 
     return (
-        <div className="w-full flex flex-col h-full">
-            <div className="p-1 mb-2">
+        <div className="w-full flex flex-col h-full max-h-[50vh]">
+            <div className="p-1 mb-2 sticky top-0 bg-white z-10">
                 <Input 
                     placeholder="Поиск по коду или названию..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
-            <div className="flex-grow overflow-auto pr-4">
-                {filteredData.map((rootNode) => (
+            <div className="flex-grow overflow-auto pr-4 -mr-2">
+                {filteredData.length > 0 ? filteredData.map((rootNode) => (
                     <TreeNode 
                         key={rootNode.id} 
                         node={rootNode} 
                         selectedIds={selectedIds}
                         onSelectionChange={handleNodeSelectionChange}
-                        depth={0}
+                        searchTerm={searchTerm}
                         />
-                ))}
-                {filteredData.length === 0 && (
-                    <div className="text-center text-muted-foreground p-8">Ничего не найдено.</div>
+                )) : (
+                     <div className="text-center text-muted-foreground p-8">Ничего не найдено.</div>
                 )}
             </div>
         </div>
