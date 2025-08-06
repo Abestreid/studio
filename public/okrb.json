@@ -1,0 +1,792 @@
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 1,
+      "code": "01.1",
+      "name": "Культуры однолетние и двулетние\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 2,
+      "code": "01.11",
+      "name": "Культуры злаковые (кроме риса), бобовые и семена масличных культур \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 3,
+      "code": "01.11.1",
+      "name": "Пшеница\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 4,
+      "code": "01.11.11",
+      "name": "Пшеница твердая (дурум)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 5,
+      "code": "01.11.11.100",
+      "name": "Пшеница озимая твердая \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 6,
+      "code": "01.11.11.110",
+      "name": "Зерно пшеницы озимой твердой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 7,
+      "code": "01.11.11.120",
+      "name": "Семена пшеницы озимой твердой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 8,
+      "code": "01.11.11.200",
+      "name": "Пшеница яровая твердая \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 9,
+      "code": "01.11.11.210",
+      "name": "Зерно пшеницы яровой твердой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 10,
+      "code": "01.11.11.220",
+      "name": "Семена пшеницы яровой твердой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 11,
+      "code": "01.11.12",
+      "name": "Пшеница (кроме твердой) \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 12,
+      "code": "01.11.12.100",
+      "name": "Пшеница озимая мягкая сильная \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 13,
+      "code": "01.11.12.110",
+      "name": "Зерно пшеницы озимой мягкой сильной \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 14,
+      "code": "01.11.12.120",
+      "name": "Семена пшеницы озимой мягкой сильной \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 15,
+      "code": "01.11.12.200",
+      "name": "Пшеница озимая мягкая \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 16,
+      "code": "01.11.12.210",
+      "name": "Зерно пшеницы озимой мягкой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 17,
+      "code": "01.11.12.220",
+      "name": "Семена пшеницы озимой мягкой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 18,
+      "code": "01.11.12.300",
+      "name": "Пшеница яровая мягкая\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 19,
+      "code": "01.11.12.310",
+      "name": "Зерно пшеницы яровой мягкой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 20,
+      "code": "01.11.12.320",
+      "name": "Семена пшеницы яровой мягкой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 21,
+      "code": "01.11.12.400",
+      "name": "Пшеница яровая сильная \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 22,
+      "code": "01.11.12.410",
+      "name": "Зерно пшеницы яровой сильной \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 23,
+      "code": "01.11.12.420",
+      "name": "Семена пшеницы яровой сильной \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 24,
+      "code": "01.11.12.500",
+      "name": "Пшеница яровая персидская и плотноколосая \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 25,
+      "code": "01.11.12.510",
+      "name": "Зерно пшеницы яровой персидской и плотноколосой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 26,
+      "code": "01.11.12.520",
+      "name": "Семена пшеницы яровой персидской и плотноколосой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 27,
+      "code": "01.11.12.600",
+      "name": "Полба (спельта)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 28,
+      "code": "01.11.12.610",
+      "name": "Зерно полбы (спельты)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 29,
+      "code": "01.11.12.620",
+      "name": "Семена полбы (спельты)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 30,
+      "code": "01.11.12.900",
+      "name": "Пшеница прочая\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 31,
+      "code": "01.11.12.910",
+      "name": "Зерно пшеницы прочей\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 32,
+      "code": "01.11.12.920",
+      "name": "Семена пшеницы прочей\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 33,
+      "code": "01.11.2",
+      "name": "Кукуруза (маис)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 34,
+      "code": "01.11.20",
+      "name": "Кукуруза (маис)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 35,
+      "code": "01.11.20.100",
+      "name": "Кукуруза лопающаяся (рисовая)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 36,
+      "code": "01.11.20.110",
+      "name": "Зерно кукурузы лопающейся (рисовой)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 37,
+      "code": "01.11.20.120",
+      "name": "Семена кукурузы лопающейся (рисовой)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 38,
+      "code": "01.11.20.130",
+      "name": "Початки кукурузы лопающейся (рисовой)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 39,
+      "code": "01.11.20.140",
+      "name": "Початки кукурузы лопающейся (рисовой) обрушенные\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 40,
+      "code": "01.11.20.200",
+      "name": "Кукуруза кремнистая\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 41,
+      "code": "01.11.20.210",
+      "name": "Зерно кукурузы кремнистой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 42,
+      "code": "01.11.20.220",
+      "name": "Семена кукурузы кремнистой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 43,
+      "code": "01.11.20.230",
+      "name": "Початки кукурузы кремнистой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 44,
+      "code": "01.11.20.240",
+      "name": "Початки кукурузы кремнистой обрушенные\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 45,
+      "code": "01.11.20.300",
+      "name": "Кукуруза зубовидная и прочих видов\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 46,
+      "code": "01.11.20.310",
+      "name": "Зерно кукурузы зубовидной и прочих видов\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 47,
+      "code": "01.11.20.320",
+      "name": "Семена кукурузы зубовидной и прочих видов\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 48,
+      "code": "01.11.20.330",
+      "name": "Початки кукурузы зубовидной и прочих видов\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 49,
+      "code": "01.11.20.340",
+      "name": "Початки кукурузы зубовидной и прочих видов обрушенные\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 50,
+      "code": "01.11.20.400",
+      "name": "Кукуруза разнотипная (смесь)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 51,
+      "code": "01.11.20.410",
+      "name": "Зерно кукурузы разнотипной\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 52,
+      "code": "01.11.20.420",
+      "name": "Семена кукурузы разнотипной\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 53,
+      "code": "01.11.20.430",
+      "name": "Початки кукурузы разнотипной\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 54,
+      "code": "01.11.3",
+      "name": "Ячмень, рожь и овес\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 55,
+      "code": "01.11.31",
+      "name": "Ячмень\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 56,
+      "code": "01.11.31.100",
+      "name": "Ячмень озимый\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 57,
+      "code": "01.11.31.110",
+      "name": "Зерно ячменя озимого\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 58,
+      "code": "01.11.31.120",
+      "name": "Семена ячменя озимого\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 59,
+      "code": "01.11.31.200",
+      "name": "Ячмень яровой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 60,
+      "code": "01.11.31.210",
+      "name": "Зерно ячменя ярового\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 61,
+      "code": "01.11.31.220",
+      "name": "Семена ячменя ярового\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 62,
+      "code": "01.11.32",
+      "name": "Рожь \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 63,
+      "code": "01.11.32.100",
+      "name": "Рожь озимая\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 64,
+      "code": "01.11.32.110",
+      "name": "Зерно ржи озимой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 65,
+      "code": "01.11.32.120",
+      "name": "Семена ржи озимой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 66,
+      "code": "01.11.32.200",
+      "name": "Рожь яровая\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 67,
+      "code": "01.11.32.210",
+      "name": "Зерно ржи яровой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 68,
+      "code": "01.11.32.220",
+      "name": "Семена ржи яровой\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 69,
+      "code": "01.11.33",
+      "name": "Овес\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 70,
+      "code": "01.11.33.100",
+      "name": "Зерно овса\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 71,
+      "code": "01.11.33.200",
+      "name": "Семена овса\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 72,
+      "code": "01.11.4",
+      "name": "Сорго, просо и культуры зерновые прочие\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 73,
+      "code": "01.11.41",
+      "name": "Сорго (джугара) \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 74,
+      "code": "01.11.41.100",
+      "name": "Зерно сорго\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 75,
+      "code": "01.11.41.200",
+      "name": "Семена сорго\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 76,
+      "code": "01.11.42",
+      "name": "Просо \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 77,
+      "code": "01.11.42.100",
+      "name": "Зерно проса\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 78,
+      "code": "01.11.42.200",
+      "name": "Семена проса\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 79,
+      "code": "01.11.49",
+      "name": "Культуры зерновые прочие\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 80,
+      "code": "01.11.49.100",
+      "name": "Тритикале (пшенично-ржаной гибрид)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 81,
+      "code": "01.11.49.110",
+      "name": "Тритикале озимая\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 82,
+      "code": "01.11.49.111",
+      "name": "Зерно тритикале озимой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 83,
+      "code": "01.11.49.112",
+      "name": "Семена тритикале озимой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 84,
+      "code": "01.11.49.120",
+      "name": "Тритикале яровая\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 85,
+      "code": "01.11.49.131",
+      "name": "Зерно тритикале яровой \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 86,
+      "code": "01.11.49.132",
+      "name": "Семена яровой тритикале\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 87,
+      "code": "01.11.49.200",
+      "name": "Суржик (меслин)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 88,
+      "code": "01.11.49.210",
+      "name": "Зерно суржика (меслина)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 89,
+      "code": "01.11.49.220",
+      "name": "Семена суржика (меслина)\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 90,
+      "code": "01.11.49.900",
+      "name": "Культуры зерновые прочие, гибриды и смеси  зерновых, не включенные в другие группировки\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 91,
+      "code": "01.11.49.910",
+      "name": "Гречиха\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 92,
+      "code": "01.11.49.911",
+      "name": "Зерно гречихи \r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 93,
+      "code": "01.11.49.912",
+      "name": "Семена гречихи\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 94,
+      "code": "01.11.49.990",
+      "name": "Культуры зерновые прочие, не включенные в другие группировки\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 95,
+      "code": "01.11.5",
+      "name": "Солома и мякина зерновых культур\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 96,
+      "code": "01.11.50",
+      "name": "Солома и мякина зерновых культур\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 97,
+      "code": "01.11.50.000",
+      "name": "Солома и мякина зерновых культур\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 98,
+      "code": "01.11.6",
+      "name": "Овощи бобовые зеленые свежие или охлажденные\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 99,
+      "code": "01.11.61",
+      "name": "Фасоль зеленая (включая стручковую) свежая или охлажденная\r",
+      "created_at": null,
+      "updated_at": null
+    },
+    {
+      "id": 100,
+      "code": "01.11.61.000",
+      "name": "Фасоль зеленая (включая стручковую) свежая или охлажденная\r",
+      "created_at": null,
+      "updated_at": null
+    }
+  ],
+  "first_page_url": "http://93.177.124.62:8000/api/okrbs?page=1",
+  "from": 1,
+  "last_page": 174,
+  "last_page_url": "http://93.177.124.62:8000/api/okrbs?page=174",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=1",
+      "label": "1",
+      "active": true
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=2",
+      "label": "2",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=3",
+      "label": "3",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=4",
+      "label": "4",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=5",
+      "label": "5",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=6",
+      "label": "6",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=7",
+      "label": "7",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=8",
+      "label": "8",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=9",
+      "label": "9",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=10",
+      "label": "10",
+      "active": false
+    },
+    {
+      "url": null,
+      "label": "...",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=173",
+      "label": "173",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=174",
+      "label": "174",
+      "active": false
+    },
+    {
+      "url": "http://93.177.124.62:8000/api/okrbs?page=2",
+      "label": "Next &raquo;",
+      "active": false
+    }
+  ],
+  "next_page_url": "http://93.177.124.62:8000/api/okrbs?page=2",
+  "path": "http://93.177.124.62:8000/api/okrbs",
+  "per_page": 100,
+  "prev_page_url": null,
+  "to": 100,
+  "total": 17383
+}

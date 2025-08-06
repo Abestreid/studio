@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { Skeleton } from './ui/skeleton';
 
 interface OkrbNodeData {
-  id: string;
+  id: string; // Keep id as string to match usage
   name: string;
   children?: OkrbNodeData[];
 }
@@ -39,7 +39,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, level = 0, selectedIds, onSel
     return (
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value={node.id} className="border-b-0">
-          <div
+           <div
             className="flex items-center gap-2 py-1"
             style={{ paddingLeft: `${paddingLeft}px` }}
           >
@@ -96,17 +96,62 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
     const [error, setError] = React.useState<string | null>(null);
 
     React.useEffect(() => {
+        const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNodeData[] => {
+            const tree: OkrbNodeData[] = [];
+            const lookup: { [key: string]: OkrbNodeData } = {};
+
+            // Initialize lookup table
+            items.forEach(item => {
+                lookup[item.code] = { id: item.code, name: `[${item.code}] - ${item.name.trim()}`, children: [] };
+            });
+
+            items.forEach(item => {
+                const parts = item.code.split('.');
+                if (parts.length > 1) {
+                    const parentCode = parts.slice(0, -1).join('.');
+                    if (lookup[parentCode]) {
+                        // Ensure children array exists
+                        if (!lookup[parentCode].children) {
+                            lookup[parentCode].children = [];
+                        }
+                        lookup[parentCode].children!.push(lookup[item.code]);
+                    } else {
+                        // Root node (e.g., code has no parent in the list)
+                        tree.push(lookup[item.code]);
+                    }
+                } else {
+                    // Root node
+                    tree.push(lookup[item.code]);
+                }
+            });
+
+             // Filter out nodes that have been nested
+            const rootCodes = new Set(tree.map(node => node.id));
+            items.forEach(item => {
+                const parts = item.code.split('.');
+                 if (parts.length > 1) {
+                    const parentCode = parts.slice(0, -1).join('.');
+                     if (lookup[parentCode]) {
+                        rootCodes.delete(item.code);
+                    }
+                }
+            })
+
+            return tree.filter(node => rootCodes.has(node.id));
+        };
+
         const fetchOkrbData = async () => {
             try {
-                const response = await fetch('http://93.177.124.62:8000/api/okrbs');
+                const response = await fetch('/okrb.json');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const data: OkrbNodeData[] = await response.json();
-                setOkrbData(data);
+                const rawData = await response.json();
+                const treeData = buildTree(rawData.data);
+                setOkrbData(treeData);
             } catch (error) {
                 console.error("Failed to fetch OKRB data:", error);
-                setError('Не удалось загрузить справочник. Сервер недоступен или есть проблема с CORS.');
+                setError('Не удалось загрузить локальный справочник okrb.json.');
             } finally {
                 setLoading(false);
             }
@@ -154,7 +199,7 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
                 node={rootNode} 
                 selectedIds={selectedIds}
                 onSelectionChange={handleNodeSelectionChange}
-            />
+                />
         ))}
         </div>
     );
