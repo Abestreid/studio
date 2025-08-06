@@ -9,11 +9,11 @@ import {
 } from '@/components/ui/accordion';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
-import { cn } from '@/lib/utils';
 import { Skeleton } from './ui/skeleton';
+import { Input } from './ui/input';
 
 interface OkrbNodeData {
-  id: string; // Keep id as string to match usage
+  id: string;
   name: string;
   children: OkrbNodeData[];
 }
@@ -22,9 +22,10 @@ interface TreeNodeProps {
   node: OkrbNodeData;
   selectedIds: string[];
   onSelectionChange: (id: string, isSelected: boolean) => void;
+  depth: number;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChange }) => {
+const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChange, depth }) => {
   const hasChildren = node.children && node.children.length > 0;
   const isSelected = selectedIds.includes(node.id);
 
@@ -38,8 +39,8 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
             id={node.id}
             checked={isSelected}
             onCheckedChange={handleCheckedChange}
-            className="rounded-full" />
-        <Label htmlFor={node.id} className="font-normal cursor-pointer">{node.name}</Label>
+             />
+        <Label htmlFor={node.id} className="font-normal cursor-pointer flex-1">{node.name}</Label>
     </div>
   );
 
@@ -49,7 +50,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
         <AccordionItem value={node.id} className="border-b-0">
             <div className="flex items-center p-1 rounded-md hover:bg-accent/10 data-[state=open]:bg-accent/10">
                 <div className="flex-1">{content}</div>
-                 <AccordionTrigger className="p-1 hover:no-underline" />
+                 <AccordionTrigger className="p-2 hover:no-underline" />
             </div>
           <AccordionContent className="pl-6">
             {node.children!.map((child) => (
@@ -58,6 +59,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
                 node={child} 
                 selectedIds={selectedIds}
                 onSelectionChange={onSelectionChange}
+                depth={depth+1}
                 />
             ))}
           </AccordionContent>
@@ -67,8 +69,8 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, selectedIds, onSelectionChang
   }
 
   return (
-    <div className="flex items-center py-1 pl-8 pr-1 rounded-md hover:bg-accent/10">
-      {content}
+    <div className="flex items-center p-1 rounded-md hover:bg-accent/10">
+      <div className="flex-1 pl-8">{content}</div>
     </div>
   );
 };
@@ -81,9 +83,7 @@ interface OkrbTreeProps {
 
 const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNodeData[] => {
     const nodeMap: { [key: string]: OkrbNodeData } = {};
-    const roots: OkrbNodeData[] = [];
-
-    // Initialize all nodes
+    
     items.forEach(item => {
         nodeMap[item.code] = { 
             id: item.code, 
@@ -92,37 +92,35 @@ const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNod
         };
     });
 
-    // Parent-child linking
+    const roots: OkrbNodeData[] = [];
     items.forEach(item => {
         const node = nodeMap[item.code];
         const dotIndex = item.code.lastIndexOf('.');
-        
+        const isRootCandidate = /^[A-Z]$/.test(item.code);
+
+        if (isRootCandidate) {
+          roots.push(node)
+          return;
+        }
+
         if (dotIndex > -1) {
             const parentCode = item.code.substring(0, dotIndex);
             if (nodeMap[parentCode]) {
                 nodeMap[parentCode].children.push(node);
             } else {
-                // If parent doesn't exist for some reason, treat it as a root.
                  roots.push(node);
             }
         } else {
-            // No dot means it's a root-level category (like "A", "B", "C").
-            const firstCharCode = item.code.match(/^[A-Z]/);
-             if(firstCharCode) {
-                roots.push(node);
+             const parentCode = item.code.substring(0,1);
+             if (nodeMap[parentCode]) {
+                nodeMap[parentCode].children.push(node)
              } else {
-                 const parentCode = item.code.substring(0,1);
-                 if(nodeMap[parentCode]) {
-                    nodeMap[parentCode].children.push(node);
-                 } else {
-                    roots.push(node);
-                 }
+                roots.push(node)
              }
         }
     });
-
-    // This handles cases where a child might appear before its parent in the flat list.
-    // We do a final check to ensure only true roots are in the root list.
+    
+    // Final filtering to get only true roots
     const allChildIds = new Set<string>();
     Object.values(nodeMap).forEach(node => {
         node.children.forEach(child => {
@@ -133,15 +131,40 @@ const buildTree = (items: { id: number; code: string; name: string }[]): OkrbNod
     return roots.filter(node => !allChildIds.has(node.id));
 };
 
+const filterTree = (nodes: OkrbNodeData[], filterText: string): OkrbNodeData[] => {
+    if (!filterText) {
+        return nodes;
+    }
+
+    const lowerCaseFilter = filterText.toLowerCase();
+
+    const recursiveFilter = (node: OkrbNodeData): OkrbNodeData | null => {
+        const hasMatchingChildren = node.children.length > 0;
+        const filteredChildren = hasMatchingChildren 
+            ? node.children.map(child => recursiveFilter(child)).filter((child): child is OkrbNodeData => child !== null)
+            : [];
+
+        const isMatch = node.name.toLowerCase().includes(lowerCaseFilter);
+        
+        if (isMatch || filteredChildren.length > 0) {
+            return { ...node, children: filteredChildren };
+        }
+
+        return null;
+    };
+
+    return nodes.map(node => recursiveFilter(node)).filter((node): node is OkrbNodeData => node !== null);
+};
+
 export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChange }) => {
     const [okrbData, setOkrbData] = React.useState<OkrbNodeData[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState<string | null>(null);
+    const [searchTerm, setSearchTerm] = React.useState('');
 
     React.useEffect(() => {
         const fetchOkrbData = async () => {
             try {
-                // Use local file to avoid CORS issues
                 const response = await fetch('/okrb.json');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -170,6 +193,8 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
         }
         onSelectionChange(newSelectedIds);
     };
+    
+    const filteredData = React.useMemo(() => filterTree(okrbData, searchTerm), [okrbData, searchTerm]);
 
     if (loading) {
         return (
@@ -192,15 +217,28 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
     }
 
     return (
-        <div className="w-full">
-        {okrbData.map((rootNode) => (
-            <TreeNode 
-                key={rootNode.id} 
-                node={rootNode} 
-                selectedIds={selectedIds}
-                onSelectionChange={handleNodeSelectionChange}
+        <div className="w-full flex flex-col h-full">
+            <div className="p-1 mb-2">
+                <Input 
+                    placeholder="Поиск по коду или названию..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
-        ))}
+            </div>
+            <div className="flex-grow overflow-auto pr-4">
+                {filteredData.map((rootNode) => (
+                    <TreeNode 
+                        key={rootNode.id} 
+                        node={rootNode} 
+                        selectedIds={selectedIds}
+                        onSelectionChange={handleNodeSelectionChange}
+                        depth={0}
+                        />
+                ))}
+                {filteredData.length === 0 && (
+                    <div className="text-center text-muted-foreground p-8">Ничего не найдено.</div>
+                )}
+            </div>
         </div>
     );
 };
