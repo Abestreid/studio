@@ -93,6 +93,7 @@ interface OkrbTreeProps {
 export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChange }) => {
     const [okrbData, setOkrbData] = React.useState<OkrbNodeData[]>([]);
     const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState<string | null>(null);
 
     React.useEffect(() => {
         const fetchOkrbData = async () => {
@@ -105,7 +106,7 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
                 setOkrbData(data);
             } catch (error) {
                 console.error("Failed to fetch OKRB data:", error);
-                // Optionally, set an error state to show a message to the user
+                setError('Не удалось загрузить справочник. Сервер недоступен или есть проблема с CORS.');
             } finally {
                 setLoading(false);
             }
@@ -134,6 +135,15 @@ export const OkrbTree: React.FC<OkrbTreeProps> = ({ selectedIds, onSelectionChan
                 ))}
             </div>
         );
+    }
+    
+    if (error) {
+        return (
+            <div className="text-center text-destructive-foreground bg-destructive/80 p-4 rounded-md">
+                <p className="font-semibold">Ошибка</p>
+                <p>{error}</p>
+            </div>
+        )
     }
 
     return (
