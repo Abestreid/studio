@@ -7,8 +7,8 @@
   :root {
     --panel-background: 0 0% 100%;
     
-    --background: 220 17% 97%; /* #F5F6F8 */
-    --foreground: 215 28% 17%; /* #212933 */
+    --background: 228 12% 98%; /* #F5F6FA */
+    --foreground: 210 29% 25%; /* #2C3E50 */
     
     --card: 0 0% 100%;
     --card-foreground: var(--foreground);
@@ -16,35 +16,35 @@
     --popover: 0 0% 100%;
     --popover-foreground: var(--foreground);
     
-    --primary: 196 35% 26%; /* #2A4A56 */
+    --primary: 168 76% 36%; /* #16A085 */
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 216 34% 91%; /* #E3E8EF */
+    --secondary: 220 17% 97%; /* #F5F6F8. Using old background as new secondary for contrast */
     --secondary-foreground: var(--foreground);
     
     --muted: var(--secondary);
-    --muted-foreground: 220 9% 46%; /* #a6a9ac */
+    --muted-foreground: 220 9% 67%; /* #a6a9ac */
     
-    --accent: 168 76% 36%; /* #16A085 */
-    --accent-dark: 168 76% 30%; /* #138D75 */
+    --accent: 168 76% 36%; /* #16A085 - same as primary */
+    --accent-dark: 168 76% 30%; /* #138d75 */
     --accent-foreground: 0 0% 98%;
     
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 3 89% 38%; /* #BD140B */
     --destructive-foreground: 0 0% 98%;
     
-    --border: 220 17% 97%; /* #F5F6F8 */
+    --border: 0 0% 0%; /* border-color with opacity is used instead */
     --input: var(--secondary);
-    --ring: var(--accent);
+    --ring: var(--primary);
     
-    --chart-1: 19 81% 54%; /* #EA6C2A */
+    --chart-1: 22 81% 67%; /* #EA6C2A */
     --chart-2: 195 100% 50%; /* #00C6FF */
     --chart-3: 149 100% 50%; /* #00FF74 */
     --chart-4: 225 100% 50%; /* #0048FF */
-    --chart-5: 48 100% 50%; /* #FFD300 */
+    --chart-5: 48 100% 66%; /* #FFD300 */
     --chart-6: 285 100% 50%; /* #C600FF */
     --chart-7: 0 100% 50%; /* #FF0000 */
 
-    --radius: 1rem; /* 16px */
+    --radius: 16px;
   }
 
   .theme-rednet {
@@ -64,31 +64,31 @@
   }
 
   .dark {
-    --background: 215 28% 17%;
+    --background: 210 29% 25%; /* #2C3E50 */
     --foreground: 0 0% 98%;
-    --card: 215 28% 11%;
+    --card: 210 43% 13%; /* #1A2634 */
     --card-foreground: 0 0% 98%;
-    --popover: 215 28% 11%;
+    --popover: 210 43% 13%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 215 28% 17%;
-    --secondary: 217 21% 21%;
+    --primary: 168 76% 36%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 43% 18%; /* Darker variant for popovers/cards on dark bg */
     --secondary-foreground: 0 0% 98%;
-    --muted: 217 21% 21%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 210 43% 18%;
+    --muted-foreground: 220 9% 67%;
     --accent: 168 76% 36%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 3 89% 38%;
     --destructive-foreground: 0 0% 98%;
-    --border: 217 21% 27%;
-    --input: 217 21% 27%;
+    --border: 0 0% 100%;
+    --input: 210 43% 18%;
     --ring: 168 76% 36%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border) / var(--border-opacity, 0.12));
   }
   body {
     @apply bg-background text-foreground;
@@ -97,9 +97,10 @@
     @apply py-12 sm:py-16 lg:py-20;
   }
   .section-title {
-      @apply text-2xl font-bold text-center text-primary mb-8 sm:text-3xl lg:text-4xl lg:mb-12;
+      @apply text-2xl font-bold text-center text-foreground mb-8 sm:text-3xl lg:text-4xl lg:mb-12;
   }
   h1,h2,h3,h4,h5,h6 {
+     @apply text-foreground;
   }
 }
 
@@ -124,7 +125,7 @@
   .nav-link-animate:hover,
   .nav-link-animate:focus,
   .nav-link-animate:active {
-    @apply text-accent;
+    @apply text-primary;
     outline: none;
   }
 
@@ -135,7 +136,7 @@
     height: 2px;
     bottom: -4px; /* Adjust as needed */
     left: 0;
-    background-color: hsl(var(--accent));
+    background-color: hsl(var(--primary));
     transform: scaleX(0);
     transform-origin: center;
     transition: transform 0.3s ease-out;
@@ -147,7 +148,7 @@
   }
   
   .nav-link-animate-trigger {
-    @apply relative text-base font-medium text-muted-foreground transition-colors hover:text-accent bg-transparent p-0;
+    @apply relative text-base font-medium text-muted-foreground transition-colors hover:text-primary bg-transparent p-0;
   }
   
   .nav-link-animate-trigger:focus {
@@ -163,7 +164,7 @@
     margin: 0 auto;
     width: 100%;
     height: 2px;
-    background-color: hsl(var(--accent));
+    background-color: hsl(var(--primary));
     transform: scaleX(0);
     transition: transform 0.3s ease-out;
     transform-origin: center;
@@ -197,7 +198,7 @@
 }
 
 .chip-group .form-check-input:checked + .form-check-label {
-    @apply bg-accent text-accent-foreground border-accent;
+    @apply bg-primary text-primary-foreground border-primary;
 }
 
 .sources-container {
@@ -252,7 +253,7 @@
 }
 
 .chip-group-sm .form-check-input:checked + .form-check-label {
-    @apply bg-accent text-accent-foreground border-accent;
+    @apply bg-primary text-primary-foreground border-primary;
 }
 
     

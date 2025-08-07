@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useActionState, useEffect, useState, useId, useRef } from 'react';
@@ -115,7 +116,7 @@ export function Hero() {
   
 
   return (
-    <section className={cn("bg-gradient-to-br from-primary to-accent pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20")}>
+    <section className={cn("bg-gradient-to-br from-foreground to-foreground/80 pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20")}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl font-bold text-white tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
@@ -274,7 +275,7 @@ export function Hero() {
                     type="button"
                     variant="outline"
                     size="icon"
-                    className="rounded-full shrink-0 w-12 h-12 border-accent text-accent hover:bg-accent/20"
+                    className="rounded-full shrink-0 w-12 h-12 border-primary text-primary hover:bg-primary/20"
                     aria-label="Настройки"
                   >
                     <SlidersHorizontal className="text-xl" />

@@ -84,7 +84,7 @@ export function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/home2" className="flex items-center gap-2 text-decoration-none logo">
           <Image src="https://tendersoft.kz/logonavbar.svg" alt="Tendersoft Logo" width={40} height={40} />
-          <span className="text-xl font-bold text-primary">Tendersoft</span>
+          <span className="text-xl font-bold text-foreground">Tendersoft</span>
         </Link>
         <nav className="hidden items-center gap-2 lg:flex">
             <NavigationMenu>
@@ -94,7 +94,7 @@ export function Header() {
                         <NavigationMenuContent>
                             <div className="grid w-[600px] grid-cols-2 gap-x-8 gap-y-4 p-4">
                                 <div>
-                                    <h3 className="font-semibold text-primary mb-2">Тендеры по площадкам</h3>
+                                    <h3 className="font-semibold text-foreground mb-2">Тендеры по площадкам</h3>
                                     <ul className="space-y-1">
                                     {platforms.map((component) => (
                                         <ListItem key={component.title} href={component.href} title={component.title}/>
@@ -102,7 +102,7 @@ export function Header() {
                                     </ul>
                                 </div>
                                 <div>
-                                     <h3 className="font-semibold text-primary mb-2">Тендеры по отраслям</h3>
+                                     <h3 className="font-semibold text-foreground mb-2">Тендеры по отраслям</h3>
                                     <ul className="space-y-1">
                                     {industries.map((component) => (
                                         <ListItem key={component.title} href={component.href} title={component.title}/>
@@ -144,7 +144,7 @@ export function Header() {
           {isLoggedIn ? (
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                    <Button variant="outline" size="icon" className="rounded-full">
                        <UserCircle className="h-6 w-6" />
                     </Button>
                 </DropdownMenuTrigger>
@@ -166,10 +166,10 @@ export function Header() {
             </DropdownMenu>
           ) : (
             <>
-                <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
+                <Button variant="outline" asChild>
                     <Link href="/login">Войти</Link>
                 </Button>
-                <Button className="bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+                <Button asChild>
                     <Link href="/register">Попробовать бесплатно</Link>
                 </Button>
             </>
@@ -200,10 +200,10 @@ export function Header() {
                         </Button>
                    ) : (
                     <>
-                        <Button variant="outline" className="w-full border-accent text-accent" asChild>
+                        <Button variant="outline" className="w-full" asChild>
                         <Link href="/login" onClick={() => setIsMenuOpen(false)}>Войти</Link>
                         </Button>
-                        <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+                        <Button className="w-full" asChild>
                         <Link href="/register" onClick={() => setIsMenuOpen(false)}>Попробовать бесплатно</Link>
                         </Button>
                     </>
@@ -228,12 +228,12 @@ const ListItem = React.forwardRef<
           href={props.href!}
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 focus:bg-accent/10",
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-primary/10 focus:bg-primary/10",
             className
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
+          <div className="text-sm font-medium leading-none text-foreground">{title}</div>
           {children && <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>}
@@ -246,4 +246,5 @@ ListItem.displayName = "ListItem"
 
 
     
+
 
