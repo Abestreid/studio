@@ -105,6 +105,7 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
+              <Link href="/icon-library" className="text-base font-medium nav-link-animate">Библиотека иконок</Link>
         </nav>
         <div className="hidden items-center gap-4 lg:flex">
           {isLoggedIn ? (
@@ -162,6 +163,7 @@ export function Header() {
                         {link.label}
                     </Link>
                     ))}
+                    <Link href="/icon-library" onClick={() => setIsMenuOpen(false)} className="text-xl font-medium text-muted-foreground transition-colors hover:text-primary">Библиотека иконок</Link>
                 </nav>
                 <div className="mt-auto flex flex-col gap-3">
                    {isLoggedIn ? (
