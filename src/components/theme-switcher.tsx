@@ -56,21 +56,21 @@ export function ThemeSwitcher() {
             variant={theme === "tendersoft" ? "default" : "outline"}
             className={cn(theme === 'tendersoft' && 'bg-primary text-primary-foreground')}
           >
-            Tendersoft (KZ)
+            Tendersoft (BY)
           </Button>
           <Button
             onClick={() => toggleTheme("rednet")}
             size="sm"
             variant={theme === "rednet" ? "default" : "outline"}
           >
-            redneT (BY)
+            redneT (KZ)
           </Button>
            <Button
             onClick={() => toggleTheme("rednet2")}
             size="sm"
             variant={theme === "rednet2" ? "default" : "outline"}
           >
-            redneT (BY) 2
+            redneT (KZ) 2
           </Button>
         </div>
       )}
