@@ -116,7 +116,7 @@ export function Hero() {
   
 
   return (
-    <section className={cn("bg-gradient-to-r from-[--primary-darken-1] to-[--primary] pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20")}>
+    <section className={cn("bg-gradient-to-r from-primary-darken-1 to-primary pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20")}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl font-bold text-white tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
