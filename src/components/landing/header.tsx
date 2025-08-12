@@ -17,50 +17,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
-  } from "@/components/ui/navigation-menu"
 import { useRouter } from 'next/navigation';
 import { content } from '@/lib/content';
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-primary/10 focus:bg-primary/10",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none text-foreground">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
-
+import { usePathname } from 'next/navigation';
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [theme, setTheme] = useState('tendersoft');
     const router = useRouter();
+    const pathname = usePathname();
 
     const handleLoginStatus = () => {
         const currentTheme = localStorage.getItem('theme') || 'tendersoft';
@@ -101,11 +67,12 @@ export function Header() {
                   key={link.label}
                   href={link.href}
                   className="text-base font-medium nav-link-animate"
+                  data-active={pathname === link.href}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Link href="/icon-library" className="text-base font-medium nav-link-animate">Библиотека иконок</Link>
+              <Link href="/icon-library" data-active={pathname === "/icon-library"} className="text-base font-medium nav-link-animate">Библиотека иконок</Link>
         </nav>
         <div className="hidden items-center gap-4 lg:flex">
           {isLoggedIn ? (

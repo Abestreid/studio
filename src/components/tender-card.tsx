@@ -25,7 +25,7 @@ export function TenderCard(tender: Tender) {
 
   return (
     <Link href={`/tender/${id}`} className="block text-decoration-none group">
-        <article className="flex flex-col md:flex-row gap-4 p-4 rounded-xl shadow-sm bg-white hover:shadow-lg transition-all duration-300 border hover:border-primary hover:-translate-y-1">
+        <article className="flex flex-col md:flex-row gap-4 p-4 rounded-xl shadow-sm bg-white hover:shadow-lg transition-all duration-300 border hover:border-primary hover:scale-105">
         <div className="flex flex-col flex-grow justify-between">
             <div>
                 <h3 className="font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors text-base">{title}</h3>
