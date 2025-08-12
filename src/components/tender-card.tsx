@@ -25,7 +25,7 @@ export function TenderCard(tender: Tender) {
 
   return (
     <Link href={`/tender/${id}`} className="block text-decoration-none group">
-        <article className="flex flex-col md:flex-row gap-4 p-4 rounded-xl shadow-sm bg-white hover:shadow-lg transition-all duration-300 border hover:border-primary hover:scale-105">
+        <article className="flex flex-col md:flex-row gap-4 p-4 rounded-lg shadow-sm bg-white hover:shadow-lg transition-all duration-300 border hover:border-primary hover:scale-105">
         <div className="flex flex-col flex-grow justify-between">
             <div>
                 <h3 className="font-semibold text-foreground mb-3 leading-tight group-hover:text-primary transition-colors text-base">{title}</h3>
@@ -38,8 +38,8 @@ export function TenderCard(tender: Tender) {
                 </div>
             </div>
             <div className="flex flex-wrap gap-2 items-center mt-auto pt-3 border-t border-dashed -mx-4 px-4">
-                <Badge variant="secondary">{type}</Badge>
-                {status && <Badge variant={getStatusVariant(status)}>{status}</Badge>}
+                <Badge variant="secondary" className="rounded-md">{type}</Badge>
+                {status && <Badge variant={getStatusVariant(status)} className="rounded-md">{status}</Badge>}
             </div>
         </div>
         <div className="flex flex-col items-center justify-center flex-shrink-0 md:ml-3 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-dashed -mx-4 px-4 md:px-0 md:pl-4 md:-my-4 min-w-[150px]">

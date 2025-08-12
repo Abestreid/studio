@@ -43,7 +43,7 @@
     --chart-6: 285 100% 50%; /* #C600FF */
     --chart-7: 0 100% 50%; /* #FF0000 */
 
-    --radius: 1rem;
+    --radius: 1rem; /* 16px */
   }
 
   .theme-rednet {
@@ -76,8 +76,6 @@
     --border: 348 97% 16%; 
     --input: 0 0% 92%;
     --ring: 359 29% 45%;
-    
-    --radius: 0.5rem;
   }
 
   .theme-rednet2 {
@@ -86,7 +84,6 @@
     --accent: 359 29% 45%; /* #965251 */
     --accent-dark: 359 29% 40%;
     --ring: 359 29% 45%;
-    --radius: 0.5rem;
   }
 
   .dark {

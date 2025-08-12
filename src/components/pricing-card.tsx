@@ -23,12 +23,12 @@ export function PricingCard({ tier, isAnnual }: PricingCardProps) {
   return (
     <Card
       className={cn(
-        'flex flex-col shadow-sm hover:shadow-xl transition-shadow duration-300 rounded-2xl',
+        'flex flex-col shadow-sm hover:shadow-xl transition-shadow duration-300 rounded-lg',
         tier.isPopular && 'border-2 border-accent shadow-accent/20'
       )}
     >
       {tier.isPopular && (
-        <div className="bg-accent text-accent-foreground text-xs font-bold uppercase tracking-wider text-center py-1.5 rounded-t-xl">
+        <div className="bg-accent text-accent-foreground text-xs font-bold uppercase tracking-wider text-center py-1.5 rounded-t-lg">
           Популярный выбор
         </div>
       )}

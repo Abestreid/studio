@@ -131,16 +131,16 @@ export function Hero() {
           </p>
         </div>
 
-        <form ref={formRef} action={handleFormAction} className="mt-8 max-w-4xl mx-auto md:mt-12 p-4 sm:p-6 bg-card backdrop-blur-sm rounded-2xl shadow-2xl border">
+        <form ref={formRef} action={handleFormAction} className="mt-8 max-w-4xl mx-auto md:mt-12 p-4 sm:p-6 bg-card backdrop-blur-sm rounded-lg shadow-2xl border">
           <Collapsible open={showAdvancedSearch} onOpenChange={setShowAdvancedSearch}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <div className="md:col-span-2">
-                <Input id={`${formId}-query`} name="query" placeholder="Что ищем? место поставки, закупки, тендер" className="bg-background h-12 rounded-md" onChange={handleQueryChange}/>
+                <Input id={`${formId}-query`} name="query" placeholder="Что ищем? место поставки, закупки, тендер" className="bg-background h-12" onChange={handleQueryChange}/>
               </div>
 
               <div className="md:col-span-2">
                  <Select name="region">
-                    <SelectTrigger id={`${formId}-region`} className="bg-background h-12 rounded-md">
+                    <SelectTrigger id={`${formId}-region`} className="bg-background h-12">
                     <SelectValue placeholder="Место поставки" />
                     </SelectTrigger>
                     <SelectContent>
@@ -154,7 +154,7 @@ export function Hero() {
               <CollapsibleContent asChild className="md:col-span-2">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                       <div className="md:col-span-2">
-                          <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-background h-12 rounded-md"/>
+                          <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-background h-12"/>
                       </div>
                        <div className="md:col-span-2 space-y-2" ref={okrbWrapperRef}>
                             <div className="relative">
@@ -162,7 +162,7 @@ export function Hero() {
                                     id={`${formId}-okrb_code`} 
                                     name="okrb_code" 
                                     placeholder="Введите код или название позиции ОКРБ" 
-                                    className="bg-background h-12 rounded-md pr-10"
+                                    className="bg-background h-12 pr-10"
                                     onFocus={() => setIsOkrbTreeVisible(true)}
                                     value={selectedOkrb.join(', ')}
                                     readOnly
@@ -174,9 +174,9 @@ export function Hero() {
                                 )}
                             </div>
                              {selectedOkrb.length > 0 && (
-                                <div className="p-2 border rounded-md bg-secondary/30 flex flex-wrap gap-2">
+                                <div className="p-2 border rounded-lg bg-secondary/30 flex flex-wrap gap-2">
                                     {selectedOkrb.map(code => (
-                                        <Badge key={code} variant="secondary" className="pl-2 pr-1">
+                                        <Badge key={code} variant="secondary" className="pl-2 pr-1 rounded-md">
                                             {code}
                                             <button onClick={() => handleRemoveOkrb(code)} className="ml-1.5 rounded-full hover:bg-muted-foreground/20 p-0.5">
                                                 <X className="w-3 h-3"/>
@@ -186,13 +186,13 @@ export function Hero() {
                                 </div>
                             )}
                             {isOkrbTreeVisible && (
-                                <div className="border rounded-md shadow-lg bg-white p-2 absolute z-10 w-[calc(100%-3rem)] max-w-4xl">
+                                <div className="border rounded-lg shadow-lg bg-white p-2 absolute z-10 w-[calc(100%-3rem)] max-w-4xl">
                                     <OkrbTree selectedIds={selectedOkrb} onSelectionChange={setSelectedOkrb}/>
                                 </div>
                             )}
                       </div>
                       <div className="md:col-span-2">
-                          <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-background h-12 rounded-md"/>
+                          <Input id={`${formId}-subject`} name="subject" placeholder="Введите наименование предмета закупки" className="bg-background h-12"/>
                           <div className="flex items-center gap-4 mt-2 justify-center">
                             <RadioGroup defaultValue="search_in_name" name="subject_match_type" className="flex">
                                   <div className="flex items-center space-x-2">
@@ -207,39 +207,39 @@ export function Hero() {
                           </div>
                       </div>
                       <div className="md:col-span-2">
-                          <Input id={`${formId}-exclude_words`} name="exclude_words" placeholder="Укажите слова исключения" className="bg-background h-12 rounded-md"/>
+                          <Input id={`${formId}-exclude_words`} name="exclude_words" placeholder="Укажите слова исключения" className="bg-background h-12"/>
                       </div>
                       <div>
                         <Label htmlFor={`${formId}-price_from`}>Предельная стоимость от</Label>
-                        <Input id={`${formId}-price_from`} name="price_from" type="number" className="bg-background h-12 rounded-md" />
+                        <Input id={`${formId}-price_from`} name="price_from" type="number" className="bg-background h-12" />
                       </div>
                       <div>
                         <Label htmlFor={`${formId}-price_to`}>Предельная стоимость до</Label>
-                        <Input id={`${formId}-price_to`} name="price_to" type="number" className="bg-background h-12 rounded-md"/>
+                        <Input id={`${formId}-price_to`} name="price_to" type="number" className="bg-background h-12"/>
                       </div>
                       <div>
                         <Label htmlFor={`${formId}-date_pub_from`}>Дата размещения с</Label>
-                        <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" className="bg-background h-12 text-muted-foreground rounded-md"/>
+                        <Input id={`${formId}-date_pub_from`} name="date_pub_from" type="date" className="bg-background h-12 text-muted-foreground"/>
                       </div>
                       <div>
                         <Label htmlFor={`${formId}-date_pub_to`}>Дата размещения до</Label>
-                        <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" className="bg-background h-12 text-muted-foreground rounded-md"/>
+                        <Input id={`${formId}-date_pub_to`} name="date_pub_to" type="date" className="bg-background h-12 text-muted-foreground"/>
                       </div>
                       <div>
                         <Label htmlFor={`${formId}-date_end_from`}>Дата оконания приема предлоджиний с</Label>
-                        <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" className="bg-background h-12 text-muted-foreground rounded-md"/>
+                        <Input id={`${formId}-date_end_from`} name="date_end_from" type="date" className="bg-background h-12 text-muted-foreground"/>
                       </div>
                       <div>
                         <Label htmlFor={`${formId}-date_end_to`}>Дата оконания приема предлоджиний до</Label>
-                        <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" className="bg-background h-12 text-muted-foreground rounded-md"/>
+                        <Input id={`${formId}-date_end_to`} name="date_end_to" type="date" className="bg-background h-12 text-muted-foreground"/>
                       </div>
                        <div>
                         <Label htmlFor={`${formId}-delivery_from`}>Срок поставки от</Label>
-                        <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" className="bg-background h-12 text-muted-foreground rounded-md"/>
+                        <Input id={`${formId}-delivery_from`} name="delivery_from" type="date" className="bg-background h-12 text-muted-foreground"/>
                       </div>
                       <div>
                         <Label htmlFor={`${formId}-delivery_to`}>Срок поставки до</Label>
-                        <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" className="bg-background h-12 text-muted-foreground rounded-md"/>
+                        <Input id={`${formId}-delivery_to`} name="delivery_to" type="date" className="bg-background h-12 text-muted-foreground"/>
                       </div>
                       <div className="md:col-span-2 space-y-3 mt-4">
                           <RadioGroup defaultValue="all" name="funding_type" className="flex items-center gap-4 justify-center">
@@ -270,7 +270,7 @@ export function Hero() {
               </CollapsibleContent>
 
               <div className="md:col-span-2 flex flex-col sm:flex-row justify-between items-center mt-4 gap-4">
-                 <Button type="submit" size="lg" className="w-full sm:w-auto h-12 text-base rounded-md flex-grow" disabled={isPending}>
+                 <Button type="submit" size="lg" className="w-full sm:w-auto h-12 text-base flex-grow" disabled={isPending}>
                   <Search className="mr-2" />
                   {isPending ? 'Поиск...' : heroContent.cta}
                 </Button>
@@ -279,7 +279,7 @@ export function Hero() {
                     type="button"
                     variant="outline"
                     size="icon"
-                    className="rounded-md shrink-0 w-12 h-12 border-primary text-primary hover:bg-primary/20"
+                    className="shrink-0 w-12 h-12 border-primary text-primary hover:bg-primary/20"
                     aria-label="Настройки"
                   >
                     <SlidersHorizontal className="text-xl" />
@@ -299,7 +299,7 @@ export function Hero() {
             {isPending && (
                  <div className="space-y-4">
                     {[...Array(3)].map((_, i) => (
-                        <div key={i} className="p-4 rounded-xl shadow-sm bg-white border border-gray-200 animate-pulse">
+                        <div key={i} className="p-4 rounded-lg shadow-sm bg-white border border-gray-200 animate-pulse">
                             <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2 text-xs sm:text-sm mb-3">
                                 <div className="h-4 bg-gray-200 rounded w-1/2"></div>
