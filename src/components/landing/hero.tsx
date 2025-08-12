@@ -116,7 +116,7 @@ export function Hero() {
   
   const heroBackgroundClass = (theme === 'rednet' || theme === 'rednet2') 
     ? "bg-gradient-to-r from-primary-darken-1 to-primary"
-    : "bg-primary";
+    : "bg-gradient-to-r from-primary-darken-1 to-primary";
 
 
   return (
@@ -146,13 +146,15 @@ export function Hero() {
                     <SelectContent>
                         <SelectItem value="Все регионы">Все регионы</SelectItem>
                         <SelectItem value="by">Беларусь</SelectItem>
-                        <SelectItem value="kz">Казахстан</SelectItem>
                     </SelectContent>
                 </Select>
               </div>
 
               <CollapsibleContent asChild className="md:col-span-2">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                       <div className="md:col-span-2">
+                          <Input id={`${formId}-tender_unp`} name="tender_unp" placeholder="Введите номер УНП" className="bg-background h-12"/>
+                      </div>
                       <div className="md:col-span-2">
                           <Input id={`${formId}-tender_id`} name="tender_id" placeholder="Введите номер закупки" className="bg-background h-12"/>
                       </div>

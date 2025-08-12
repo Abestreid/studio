@@ -29,7 +29,7 @@ import Link from 'next/link';
 
 function CreateTemplateForm() {
     const searchParams = useSearchParams();
-    const country = searchParams.get('country') || 'kz';
+    const country = searchParams.get('country') || 'by'; // Default to Belarus for redneT
 
     const isKazakhstan = country === 'kz';
 

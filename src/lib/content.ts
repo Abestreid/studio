@@ -123,24 +123,26 @@ export const content = {
             navLinks: [
                 { href: '/', label: 'Тендеры' },
                 { href: '/analytics', label: 'Аналитика' },
+                { href: '/templates', label: 'Шаблоны' },
                 { href: '/favorites', label: 'Избранное' },
                 { href: '/pricing', label: 'Тарифы' },
+                { href: '/blog', label: 'Блог' },
                 { href: '/help', label: 'Помощь' },
             ]
         },
         hero: {
-            title: 'Все тендеры Беларуси и Казахстана - в одном месте',
-            subtitle: 'Поиск, аналитика и мониторинг закупок на всех основных площадках. Находите нужные закупки быстрее конкурентов. Больше не нужно искать лоты закупок вручную',
+            title: 'Все тендеры Республики Беларусь - в одном месте',
+            subtitle: 'Поиск, мониторинг, аналитика и командная работа - экономьте время и выигрывайте больше',
             cta: 'Начать поиск',
             secondaryCta: 'Запросить демо'
         },
         howItWorks: {
             title: 'Почему выбирают нас?',
             items: [
-                { icon: React.createElement(Search, { className: "w-8 h-8" }), title: 'Умный поиск', description: 'Поиск по ключевым словам и 30+ параметрам находит релевантные закупки.' },
-                { icon: React.createElement(Bell, { className: "w-8 h-8" }), title: 'Мгновенные уведомления', description: 'Email, Telegram, браузер — получайте уведомления о свежих тендерах там, где вам удобно.' },
-                { icon: React.createElement(BarChart, { className: "w-8 h-8" }), title: 'Глубокая аналитика', description: 'Анализ конкурентов, заказчиков и рынка помогает принимать взвешенные решения.'},
-                { icon: React.createElement(Users, { className: "w-8 h-8" }), title: 'Командная работа', description: 'Обсуждение закупок, распределение ответственных и CRM-интеграция в одном месте.' },
+                { icon: React.createElement(Search, { className: "w-8 h-8" }), title: 'Умный поиск', description: 'Поиск по всему тексту документации и учёт опечаток - находите даже скрытые закупки.' },
+                { icon: React.createElement(Bell, { className: "w-8 h-8" }), title: 'Мгновенные уведомления', description: 'Email, Telegram, web-push - получайте свежие тендеры сразу после публикации.' },
+                { icon: React.createElement(BarChart, { className: "w-8 h-8" }), title: 'Глубокая аналитика', description: 'Отраслевые дашборды, статистика заказчиков и конкурентов — принимайте обоснованные решения.'},
+                { icon: React.createElement(Users, { className: "w-8 h-8" }), title: 'Командная работа', description: 'Метки, задачи, календарь дедлайнов — вся команда работает в едином пространстве.' },
             ]
         },
         features: {
@@ -148,7 +150,7 @@ export const content = {
             items: [
                 {
                     title: "Аналитика",
-                    list: [ 'Поиск по PDF- и DOC-документам тендера', 'Сохранённые фильтры и история запросов', 'REST API для интеграции с CRM/ERP'],
+                    list: [ 'Поиск внутри PDF / DOC-документов тендера', 'Сохранённые фильтры и Telegram-бот', 'REST API для интеграции с CRM / ERP'],
                     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhbmFseXRpY3MlMjBkYXNoYm9hcmR8ZW58MHx8fHwxNzUzODY0NTI2fDA&ixlib=rb-4.1.0&q=80&w=1080',
                     alt: 'Аналитика',
                     hint: 'analytics dashboard'
@@ -158,9 +160,9 @@ export const content = {
         growth: {
             title: 'Ваш инструмент для роста в цифрах',
             items: [
-                { icon: React.createElement(DatabaseZap, { className: "w-8 h-8 text-accent-foreground" }), value: '15 000+', label: 'Актуальные тендеры и лоты прямо сейчас' },
-                { icon: React.createElement(UserPlus, { className: "w-8 h-8 text-accent-foreground" }), value: '250+', label: 'Новых клиентов за месяц доверяют нам свой рост' },
-                { icon: React.createElement(Clock, { className: "w-8 h-8 text-accent-foreground" }), value: '8 часов', label: 'Рабочего времени в неделю экономит специалист' },
+                { icon: React.createElement(DatabaseZap, { className: "w-8 h-8 text-accent-foreground" }), value: '15 000+', label: 'Активных тендеров в базе прямо сейчас' },
+                { icon: React.createElement(DatabaseZap, { className: "w-8 h-8 text-accent-foreground" }), value: '1 500+', label: 'Новых заказов по Республике Беларусь добавляется ежедневно' },
+                { icon: React.createElement(Clock, { className: "w-8 h-8 text-accent-foreground" }), value: '8 часов', label: 'Рабочего времени в неделю в среднем экономят наши клиенты' },
             ]
         },
         benefits: {
@@ -168,14 +170,14 @@ export const content = {
             main: [
                 { icon: React.createElement(Bot, { className: "w-8 h-8 text-accent" }), title: 'Полная автоматизация', description: 'Тендеры обновляются ежедневно без вашего участия.'},
                 { icon: React.createElement(Filter, { className: "w-8 h-8 text-accent" }), title: 'Фильтрация и исключения', description: 'Настраивайте показ только релевантных тендеров.'},
-                { icon: React.createElement(DatabaseZap, { className: "w-8 h-8 text-accent" }), title: 'Интеграция данных', description: 'Доступ к тендерам с goszakupki.by и icetrade.by.'},
+                { icon: React.createElement(DatabaseZap, { className: "w-8 h-8 text-accent" }), title: 'Интеграция данных', description: 'Доступ к тендерам с goszakupki.by, icetrade.by и других белорусских площадок.'},
             ],
             steps: {
                 title: 'Начните выигрывать тендеры за 3 шага',
                 items: [
-                    { icon: React.createElement(SlidersHorizontal, { className: "w-8 h-8 text-accent" }), title: 'Настройте ваш поиск', description: 'Укажите ключевые слова, регион, отрасль и другие параметры. Наша система запомнит их.'},
-                    { icon: React.createElement(Bell, { className: "w-8 h-8 text-accent" }), title: 'Получайте готовую подборку', description: 'Больше не нужно тратить время на ручной поиск. Мы пришлем уведомления, как только появятся подходящие тендеры.'},
-                    { icon: React.createElement(Target, { className: "w-8 h-8 text-accent" }), title: 'Участвуйте и побеждайте!', description: 'Используйте наши инструменты аналитики, чтобы подготовить лучшее предложение и забирайте контракт.'},
+                    { icon: React.createElement(SlidersHorizontal, { className: "w-8 h-8 text-accent" }), title: 'Настройте ваш поиск', description: 'Укажите вашу сферу деятельности, ключевые слова и регион. Наша система запомнит ваш выбор.'},
+                    { icon: React.createElement(Bell, { className: "w-8 h-8 text-accent" }), title: 'Получайте готовую подборку', description: 'Изучайте ленту релевантных закупок на сайте или просто ждите уведомлений о новых заказах.'},
+                    { icon: React.createElement(Target, { className: "w-8 h-8 text-accent" }), title: 'Участвуйте и побеждайте!', description: 'Используйте сэкономленное время для качественной подготовки документов и побеждайте в торгах.'},
                 ],
                 buttonText: 'Зарегистрироваться бесплатно',
             }
@@ -183,18 +185,18 @@ export const content = {
         systemFeatures: {
             title: 'Ваш инструмент для роста в цифрах',
             items: [
-              { icon: React.createElement(Search, { className: "w-8 h-8" }), title: 'Мультиплощадочный поиск', description: 'Поиск тендеров по всем основным площадкам Беларуси. Быстро находите нужные закупки с помощью интеллектуальных фильтров.'},
+              { icon: React.createElement(Search, { className: "w-8 h-8" }), title: 'Мультиплощадочный поиск', description: 'Поиск тендеров по всем основным площадкам Республики Беларусь. Быстро находите нужные закупки с помощью интеллектуальных фильтров.'},
               { icon: React.createElement(Briefcase, { className: "w-8 h-8" }), title: 'Детализированные карточки', description: 'Вся информация о тендере в одном месте: заказчик, статус, сроки, тип закупки, цена и многое другое для быстрого анализа.'},
-              { icon: React.createElement(BellRing, { className: "w-8 h-8" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram, не пропускайте важные закупки и изменения статусов.' },
+              { icon: React.createElement(BellRing, { className: "w-8 h-8" }), title: 'Система оповещений', description: 'Получайте уведомления о новых тендерах на email и в Telegram. Не пропустите важные закупки и изменения статусов.' },
               { icon: React.createElement(BarChart3, { className: "w-8 h-8" }), title: 'Аналитика и статистика', description: 'Анализируйте рынок, отслеживайте динамику тендеров, стройте отчёты и принимайте обоснованные решения.'},
               { icon: React.createElement(Users, { className: "w-8 h-8" }), title: 'Отслеживание конкурентов', description: 'Следите за активностью конкурентов и их тендерами, чтобы быть на шаг впереди на рынке.'},
               { icon: React.createElement(Filter, { className: "w-8 h-8" }), title: 'Гибкая фильтрация', description: 'Настраивайте фильтры по регионам, типам закупок, цене, дате и другим параметрам для максимальной релевантности.'},
             ]
         },
         cta: {
-            main: { title: "Готовы получить свой первый госконтракт?", description: "Зарегистрируйтесь за 1 минуту и получите доступ на 7 дней бесплатно, без карты и обязательств.", buttonText: "Попробовать бесплатно", secondaryButtonText: "Связаться с менеджером" },
+            main: { title: "Готовы получить свой первый госконтракт?", description: "Зарегистрируйтесь за 1 минуту и получите 7 дней полного доступа ко всем функциям. Без привязки карты и обязательств.", buttonText: "Попробовать бесплатно", secondaryButtonText: "Связаться с менеджером" },
             secondary: { title: "Начните получать тендеры первыми", buttonText: "Получить тестовый доступ" },
-            final: { title: "Готовы получить свой первый госконтракт?", description: "Зарегистрируйтесь за 1 минуту и получите доступ на 7 дней бесплатно, без карты и обязательств.", buttonText: "Попробовать бесплатно" },
+            final: { title: "Готовы получить свой первый госконтракт?", description: "Зарегистрируйтесь за 1 минуту и получите 7 дней полного доступа ко всем функциям. Без привязки карты и обязательств.", buttonText: "Получить тестовый доступ" },
         }
     },
     rednet2: {

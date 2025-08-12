@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/landing/header';
 import { Footer } from '@/components/landing/footer';
 import { Button } from '@/components/ui/button';
@@ -90,6 +90,7 @@ const daysOfWeek = [
 ]
 
 export default function TemplatesPage() {
+  const [theme, setTheme] = useState('tendersoft');
   const [activeTab, setActiveTab] = useState('kz');
   const [templates, setTemplates] = useState(mockTemplates);
   
@@ -101,6 +102,20 @@ export default function TemplatesPage() {
   const [times, setTimes] = useState<string[]>(['09:00', '18:00']);
   const [newTime, setNewTime] = useState('');
   
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const currentTheme = localStorage.getItem('theme') || 'tendersoft';
+      setTheme(currentTheme);
+      // Set active tab based on theme: rednet for BY, tendersoft for KZ
+      setActiveTab(currentTheme === 'rednet' ? 'by' : 'kz');
+    };
+
+    handleStorageChange(); // Initial setup
+    window.addEventListener('storage', handleStorageChange); // Listen for changes
+
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const handleDayToggle = (dayId: string) => {
     setSelectedDays(prev => 
         prev.includes(dayId) ? prev.filter(d => d !== dayId) : [...prev, dayId]
