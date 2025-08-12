@@ -47,11 +47,36 @@
   }
 
   .theme-rednet {
-    --primary: 349 76% 23%; /* #5E142D */
-    --primary-darken-1: 349 76% 18%; /* Darker version for gradient */
-    --accent: 3 100% 74%;  /* #FF817A */
-    --accent-dark: 3 100% 68%;
-    --ring: 3 100% 74%;
+    --background: 0 0% 98%;    /* Off-white */
+    --foreground: 348 97% 11%;  /* Dark Burgundy for text */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 348 97% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 348 97% 11%;
+    
+    --primary: 348 97% 16%; /* #540111 Main Burgundy */
+    --primary-darken-1: 348 97% 11%; /* Darker Burgundy for gradient */
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96%; /* Lighter grey for secondary elements */
+    --secondary-foreground: 348 97% 11%;
+    
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
+    
+    --accent: 359 29% 45%; /* #965251 Muted Red-Brown */
+    --accent-dark: 359 29% 40%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 348 97% 16%; 
+    --input: 0 0% 92%;
+    --ring: 359 29% 45%;
+    
     --radius: 0.5rem;
   }
 
