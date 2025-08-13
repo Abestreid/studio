@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Image from 'next/image';
 import { content } from '@/lib/content';
-import { Check } from 'lucide-react';
+import { Check, X } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const proposalDate = new Date().toLocaleDateString('ru-RU', {
   day: 'numeric',
@@ -15,24 +16,33 @@ const proposalDate = new Date().toLocaleDateString('ru-RU', {
   year: 'numeric'
 });
 
-const standardFeatures = [
-    'Поиск по всем площадкам РБ',
-    'Уведомления на Email',
-    '5 сохраненных фильтров поиска',
-    'Базовая аналитика по заказчикам',
-    'Доступ для 1 пользователя',
-    'Техническая поддержка по Email',
+const features = [
+    { name: 'Поиск по всем площадкам РБ', standard: true, pro: true },
+    { name: 'Уведомления на Email', standard: true, pro: true },
+    { name: '5 сохраненных фильтров поиска', standard: true, pro: true },
+    { name: 'Базовая аналитика по заказчикам', standard: true, pro: true },
+    { name: 'Техническая поддержка по Email', standard: true, pro: true },
+    { name: 'Доступ для 1 пользователя', standard: true, pro: true },
+    { name: 'Выгрузка результатов в Excel', standard: false, pro: true },
+    { name: 'Уведомления в Telegram', standard: false, pro: true },
+    { name: 'Безлимитные фильтры поиска', standard: false, pro: true },
+    { name: 'Расширенная аналитика и статистика', standard: false, pro: true },
+    { name: 'Командный доступ до 5 пользователей', standard: false, pro: true },
+    { name: 'Персональный менеджер', standard: false, pro: true },
 ];
 
-const proFeatures = [
-    'Все функции тарифа "Стандарт"',
-    'Выгрузка результатов в Excel',
-    'Уведомления в Telegram',
-    'Безлимитные фильтры поиска',
-    'Расширенная аналитика и статистика',
-    'Командный доступ до 5 пользователей',
-];
-
+const pricing = {
+    standard: [
+        { term: '3 месяца', pricePerMonth: 45, total: 135 },
+        { term: '6 месяцев', pricePerMonth: 40, total: 240 },
+        { term: '12 месяцев', pricePerMonth: 35, total: 420 },
+    ],
+    pro: [
+        { term: '3 месяца', pricePerMonth: 50, total: 150 },
+        { term: '6 месяцев', pricePerMonth: 45, total: 270 },
+        { term: '12 месяцев', pricePerMonth: 40, total: 480 },
+    ]
+}
 
 export default function CommercialProposalPage() {
     const theme = 'rednet'; // Hardcoded for this page style
@@ -70,62 +80,86 @@ export default function CommercialProposalPage() {
                         </p>
                     </div>
 
-                    {/* Tariffs */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                        {/* Tariff Standard */}
-                        <Card className="border-primary/20 shadow-md flex flex-col">
-                            <CardHeader className="text-center">
-                                <CardTitle className="text-2xl text-primary">Тариф «Стандарт»</CardTitle>
-                                <CardDescription>Идеально для ИП и небольших компаний</CardDescription>
-                            </CardHeader>
-                            <CardContent className="flex-grow">
-                                <p className="text-center mb-6">
-                                    <span className="text-4xl font-bold">45 BYN</span>
-                                    <span className="text-muted-foreground">/мес (при оплате за 3 мес.)</span>
-                                </p>
-                                <ul className="space-y-3">
-                                    {standardFeatures.map(feature => (
-                                        <li key={feature} className="flex items-start">
-                                            <Check className="w-5 h-5 text-green-500 mr-2 shrink-0 mt-0.5" />
-                                            <span>{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </CardContent>
-                            <div className="p-6 mt-auto">
-                                <Button className="w-full" variant="outline">Выбрать Стандарт</Button>
-                            </div>
-                        </Card>
+                    {/* Features Comparison Table */}
+                     <div className="mb-12">
+                        <h3 className="text-xl font-bold text-primary text-center mb-6">Сравнение функционала тарифов</h3>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-2/4">Функционал</TableHead>
+                                    <TableHead className="text-center">Стандарт</TableHead>
+                                    <TableHead className="text-center">Профи</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {features.map((feature) => (
+                                    <TableRow key={feature.name}>
+                                        <TableCell className="font-medium">{feature.name}</TableCell>
+                                        <TableCell className="text-center">
+                                            {feature.standard ? <Check className="w-5 h-5 text-green-500 mx-auto" /> : <X className="w-5 h-5 text-red-500 mx-auto" />}
+                                        </TableCell>
+                                         <TableCell className="text-center">
+                                            {feature.pro ? <Check className="w-5 h-5 text-green-500 mx-auto" /> : <X className="w-5 h-5 text-red-500 mx-auto" />}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
 
-                        {/* Tariff Pro */}
-                        <Card className="border-accent shadow-accent/20 shadow-lg flex flex-col">
-                            <CardHeader className="text-center">
-                                <CardTitle className="text-2xl text-primary">Тариф «Профи»</CardTitle>
-                                <CardDescription>Для тендерных отделов и опытных команд</CardDescription>
-                            </CardHeader>
-                            <CardContent className="flex-grow">
-                                <p className="text-center mb-6">
-                                    <span className="text-4xl font-bold">50 BYN</span>
-                                    <span className="text-muted-foreground">/мес (при оплате за 3 мес.)</span>
-                                </p>
-                                <ul className="space-y-3">
-                                    {proFeatures.map(feature => (
-                                        <li key={feature} className="flex items-start">
-                                            <Check className="w-5 h-5 text-green-500 mr-2 shrink-0 mt-0.5" />
-                                            <span>{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </CardContent>
-                             <div className="p-6 mt-auto">
-                                <Button className="w-full">Выбрать Профи</Button>
-                            </div>
-                        </Card>
+
+                    {/* Pricing by Term */}
+                     <div>
+                        <h3 className="text-xl font-bold text-primary text-center mb-6">Стоимость доступа</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                             <div>
+                                <h4 className="font-semibold text-lg text-center mb-4">Тариф "Стандарт"</h4>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Срок доступа</TableHead>
+                                            <TableHead>Цена в месяц (BYN)</TableHead>
+                                            <TableHead className="text-right">Общая стоимость (BYN)</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {pricing.standard.map(p => (
+                                            <TableRow key={p.term}>
+                                                <TableCell>{p.term}</TableCell>
+                                                <TableCell>{p.pricePerMonth}</TableCell>
+                                                <TableCell className="text-right font-semibold">{p.total}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                             </div>
+                              <div>
+                                <h4 className="font-semibold text-lg text-center mb-4">Тариф "Профи"</h4>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Срок доступа</TableHead>
+                                            <TableHead>Цена в месяц (BYN)</TableHead>
+                                            <TableHead className="text-right">Общая стоимость (BYN)</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {pricing.pro.map(p => (
+                                            <TableRow key={p.term}>
+                                                <TableCell>{p.term}</TableCell>
+                                                <TableCell>{p.pricePerMonth}</TableCell>
+                                                <TableCell className="text-right font-semibold">{p.total}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                             </div>
+                        </div>
                     </div>
 
 
                     {/* Footer */}
-                    <div className="border-t pt-8 mt-8 text-sm text-muted-foreground text-center">
+                    <div className="border-t pt-8 mt-12 text-sm text-muted-foreground text-center">
                         <p>С уважением, команда {brandName}.</p>
                         <p>Если у вас возникли вопросы, свяжитесь с нами по телефону или электронной почте.</p>
                         <div className="flex justify-center gap-4 mt-4">
