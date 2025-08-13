@@ -5,9 +5,9 @@ import { Header } from '@/components/landing/header';
 import { Footer } from '@/components/landing/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Image from 'next/image';
 import { content } from '@/lib/content';
+import { Check } from 'lucide-react';
 
 const proposalDate = new Date().toLocaleDateString('ru-RU', {
   day: 'numeric',
@@ -15,16 +15,22 @@ const proposalDate = new Date().toLocaleDateString('ru-RU', {
   year: 'numeric'
 });
 
-const tariff1 = [
-    { months: 3, pricePerMonth: 45, total: 135, description: 'Поиск тендеров по всем площадкам РБ, уведомления на Email, 5 сохраненных фильтров.' },
-    { months: 6, pricePerMonth: 40, total: 240, description: 'Поиск тендеров по всем площадкам РБ, уведомления на Email, 5 сохраненных фильтров.' },
-    { months: 12, pricePerMonth: 35, total: 420, description: 'Поиск тендеров по всем площадкам РБ, уведомления на Email, 5 сохраненных фильтров.' },
+const standardFeatures = [
+    'Поиск по всем площадкам РБ',
+    'Уведомления на Email',
+    '5 сохраненных фильтров поиска',
+    'Базовая аналитика по заказчикам',
+    'Доступ для 1 пользователя',
+    'Техническая поддержка по Email',
 ];
 
-const tariff2 = [
-    { months: 3, pricePerMonth: 50, total: 150, description: 'Все функции тарифа "Стандарт" + выгрузка в Excel, уведомления в Telegram, безлимитные фильтры и базовая аналитика.' },
-    { months: 6, pricePerMonth: 45, total: 270, description: 'Все функции тарифа "Стандарт" + выгрузка в Excel, уведомления в Telegram, безлимитные фильтры и базовая аналитика.' },
-    { months: 12, pricePerMonth: 40, total: 480, description: 'Все функции тарифа "Стандарт" + выгрузка в Excel, уведомления в Telegram, безлимитные фильтры и базовая аналитика.' },
+const proFeatures = [
+    'Все функции тарифа "Стандарт"',
+    'Выгрузка результатов в Excel',
+    'Уведомления в Telegram',
+    'Безлимитные фильтры поиска',
+    'Расширенная аналитика и статистика',
+    'Командный доступ до 5 пользователей',
 ];
 
 
@@ -40,7 +46,7 @@ export default function CommercialProposalPage() {
         <Header />
         <main className="flex-grow py-12 sm:py-16">
             <div className="container mx-auto px-4 md:px-6">
-                <Card className="max-w-4xl mx-auto bg-white shadow-2xl p-8 sm:p-12 md:p-16 rounded-lg">
+                <Card className="max-w-5xl mx-auto bg-white shadow-2xl p-8 sm:p-12 md:p-16 rounded-lg">
                     {/* Header */}
                     <div className="flex justify-between items-start border-b pb-8 mb-8 border-dashed">
                         <div className="flex items-center gap-4">
@@ -57,72 +63,66 @@ export default function CommercialProposalPage() {
                     </div>
 
                     {/* Intro */}
-                    <div className="mb-10">
+                    <div className="mb-10 text-center">
                         <p className="text-lg">Уважаемые партнеры,</p>
-                        <p className="text-muted-foreground mt-2">
+                        <p className="text-muted-foreground mt-2 max-w-3xl mx-auto">
                             Предлагаем вашему вниманию тарифные планы на использование нашей платформы для поиска, аналитики и управления тендерами в Республике Беларусь. Мы уверены, что наши решения помогут оптимизировать ваши рабочие процессы и увеличить количество побед.
                         </p>
                     </div>
 
-                    {/* Tariff 1 */}
-                    <Card className="mb-10 border-primary/20 shadow-md">
-                        <CardHeader>
-                            <CardTitle className="text-primary">Тариф «Стандарт»</CardTitle>
-                             <CardDescription>Идеально подходит для индивидуальных специалистов и небольших компаний, которым необходим надежный инструмент для поиска тендеров.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead className="w-[150px]">Срок доступа</TableHead>
-                                        <TableHead>Цена за месяц (BYN)</TableHead>
-                                        <TableHead>Общая стоимость (BYN)</TableHead>
-                                        <TableHead>Краткое описание</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {tariff1.map((row) => (
-                                        <TableRow key={row.months}>
-                                            <TableCell className="font-medium">{row.months} мес.</TableCell>
-                                            <TableCell>{row.pricePerMonth.toFixed(2)}</TableCell>
-                                            <TableCell className="font-semibold">{row.total.toFixed(2)}</TableCell>
-                                            <TableCell className="text-muted-foreground text-xs">{row.description}</TableCell>
-                                        </TableRow>
+                    {/* Tariffs */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                        {/* Tariff Standard */}
+                        <Card className="border-primary/20 shadow-md flex flex-col">
+                            <CardHeader className="text-center">
+                                <CardTitle className="text-2xl text-primary">Тариф «Стандарт»</CardTitle>
+                                <CardDescription>Идеально для ИП и небольших компаний</CardDescription>
+                            </CardHeader>
+                            <CardContent className="flex-grow">
+                                <p className="text-center mb-6">
+                                    <span className="text-4xl font-bold">45 BYN</span>
+                                    <span className="text-muted-foreground">/мес (при оплате за 3 мес.)</span>
+                                </p>
+                                <ul className="space-y-3">
+                                    {standardFeatures.map(feature => (
+                                        <li key={feature} className="flex items-start">
+                                            <Check className="w-5 h-5 text-green-500 mr-2 shrink-0 mt-0.5" />
+                                            <span>{feature}</span>
+                                        </li>
                                     ))}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                    </Card>
+                                </ul>
+                            </CardContent>
+                            <div className="p-6 mt-auto">
+                                <Button className="w-full" variant="outline">Выбрать Стандарт</Button>
+                            </div>
+                        </Card>
 
-                     {/* Tariff 2 */}
-                    <Card className="mb-12 border-accent shadow-accent/20 shadow-lg">
-                        <CardHeader>
-                            <CardTitle className="text-primary">Тариф «Профи»</CardTitle>
-                             <CardDescription>Оптимальное решение для тендерных отделов и компаний, стремящихся к максимальной эффективности и использованию аналитических инструментов.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead className="w-[150px]">Срок доступа</TableHead>
-                                        <TableHead>Цена за месяц (BYN)</TableHead>
-                                        <TableHead>Общая стоимость (BYN)</TableHead>
-                                        <TableHead>Краткое описание</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {tariff2.map((row) => (
-                                        <TableRow key={row.months}>
-                                            <TableCell className="font-medium">{row.months} мес.</TableCell>
-                                            <TableCell>{row.pricePerMonth.toFixed(2)}</TableCell>
-                                            <TableCell className="font-semibold">{row.total.toFixed(2)}</TableCell>
-                                            <TableCell className="text-muted-foreground text-xs">{row.description}</TableCell>
-                                        </TableRow>
+                        {/* Tariff Pro */}
+                        <Card className="border-accent shadow-accent/20 shadow-lg flex flex-col">
+                            <CardHeader className="text-center">
+                                <CardTitle className="text-2xl text-primary">Тариф «Профи»</CardTitle>
+                                <CardDescription>Для тендерных отделов и опытных команд</CardDescription>
+                            </CardHeader>
+                            <CardContent className="flex-grow">
+                                <p className="text-center mb-6">
+                                    <span className="text-4xl font-bold">50 BYN</span>
+                                    <span className="text-muted-foreground">/мес (при оплате за 3 мес.)</span>
+                                </p>
+                                <ul className="space-y-3">
+                                    {proFeatures.map(feature => (
+                                        <li key={feature} className="flex items-start">
+                                            <Check className="w-5 h-5 text-green-500 mr-2 shrink-0 mt-0.5" />
+                                            <span>{feature}</span>
+                                        </li>
                                     ))}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                    </Card>
+                                </ul>
+                            </CardContent>
+                             <div className="p-6 mt-auto">
+                                <Button className="w-full">Выбрать Профи</Button>
+                            </div>
+                        </Card>
+                    </div>
+
 
                     {/* Footer */}
                     <div className="border-t pt-8 mt-8 text-sm text-muted-foreground text-center">
@@ -131,7 +131,7 @@ export default function CommercialProposalPage() {
                         <div className="flex justify-center gap-4 mt-4">
                            <Button variant="outline" onClick={() => window.print()}>Распечатать</Button>
                            <Button asChild>
-                                <a href="/pricing">Выбрать тариф</a>
+                                <a href="/pricing">Подробнее о тарифах</a>
                             </Button>
                         </div>
                     </div>
