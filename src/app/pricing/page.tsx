@@ -42,7 +42,7 @@ export default function PricingPage() {
             </Label>
           </div>
 
-          <div className="flex flex-col gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start max-w-6xl mx-auto">
             {tiers.map((tier) => (
                 <PricingCard key={tier.name} tier={tier} isAnnual={isAnnual} />
             ))}
