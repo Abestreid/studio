@@ -16,15 +16,15 @@ const proposalDate = new Date().toLocaleDateString('ru-RU', {
 });
 
 const tariff1 = [
-    { months: 3, pricePerMonth: 45, total: 135, description: 'Поиск тендеров по всем площадкам РБ' },
-    { months: 6, pricePerMonth: 40, total: 240, description: 'Поиск тендеров по всем площадкам РБ' },
-    { months: 12, pricePerMonth: 35, total: 420, description: 'Поиск тендеров по всем площадкам РБ' },
+    { months: 3, pricePerMonth: 45, total: 135, description: 'Поиск тендеров по всем площадкам РБ, уведомления на Email, 5 сохраненных фильтров.' },
+    { months: 6, pricePerMonth: 40, total: 240, description: 'Поиск тендеров по всем площадкам РБ, уведомления на Email, 5 сохраненных фильтров.' },
+    { months: 12, pricePerMonth: 35, total: 420, description: 'Поиск тендеров по всем площадкам РБ, уведомления на Email, 5 сохраненных фильтров.' },
 ];
 
 const tariff2 = [
-    { months: 3, pricePerMonth: 50, total: 150, description: 'Поиск тендеров по всем площадкам РБ + выгрузка в Excel' },
-    { months: 6, pricePerMonth: 45, total: 270, description: 'Поиск тендеров по всем площадкам РБ + выгрузка в Excel' },
-    { months: 12, pricePerMonth: 40, total: 480, description: 'Поиск тендеров по всем площадкам РБ + выгрузка в Excel' },
+    { months: 3, pricePerMonth: 50, total: 150, description: 'Все функции тарифа "Стандарт" + выгрузка в Excel, уведомления в Telegram, безлимитные фильтры и базовая аналитика.' },
+    { months: 6, pricePerMonth: 45, total: 270, description: 'Все функции тарифа "Стандарт" + выгрузка в Excel, уведомления в Telegram, безлимитные фильтры и базовая аналитика.' },
+    { months: 12, pricePerMonth: 40, total: 480, description: 'Все функции тарифа "Стандарт" + выгрузка в Excel, уведомления в Telegram, безлимитные фильтры и базовая аналитика.' },
 ];
 
 
@@ -40,7 +40,7 @@ export default function CommercialProposalPage() {
         <Header />
         <main className="flex-grow py-12 sm:py-16">
             <div className="container mx-auto px-4 md:px-6">
-                <Card className="max-w-4xl mx-auto bg-white shadow-2xl p-8 sm:p-12 md:p-16 rounded-none sm:rounded-lg">
+                <Card className="max-w-4xl mx-auto bg-white shadow-2xl p-8 sm:p-12 md:p-16 rounded-lg">
                     {/* Header */}
                     <div className="flex justify-between items-start border-b pb-8 mb-8 border-dashed">
                         <div className="flex items-center gap-4">
@@ -65,9 +65,10 @@ export default function CommercialProposalPage() {
                     </div>
 
                     {/* Tariff 1 */}
-                    <Card className="mb-10 border-primary/20">
+                    <Card className="mb-10 border-primary/20 shadow-md">
                         <CardHeader>
                             <CardTitle className="text-primary">Тариф «Стандарт»</CardTitle>
+                             <CardDescription>Идеально подходит для индивидуальных специалистов и небольших компаний, которым необходим надежный инструмент для поиска тендеров.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Table>
@@ -85,7 +86,7 @@ export default function CommercialProposalPage() {
                                             <TableCell className="font-medium">{row.months} мес.</TableCell>
                                             <TableCell>{row.pricePerMonth.toFixed(2)}</TableCell>
                                             <TableCell className="font-semibold">{row.total.toFixed(2)}</TableCell>
-                                            <TableCell className="text-muted-foreground">{row.description}</TableCell>
+                                            <TableCell className="text-muted-foreground text-xs">{row.description}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -94,9 +95,10 @@ export default function CommercialProposalPage() {
                     </Card>
 
                      {/* Tariff 2 */}
-                    <Card className="mb-12 border-primary/20">
+                    <Card className="mb-12 border-accent shadow-accent/20 shadow-lg">
                         <CardHeader>
                             <CardTitle className="text-primary">Тариф «Профи»</CardTitle>
+                             <CardDescription>Оптимальное решение для тендерных отделов и компаний, стремящихся к максимальной эффективности и использованию аналитических инструментов.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Table>
@@ -114,7 +116,7 @@ export default function CommercialProposalPage() {
                                             <TableCell className="font-medium">{row.months} мес.</TableCell>
                                             <TableCell>{row.pricePerMonth.toFixed(2)}</TableCell>
                                             <TableCell className="font-semibold">{row.total.toFixed(2)}</TableCell>
-                                            <TableCell className="text-muted-foreground">{row.description}</TableCell>
+                                            <TableCell className="text-muted-foreground text-xs">{row.description}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -127,8 +129,10 @@ export default function CommercialProposalPage() {
                         <p>С уважением, команда {brandName}.</p>
                         <p>Если у вас возникли вопросы, свяжитесь с нами по телефону или электронной почте.</p>
                         <div className="flex justify-center gap-4 mt-4">
-                           <Button variant="outline">Распечатать</Button>
-                           <Button>Выбрать тариф</Button>
+                           <Button variant="outline" onClick={() => window.print()}>Распечатать</Button>
+                           <Button asChild>
+                                <a href="/pricing">Выбрать тариф</a>
+                            </Button>
                         </div>
                     </div>
                 </Card>
